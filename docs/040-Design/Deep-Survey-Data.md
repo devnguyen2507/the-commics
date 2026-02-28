@@ -1,0 +1,111 @@
+
+#### Gia đình
+- [Iraira Enanan no Ecchi na Nadamekata](https://hentaivn.ch/https://hentaivn.ch/truyen/iraira-enanan-no-ecchi-na-nadamekata/)
+- [Shinseki Midara My Home Harem](https://hentaivn.ch/https://hentaivn.ch/truyen/shinseki-midara-my-home-harem/)
+- [Hãy ước lên bộ ngực này](https://hentaivn.ch/https://hentaivn.ch/truyen/hay-uoc-len-bo-nguc-nay/)
+- [Ba nguyên tắc cho em gái](https://hentaivn.ch/https://hentaivn.ch/truyen/ba-nguyen-tac-cho-em-gai/)
+- [Chị gái mềm mại và ấm áp](https://hentaivn.ch/https://hentaivn.ch/truyen/chi-gai-mem-mai-va-am-ap/)
+- [Bị tai nạn tôi bị biến thành một thằng nhóc](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-tai-nan-toi-bi-bien-thanh-mot-thang-nhoc/)
+- [Mẹ là đồ chơi của tôi](https://hentaivn.ch/https://hentaivn.ch/truyen/me-la-do-choi-cua-toi/)
+- [Okaa-San LOVE](https://hentaivn.ch/https://hentaivn.ch/truyen/okaa-san-love/)
+- [Mặt khuất của cô em gái](https://hentaivn.ch/https://hentaivn.ch/truyen/mat-khuat-cua-co-em-gai/)
+
+#### Webtoon
+- [Tôi là giáo chủ tà giáo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-la-giao-chu-ta-giao/)
+- [Mẹ bạn – Người phụ nữ lý tưởng của tôi](https://hentaivn.ch/https://hentaivn.ch/truyen/me-ban-nguoi-phu-nu-ly-tuong-cua-toi/)
+- [Nàng ca sĩ trong trắng muốn được làm tình…](https://hentaivn.ch/https://hentaivn.ch/truyen/nang-ca-si-trong-trang-muon-duoc-lam-tinh/)
+- [Chap 19](https://hentaivn.ch/https://hentaivn.ch/truyen/nang-ca-si-trong-trang-muon-duoc-lam-tinh/chap-19/)
+- [Giao ước với quỷ](https://hentaivn.ch/https://hentaivn.ch/truyen/giao-uoc-voi-quy/)
+- [Chap 15](https://hentaivn.ch/https://hentaivn.ch/truyen/giao-uoc-voi-quy/chap-15/)
+- [Cô nàng nghiêm túc trở nên dễ tính khi say](https://hentaivn.ch/https://hentaivn.ch/truyen/co-nang-nghiem-tuc-tro-nen-de-tinh-khi-say/)
+- [Chap 35-36](https://hentaivn.ch/https://hentaivn.ch/truyen/co-nang-nghiem-tuc-tro-nen-de-tinh-khi-say/chap-35-36/)
+- [Tôi Không Cưỡng Lại Được Cách Hắn Massage](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-khong-cuong-lai-duoc-cach-han-massage/)
+- [Chap 100-101](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-khong-cuong-lai-duoc-cach-han-massage/chap-100-101/)
+
+#### Cheating
+- [Nhìn trộm qua cái lỗ trên tường](https://hentaivn.ch/https://hentaivn.ch/truyen/nhin-trom-qua-cai-lo-tren-tuong/)
+- [Kinjo no Hitozuma-san “Musuko no Otomodachi”](https://hentaivn.ch/https://hentaivn.ch/truyen/kinjo-no-hitozuma-san-musuko-no-otomodachi/)
+- [Bị chị gái người yêu quyến rũ](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-chi-gai-nguoi-yeu-quyen-ru/)
+- [Zetsurin Gaikokujin no Yaba Sugiru Netori Kata](https://hentaivn.ch/https://hentaivn.ch/truyen/zetsurin-gaikokujin-no-yaba-sugiru-netori-kata/)
+- [Bị mẹ bạn gái làm thịt](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-me-ban-gai-lam-thit/)
+- [Em hứa sẽ giữ bí mật](https://hentaivn.ch/https://hentaivn.ch/truyen/em-hua-se-giu-bi-mat/)
+- [Bà chủ suối nước nóng này là kẻ nghiện sex không biết xấu hổ](https://hentaivn.ch/https://hentaivn.ch/truyen/ba-chu-suoi-nuoc-nong-nay-la-ke-nghien-sex-khong-biet-xau-ho/)
+- [Chap 03](https://hentaivn.ch/https://hentaivn.ch/truyen/ba-chu-suoi-nuoc-nong-nay-la-ke-nghien-sex-khong-biet-xau-ho/chap-03/)
+
+#### NTR
+- [Bị chị gái người yêu quyến rũ](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-chi-gai-nguoi-yeu-quyen-ru/)
+- [Cosplayer phức tạp](https://hentaivn.ch/https://hentaivn.ch/truyen/cosplayer-phuc-tap/)
+- [Em hứa sẽ giữ bí mật](https://hentaivn.ch/https://hentaivn.ch/truyen/em-hua-se-giu-bi-mat/)
+- [Korean Trip](https://hentaivn.ch/https://hentaivn.ch/truyen/korean-trip/)
+- [Goodbye Mom](https://hentaivn.ch/https://hentaivn.ch/truyen/goodbye-mom/)
+- [Xin lỗi, tớ lại phải đi chịch nữa rồi!](https://hentaivn.ch/https://hentaivn.ch/truyen/xin-loi-to-lai-phai-di-chich-nua-roi/)
+- [Uy hiếp cô bạn vì yêu giáo viên](https://hentaivn.ch/https://hentaivn.ch/truyen/uy-hiep-co-ban-vi-yeu-giao-vien/)
+- [Chap 02 - END](https://hentaivn.ch/https://hentaivn.ch/truyen/uy-hiep-co-ban-vi-yeu-giao-vien/chap-02-end/)
+- [Streamer ‐ Neat and Clean, She can’t Stand the Pleasure](https://hentaivn.ch/https://hentaivn.ch/truyen/streamer-%e2%80%90-neat-and-clean-she-cant-stand-the-pleasure/)
+- [Otaku ni Yasashii Gal wa Netorareru](https://hentaivn.ch/https://hentaivn.ch/truyen/otaku-ni-yasashii-gal-wa-netorareru/)
+
+#### Truyện ngắn
+- [Toi, Seitsuu Mae no Namaikina Kuso Gaki oo Manko Zuke ni Shitara Dou Naruka Kotae Yo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-seitsuu-mae-no-namaikina-kuso-gaki-oo-manko-zuke-ni-shitara-dou-naruka-kotae-yo/)
+- [Ryuukinza no Yoru](https://hentaivn.ch/https://hentaivn.ch/truyen/ryuukinza-no-yoru/)
+- [Nhìn trộm qua cái lỗ trên tường](https://hentaivn.ch/https://hentaivn.ch/truyen/nhin-trom-qua-cai-lo-tren-tuong/)
+- [Iku-san to Onsen de Ichaicha Shitai](https://hentaivn.ch/https://hentaivn.ch/truyen/iku-san-to-onsen-de-ichaicha-shitai/)
+- [Cô nàng thinh lặng](https://hentaivn.ch/https://hentaivn.ch/truyen/co-nang-thinh-lang/)
+- [Bunny ga Osuki to Kikimashite](https://hentaivn.ch/https://hentaivn.ch/truyen/bunny-ga-osuki-to-kikimashite/)
+- [The Vegan Gyaru Elf Craves Meat](https://hentaivn.ch/https://hentaivn.ch/truyen/the-vegan-gyaru-elf-craves-meat/)
+- [Người giúp việc giặt giũ](https://hentaivn.ch/https://hentaivn.ch/truyen/nguoi-giup-viec-giat-giu/)
+- [Tsuntsun Yuutousei wa Biyaku de Kairaku Ochi Suru](https://hentaivn.ch/https://hentaivn.ch/truyen/tsuntsun-yuutousei-wa-biyaku-de-kairaku-ochi-suru/)
+- [Bị chị gái người yêu quyến rũ](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-chi-gai-nguoi-yeu-quyen-ru/)
+
+#### Truyện dài
+- [Tình yêu méo mó với đồng nghiệp](https://hentaivn.ch/https://hentaivn.ch/truyen/tinh-yeu-meo-mo-voi-dong-nghiep/)
+- [Kinjo no Hitozuma-san “Musuko no Otomodachi”](https://hentaivn.ch/https://hentaivn.ch/truyen/kinjo-no-hitozuma-san-musuko-no-otomodachi/)
+- [Zetsurin Gaikokujin no Yaba Sugiru Netori Kata](https://hentaivn.ch/https://hentaivn.ch/truyen/zetsurin-gaikokujin-no-yaba-sugiru-netori-kata/)
+- [Kurashiki-sensei Is In Heat](https://hentaivn.ch/https://hentaivn.ch/truyen/kurashiki-sensei-is-in-heat/)
+- [Chap 03B - END](https://hentaivn.ch/https://hentaivn.ch/truyen/kurashiki-sensei-is-in-heat/chap-03b-end/)
+- [Bị mẹ bạn gái làm thịt](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-me-ban-gai-lam-thit/)
+- [Shinseki Midara My Home Harem](https://hentaivn.ch/https://hentaivn.ch/truyen/shinseki-midara-my-home-harem/)
+- [Tôi là giáo chủ tà giáo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-la-giao-chu-ta-giao/)
+
+#### Truyện Màu
+- [Kinjo no Hitozuma-san “Musuko no Otomodachi”](https://hentaivn.ch/https://hentaivn.ch/truyen/kinjo-no-hitozuma-san-musuko-no-otomodachi/)
+- [Bunny ga Osuki to Kikimashite](https://hentaivn.ch/https://hentaivn.ch/truyen/bunny-ga-osuki-to-kikimashite/)
+- [Zetsurin Gaikokujin no Yaba Sugiru Netori Kata](https://hentaivn.ch/https://hentaivn.ch/truyen/zetsurin-gaikokujin-no-yaba-sugiru-netori-kata/)
+- [Cosplayer phức tạp](https://hentaivn.ch/https://hentaivn.ch/truyen/cosplayer-phuc-tap/)
+- [Tôi là giáo chủ tà giáo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-la-giao-chu-ta-giao/)
+- [Lucy Gym Encounter](https://hentaivn.ch/https://hentaivn.ch/truyen/lucy-gym-encounter/)
+- [Okaa-San LOVE](https://hentaivn.ch/https://hentaivn.ch/truyen/okaa-san-love/)
+- [The Sex-Priority Train](https://hentaivn.ch/https://hentaivn.ch/truyen/the-sex-priority-train/)
+
+#### Không che
+- [Nhìn trộm qua cái lỗ trên tường](https://hentaivn.ch/https://hentaivn.ch/truyen/nhin-trom-qua-cai-lo-tren-tuong/)
+- [Tình yêu méo mó với đồng nghiệp](https://hentaivn.ch/https://hentaivn.ch/truyen/tinh-yeu-meo-mo-voi-dong-nghiep/)
+- [The Vegan Gyaru Elf Craves Meat](https://hentaivn.ch/https://hentaivn.ch/truyen/the-vegan-gyaru-elf-craves-meat/)
+- [Tôi chỉ đang ngủ thôi mà!](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-chi-dang-ngu-thoi-ma/)
+- [Cosplayer phức tạp](https://hentaivn.ch/https://hentaivn.ch/truyen/cosplayer-phuc-tap/)
+- [Bị mẹ bạn gái làm thịt](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-me-ban-gai-lam-thit/)
+- [Võ sĩ VS Bác sĩ trị liệu tình dục](https://hentaivn.ch/https://hentaivn.ch/truyen/vo-si-vs-bac-si-tri-lieu-tinh-duc/)
+- [Em hứa sẽ giữ bí mật](https://hentaivn.ch/https://hentaivn.ch/truyen/em-hua-se-giu-bi-mat/)
+- [Bà chủ suối nước nóng này là kẻ nghiện sex không biết xấu hổ](https://hentaivn.ch/https://hentaivn.ch/truyen/ba-chu-suoi-nuoc-nong-nay-la-ke-nghien-sex-khong-biet-xau-ho/)
+
+#### Vếu to
+- [Toi, Seitsuu Mae no Namaikina Kuso Gaki oo Manko Zuke ni Shitara Dou Naruka Kotae Yo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-seitsuu-mae-no-namaikina-kuso-gaki-oo-manko-zuke-ni-shitara-dou-naruka-kotae-yo/)
+- [Ryuukinza no Yoru](https://hentaivn.ch/https://hentaivn.ch/truyen/ryuukinza-no-yoru/)
+- [Nhìn trộm qua cái lỗ trên tường](https://hentaivn.ch/https://hentaivn.ch/truyen/nhin-trom-qua-cai-lo-tren-tuong/)
+- [Iku-san to Onsen de Ichaicha Shitai](https://hentaivn.ch/https://hentaivn.ch/truyen/iku-san-to-onsen-de-ichaicha-shitai/)
+- [Cô nàng thinh lặng](https://hentaivn.ch/https://hentaivn.ch/truyen/co-nang-thinh-lang/)
+- [Tình yêu méo mó với đồng nghiệp](https://hentaivn.ch/https://hentaivn.ch/truyen/tinh-yeu-meo-mo-voi-dong-nghiep/)
+- [Kinjo no Hitozuma-san “Musuko no Otomodachi”](https://hentaivn.ch/https://hentaivn.ch/truyen/kinjo-no-hitozuma-san-musuko-no-otomodachi/)
+- [Bunny ga Osuki to Kikimashite](https://hentaivn.ch/https://hentaivn.ch/truyen/bunny-ga-osuki-to-kikimashite/)
+- [The Vegan Gyaru Elf Craves Meat](https://hentaivn.ch/https://hentaivn.ch/truyen/the-vegan-gyaru-elf-craves-meat/)
+
+#### Mông to
+- [Toi, Seitsuu Mae no Namaikina Kuso Gaki oo Manko Zuke ni Shitara Dou Naruka Kotae Yo](https://hentaivn.ch/https://hentaivn.ch/truyen/toi-seitsuu-mae-no-namaikina-kuso-gaki-oo-manko-zuke-ni-shitara-dou-naruka-kotae-yo/)
+- [Cô nàng thinh lặng](https://hentaivn.ch/https://hentaivn.ch/truyen/co-nang-thinh-lang/)
+- [Bị chị gái người yêu quyến rũ](https://hentaivn.ch/https://hentaivn.ch/truyen/bi-chi-gai-nguoi-yeu-quyen-ru/)
+- [Võ sĩ VS Bác sĩ trị liệu tình dục](https://hentaivn.ch/https://hentaivn.ch/truyen/vo-si-vs-bac-si-tri-lieu-tinh-duc/)
+- [Kinpatsu Bakunyuu Yome to Ama Yadori Suru Dake no Hanashi](https://hentaivn.ch/https://hentaivn.ch/truyen/kinpatsu-bakunyuu-yome-to-ama-yadori-suru-dake-no-hanashi/)
+- [Kyousei Shidou – Mechakucha Ni Kegasarete](https://hentaivn.ch/https://hentaivn.ch/truyen/kyousei-shidou-mechakucha-ni-kegasarete/)
+- [Mẹ là đồ chơi của tôi](https://hentaivn.ch/https://hentaivn.ch/truyen/me-la-do-choi-cua-toi/)
+- [Senpai-tachi to no Gakuen Seikatsu](https://hentaivn.ch/https://hentaivn.ch/truyen/senpai-tachi-to-no-gakuen-seikatsu/)
+- [Ochita Pride](https://hentaivn.ch/https://hentaivn.ch/truyen/ochita-pride/)
+
