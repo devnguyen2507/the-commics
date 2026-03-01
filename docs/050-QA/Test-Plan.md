@@ -9,6 +9,17 @@
 
 ## 1. Domain: Crawler Engine (Spec-002)
 
+### 1.1. Live Implementation Checks (Kiểm thử ngay trong lúc Code - TDD)
+*Yêu cầu DevOps/Agent tự chạy các Test này trong lúc code để chốt nghiệm thu từng hàm.*
+
+| Test Case ID | Mục tiêu Kiểm thử (Objective) | Các bước thực hiện (Steps) | Kết quả mong đợi (Expected Result) | Mức độ |
+| -- | -- | -- | -- | -- |
+| **TC-LIVE-01** | Test Regex & Bóc tách DOM (Parsing) | 1. Tải HTML thô của 1 truyện bất kỳ (có cả slider).<br>2. Chạy hàm parse Regex / BeautifulSoup cục bộ. | Lấy ra chính xác Title, Categories (Mảng text) và Tác giả. Nếu rớt/trống, báo cáo nguyên nhân tag bị lệch và tự động sửa Regex ngay lập tức. | Critical |
+| **TC-LIVE-02** | Test Độ Toàn Vẹn Data (Completeness) | 1. So sánh bộ Output Schema sinh ra từ Parser với Spec Database. | Mảng Output phải có CHUẨN ĐỦ các trường: cover, thumbnail, categories, mô tả, status. Nếu thiếu > Cảnh báo fail và bổ sung lookup. | High |
+| **TC-LIVE-03** | Test Tải Ảnh Vật Lý (Storage Check) | 1. Chạy hàm download 1 array ảnh (5 tấm).<br>2. List thư mục `/storage_data/{comic_id}/chapter/{idx}/`. | Trong folder có đủ 5 file vật lý. Không có file 0 byte. File mở lên xem được (Valid Image Signature). Nếu chưa có -> Trace log báo lỗi HTTP hay thiếu disk format -> Chỉnh ngay. | Critical |
+
+### 1.2. Intergration Checks (Sau khi đóng gói System)
+
 | Test Case ID | Mục tiêu Kiểm thử (Objective) | Các bước thực hiện (Steps) | Kết quả mong đợi (Expected Result) | Mức độ |
 | -- | -- | -- | -- | -- |
 | **TC-CRAWL-01** | Test chiến lược Bypass bằng SOCKS Proxy & UA | 1. Tắt proxy cấu hình trong file Crawler.<br>2. Chạy Crawler cào 1.000 request liên tục.<br>3. Bật Proxy và retry. | Bị block HTTP 403/503 ở bước 1. Hoạt động trơn tru > 95% sau bước 3. | Critical |
