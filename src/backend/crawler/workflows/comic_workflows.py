@@ -19,7 +19,7 @@ class ComicScraperWorkflow:
         # 1. Fetch and Parse Comic Page
         comic_meta: ComicMetadata = await workflow.execute_activity(
             fetch_and_parse_comic,
-            source_url,
+            args=[source_url],
             start_to_close_timeout=timedelta(minutes=2)
         )
         

@@ -20,12 +20,12 @@
 - **Logic**: Chú trọng order logic chương đảm bảo GraphQL phục vụ đúng thứ tự.
 - **PIC Skill**: `playwright-skill` (Source: [[.agent/skills/playwright-skill/SKILL.md]])
 
-### Giai đoạn 4: GraphQL API Layer
+### Giai đoạn 4: GraphQL API Layer (✅ Done)
 - **Mô tả**: Xây dựng layer API dựa trên Rust.
 - **Yêu cầu kỹ thuật**: Rust (sử dụng source mẫu), triển khai GraphQL từ 1 schema tích hợp. Cung cấp danh sách và chi tiết truyện/chapter.
 - **PIC Skill**: `graphql-architect` (Source: [[.agent/skills/graphql-architect/SKILL.md]])
 
-### Giai đoạn 5: CDN & Image Optimization
+### Giai đoạn 5: CDN & Image Optimization (✅ Done)
 - **Mô tả**: Xử lý và phân phối hình ảnh.
 - **Yêu cầu kỹ thuật**: Sử dụng source mẫu `imgflux`. Chỉnh sửa để tối ưu cache và render ảnh cho dự án.
 - **PIC Skill**: `cloudflare-workers-expert` (Source: [[.agent/skills/cloudflare-workers-expert/SKILL.md]])

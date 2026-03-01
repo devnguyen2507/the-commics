@@ -39,14 +39,19 @@ async def init_db():
                 
                 # Split by semicolon and filter out empty statements
                 statements = [s.strip() for s in sql.split(";") if s.strip()]
+                
+                # Use a nested transaction for each folder or just separate executions
+                # engine.begin() already handles a transaction. 
+                # To recover from individual errors, we need to handle them carefully.
                 for statement in statements:
                     try:
-                        await conn.execute(text(statement))
+                        # Start a fresh transaction for each statement if we want to be very resilient
+                        async with engine.begin() as statement_conn:
+                            await statement_conn.execute(text(statement))
                     except Exception as e:
-                        # Log error but continue if it's "already exists" (since we lack a migration table)
                         if "already exists" in str(e).lower():
-                            print(f"  Skipping statement (already applied): {statement[:50]}...")
+                            print(f"  Skipping (exists): {statement[:50]}...")
                         else:
-                            print(f"  ERROR executing statement in {folder}: {e}")
+                            print(f"  CRITICAL ERROR in {folder}: {e}")
                             raise
     print("Database migrations applied successfully.")

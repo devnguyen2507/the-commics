@@ -20,7 +20,7 @@ class ChapterScraperWorkflow:
             # 1. Fetch Chapter HTML and Extract Image URLs
             image_urls = await workflow.execute_activity(
                 fetch_and_parse_chapter,
-                chapter_info.source_url,
+                args=[chapter_info.source_url],
                 start_to_close_timeout=timedelta(minutes=2)
             )
             
@@ -37,7 +37,7 @@ class ChapterScraperWorkflow:
             # If only_img, fetch assets from DB for this chapter
             asset_ids = await workflow.execute_activity(
                 fetch_chapter_assets,
-                chapter_info.id,
+                args=[chapter_info.id],
                 start_to_close_timeout=timedelta(minutes=2)
             )
             

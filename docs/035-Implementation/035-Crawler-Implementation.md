@@ -7,11 +7,16 @@ Bản báo cáo này mô tả chi tiết quá trình thực thi và hoàn thiệ
 
 ### 1. Database Management Layer (Diesel & SQLAlchemy)
 - **Migrations**: Đã triển khai hệ thống migration bằng `diesel-cli` đặt tại `src/backend/crawler/migrations`. 
+- **Automatic Runner**: Tích hợp Migration Runner tự động tại `db/database.py`, tự động thực thi `up.sql` khi container khởi chạy.
+- **Category Normalization (V2.5)**: 
+    - Chuyển `categories` từ JSONB sang bảng quan hệ Many-to-Many.
+    - Bảng `categories`: Lưu ID (slug) và tên thể loại chuẩn.
+    - Bảng `comic_categories`: Lưu mapping giữa truyện và thể loại.
 - **Schema Separation**: 
-    - **Public Content**: `comics`, `chapters`.
+    - **Public Content**: `comics`, `chapters`, `categories`.
     - **Asset Management**: `assets` (Track URL gốc, Path vật lý, Trạng thái tải).
     - **Worker State**: `worker_comics`, `worker_chapters` (Dùng để kiểm tra update, sync progress mà không làm bẩn bảng chính).
-- **ID Strategy**: Chuyển đổi hoàn toàn sang **Slug-based IDs** (`truyen-a`, `truyen-a-chap-1`).
+- **ID Strategy**: Chuyển đổi hoàn toàn sang **Slug-based IDs** (`truyen-a`, `truyen-a-chap-1`, `harem`).
 
 ### 2. Physical Storage Refactor
 - **Location**: Toàn bộ dữ liệu ảnh tải về được lưu tại `ops/docker/storage_data`.

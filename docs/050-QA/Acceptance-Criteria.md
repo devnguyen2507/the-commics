@@ -24,6 +24,8 @@
 | CR-03 | **Numeric Path Storage**: Thư mục ảnh lưu trên disk không chứa sub-string của slug thay đổi. | Kiểm tra cây thư mục tạo ra trên disk. Phải là `{comic_id}/chapter/{chapter_id}`. |
 | CR-04 | **Order Validation**: Các index chap đánh lộn xộn (Oneshot, chap 2.1) phải được gán rank số thứ tự tăng dần. | Query SQL `ORDER BY order_index`, danh sách phải chuẩn tuyệt đối. |
 | CR-05 | **Crawl Success Metric**: Chapter được count là "Success" ngay khi nhặt xong list ảnh và lưu URL vào database mà không cần đợi write file xong 100%. | Check worker status log trong thời gian ngắn. |
+| CR-06 | **Category Auto-Slug**: Các category dạng text thô (Vd: "Hành động") phải được auto-slugify thành ID chuẩn (`hanh-dong`) và upsert vào bảng `categories`. | Query bảng `categories` sau khi sync truyện mới. |
+| CR-07 | **Content Accuracy**: Các trường `author`, `description`, `title` không được trống. Nếu nguồn có dữ liệu, Database phải phản ánh đúng metadata đó. | Manual check SQL Record vs Source UI cho 5 truyện mẫu. |
 
 ---
 
@@ -33,6 +35,9 @@
 | DB-01 | **Atomicity**: Cập nhật `worker_status` và insert Array Chapters bằng vòng Transaction khối. | Giả lập crash ngang code khi rải Insert, Tracking phải không bị ghi nhận láo. |
 | DB-02 | **Unique Constraint**: Schema khóa trùng lặp theo cặp (`comic_id`, `chapter_number`). | Cố tình test Insert SQL thủ công 2 cặp giống nhau, output lỗi Unique Error. |
 | DB-03 | **JSONB Dimension**: Cột `images` lưu trọn vẹn Dimensions ảnh `[{"file": "x", "w": 0, "h": 0}]`. | SELECT trực tiếp trường `images` và kiểm tra object con. |
+| DB-04 | **Relational Integrity**: Dữ liệu Category và Comic mapping (`comic_categories`) phải chuẩn chỉnh, xóa Comic phải cascade mất mapping. | Thử xóa 1 record ở bảng `comics`, check bảng `comic_categories`. |
+| DB-05 | **Auto-Migration Execution**: Hệ thống tự động apply các file `up.sql` mới khi khởi động mà không cần can thiệp thủ công. | Kiểm tra Log khởi động của container `crawler`. |
+| DB-06 | **FE Ready Schema**: Bảng `comics` và `chapters` phải cung cấp đủ: Slug cho URL, Thumbnail cho Card, mảng Chapter được sort sẵn cho Reader. | Review GraphQL Schema Schema mapping với Database table structure. |
 
 ---
 

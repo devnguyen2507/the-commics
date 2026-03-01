@@ -37,15 +37,15 @@ Hệ thống bao gồm các module chính:
 - [x] Incremental Sync logic (Check update dựa trên Worker Metadata).
 - [x] Live Verification (Images ordering, Local Storage Bind Mount).
 
-**Phase 3: Database & GraphQL API Layer (🔄 In Progress)**
+**Phase 3: Database & GraphQL API Layer (✅ Done)**
 - [x] Setup Diesel Migration & Auto-gen Source (Part of Crawler V2).
-- [ ] Thiết lập GraphQL Schema dựa trên Migrations của Crawler.
-- [ ] Viết Resolvers phân trang Relay Connection.
-- [ ] Cấu trúc LRU Cache Memory & Redis Standalone.
+- [x] Thiết lập GraphQL Schema dựa trên Migrations của Crawler.
+- [x] Viết Resolvers phân trang Relay Connection.
+- [x] Cấu trúc LRU Cache Memory & Redis Standalone.
 
-**Phase 4: CDN ImageFlux (⏳ Todo)**
-- [ ] Config Webp Encoder & Magic Bytes Validation.
-- [ ] Áp dụng Atomic File Lock (Chống Thundering Herd).
+**Phase 4: CDN ImageFlux (✅ Done)**
+- [x] Config Webp Encoder & Magic Bytes Validation.
+- [x] Áp dụng Atomic File Lock (Chống Thundering Herd).
 
 **Phase 5: Frontend UI (⏳ Todo)**
 - [ ] Render Layout Astro Components.
