@@ -14,7 +14,7 @@ class ComicScraperWorkflow:
     @workflow.run
     async def run(self, source_url: str, only_img: bool = False) -> str:
         with workflow.unsafe.imports_passed_through():
-            from activities.chapter_activities import download_images
+            from activities.chapter_activities import download_chapter_assets
 
         # 1. Fetch and Parse Comic Page
         comic_meta: ComicMetadata = await workflow.execute_activity(
@@ -32,17 +32,23 @@ class ComicScraperWorkflow:
         internal_comic_id = upsert_result["internal_id"]
         comic_asset_ids = upsert_result["asset_ids"]
 
-        # 3. Check for NEW Chapters
-        chapters_to_crawl = await workflow.execute_activity(
-            check_comic_update,
-            args=[comic_meta],
-            start_to_close_timeout=timedelta(minutes=1)
-        )
+        if only_img:
+            # If only_img, we bypass the "new chapters" check and trigger ALL known chapters
+            # But wait, comic_meta.chapters has the current list from the site
+            chapters_to_crawl = comic_meta.chapters
+            workflow.logger.info(f"Forcing sync of all chapters due to only_img=True (count={len(chapters_to_crawl)})")
+        else:
+            # 3. Check for NEW Chapters
+            chapters_to_crawl = await workflow.execute_activity(
+                check_comic_update,
+                args=[comic_meta],
+                start_to_close_timeout=timedelta(minutes=1)
+            )
 
         # 4. Download Comic Assets (Logo, Thumbnail)
         if comic_asset_ids:
             await workflow.execute_activity(
-                download_images,
+                download_chapter_assets,
                 args=[comic_asset_ids],
                 start_to_close_timeout=timedelta(minutes=5)
             )

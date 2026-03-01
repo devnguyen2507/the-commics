@@ -1,7 +1,7 @@
 ---
 id: PRD-022
 type: prd
-status: approved
+status: implemented
 project: commics
 owner: "DevNguyen"
 tags: [graphql, rust, api]

@@ -7,7 +7,7 @@ from temporalio.worker import Worker
 from activities.comic_activities import fetch_and_parse_comic, upsert_comic_in_db, check_comic_update
 from activities.chapter_activities import (
     fetch_and_parse_chapter, 
-    download_images, 
+    download_chapter_assets, 
     upsert_chapter_in_db,
     fetch_chapter_assets
 )
@@ -47,7 +47,7 @@ async def main():
             upsert_comic_in_db,
             check_comic_update,
             fetch_and_parse_chapter,
-            download_images,
+            download_chapter_assets,
             upsert_chapter_in_db,
             fetch_chapter_assets
         ],

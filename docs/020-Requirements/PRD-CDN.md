@@ -1,7 +1,7 @@
 ---
 id: PRD-023
 type: prd
-status: approved
+status: implemented
 project: commics
 owner: "DevNguyen"
 tags: [cdn, imgflux, edge, image-optimization]

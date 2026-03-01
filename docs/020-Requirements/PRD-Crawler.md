@@ -1,7 +1,7 @@
 ---
 id: PRD-020
 type: prd
-status: approved
+status: implemented
 project: commics
 owner: "DevNguyen"
 tags: [crawler, temporal, hentaivn, python]

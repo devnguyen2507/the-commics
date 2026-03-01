@@ -24,9 +24,9 @@ async def fetch_and_parse_chapter(source_url: str) -> list[str]:
     logger.info("Chapter parsing completed", count=len(image_list))
     return image_list
 
-@activity.defn
-async def download_images(asset_ids: list[str]) -> list[dict]:
-    logger.info("download_images started", count=len(asset_ids))
+@activity.defn(name="download_chapter_assets")
+async def download_chapter_assets(asset_ids: list[str]) -> list[dict]:
+    logger.info("download_chapter_assets started", count=len(asset_ids))
     
     results = []
     async with async_session_maker() as session:
@@ -34,8 +34,12 @@ async def download_images(asset_ids: list[str]) -> list[dict]:
         q = await session.execute(select(Asset).where(Asset.id.in_(asset_ids)))
         assets = q.scalars().all()
         
-        async with aiohttp.ClientSession(headers=get_random_headers()) as http_session:
+        async with aiohttp.ClientSession() as http_session:
             for asset in assets:
+                # Add a small delay to avoid rate limiting
+                import asyncio
+                await asyncio.sleep(0.5)
+                
                 # Standard path: storage_data/{slug}/chapters/{num}/{idx}.jpg
                 # comic_id is slug, chapter_id often contains num
                 # For safety, let's use a simpler structure if num is complex
@@ -46,8 +50,10 @@ async def download_images(asset_ids: list[str]) -> list[dict]:
                     # Parse chapter num from slug or use a generic 'c' prefix
                     chap_folder = asset.chapter_id.split('-')[-1]
                     relative_dir = os.path.join(asset.comic_id, "chapters", chap_folder)
+                    referer = asset.source_url # Fallback if we don't have chapter page URL
                 else:
                     relative_dir = os.path.join(asset.comic_id, asset.asset_type + "s")
+                    referer = "https://hentaivn.ch/truyen/" + asset.comic_id + "/"
                 
                 target_dir = os.path.join(STORAGE_DATA_PATH, relative_dir)
                 os.makedirs(target_dir, exist_ok=True)
@@ -56,7 +62,9 @@ async def download_images(asset_ids: list[str]) -> list[dict]:
                 relative_storage_path = os.path.join(relative_dir, filename)
                 
                 try:
-                    async with http_session.get(asset.source_url) as response:
+                    logger.info("Downloading asset", id=asset.id, url=asset.source_url)
+                    headers = get_random_headers(referer=referer, is_image=True)
+                    async with http_session.get(asset.source_url, headers=headers) as response:
                         if response.status == 200:
                             async with aiofiles.open(file_path, mode='wb') as f:
                                 await f.write(await response.read())
@@ -77,6 +85,7 @@ async def download_images(asset_ids: list[str]) -> list[dict]:
                                     )
                                 )
                             results.append({"id": asset.id, "path": relative_storage_path})
+                            logger.info("Asset downloaded successfully", id=asset.id, path=relative_storage_path)
                         else:
                             logger.error("Failed to download asset", id=asset.id, status=response.status)
                             await session.execute(update(Asset).where(Asset.id == asset.id).values(status="failed"))

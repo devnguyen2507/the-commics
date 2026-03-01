@@ -8,6 +8,7 @@ from utils.http_client import fetch_html
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import select, delete
 from parsers.factory import get_parser
+from utils.category_mapper import normalize_category_name
 from core.logger import logger
 
 @activity.defn
@@ -183,17 +184,16 @@ async def upsert_comic_in_db(metadata: ComicMetadata) -> dict:
         if metadata.categories:
             # 1. Upsert Categories
             for cat_name in metadata.categories:
-                # Basic slugify
-                import re
-                cat_id = re.sub(r'[^a-z0-9]+', '-', cat_name.lower()).strip('-')
+                # Normalize category name and get slug
+                norm_name, cat_id = normalize_category_name(cat_name)
                 
                 await session.execute(
                     insert(Category).values(
                         id=cat_id,
-                        name=cat_name
+                        name=norm_name
                     ).on_conflict_do_update(
                         index_elements=['id'],
-                        set_={"name": cat_name, "updated_at": datetime.utcnow()}
+                        set_={"name": norm_name, "updated_at": datetime.utcnow()}
                     )
                 )
                 

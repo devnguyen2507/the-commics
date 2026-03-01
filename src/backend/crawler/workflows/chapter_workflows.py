@@ -5,7 +5,7 @@ from models.comic_models import ChapterInfo
 with workflow.unsafe.imports_passed_through():
     from activities.chapter_activities import (
         fetch_and_parse_chapter,
-        download_images,
+        download_chapter_assets,
         upsert_chapter_in_db,
         fetch_chapter_assets
     )
@@ -44,7 +44,7 @@ class ChapterScraperWorkflow:
         # 3. Download Images to Local Volume (Stage 2: Persistence)
         if asset_ids:
             await workflow.execute_activity(
-                download_images,
+                download_chapter_assets,
                 args=[asset_ids],
                 start_to_close_timeout=timedelta(minutes=10)
             )
