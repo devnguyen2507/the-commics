@@ -4,6 +4,16 @@
 **Thời gian lập**: 2026-03-01
 **Mục tiêu**: Bảng checklist này là tiêu chuẩn Vàng (Gold Standard) bắt buộc các Dev/Agent phải pass khi bàn giao module Code thực tế.
 
+## 0. Domain: Trọng điểm Chất lượng Code (Engineering Standards)
+*Lưu ý: Các module bắt buộc phải qua ải này trước khi Build Docker chuyển giao.*
+
+| ID | Tiêu chí Nghiệm thu (Acceptance Criteria) | Phương pháp Xác thực (Verification) |
+| --- | --- | --- |
+| CODE-01 | **Clean Architecture & Naming** | Mở source code bất kỳ. Tên biến, class, hàm phải đọc như tiếng Anh tự nhiên. Tất cả Functions béo (Fat function) phải được bẻ nhỏ (1 function - 1 task). |
+| CODE-02 | **Linter & Formatter Clean** | Tại Terminal chạy linter: <br>- Đối với Rust: `cargo clippy -- -D warnings` và `cargo fmt --check`<br>- JS/TS: `npm run lint` & `tsc --noEmit`<br>- Python: `ruff check .` -> Output trả về 0 Errors/Warnings. |
+| CODE-03 | **Unit Testing Coverage** | Dev bắt buộc đính kèm File Test (Mock testing). Chạy command Test (VD: `cargo test` / `pytest`) trả về toàn bộ mảng `Passed`. Không skip test! |
+| CODE-04 | **Component Reusability** | Code logic lặp lại > 2 lần phải được tống vào thư mục `libs/utils` đối với Backend hoặc cấu trúc `<Component />` đối với UI Astro để xài chung. |
+
 ---
 
 ## 1. Domain: Crawler Engine (Python Temporal)

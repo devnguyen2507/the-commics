@@ -64,10 +64,17 @@ Tập trung toàn bộ cấu hình hạ tầng containerized:
 
 Dự án áp dụng chặt chẽ workflow **"Local Code -> Local Test -> Containerize"** để rào bít lỗi phát sinh khi chuyển môi trường. Quá trình phát triển các services phải đảm bảo tuần tự sau:
 
-1. **Giai đoạn Coding & Debugging (Develop Mode)**:
-   - Developer thao tác trực tiếp trên các thư mục `src/backend/...` hoặc `src/ui/`.
-   - Tiến hành chạy local môi trường (VD: `cargo run`, `npm run dev`) để thực hiện các chức năng.
-   - Chỉnh sửa, fix bug cục bộ trên thiết bị cho đến khi app chạy hoàn hảo dựa vào testcases trong `Test-Plan.md`.
+1. **Giai đoạn Coding & Clean Code (Develop Mode)**:
+   - Thao tác trực tiếp trên các thư mục `src/backend/...` hoặc `src/ui/`.
+   - **Quy Chuẩn Code (Coding Rules)**:
+     - Áp dụng nguyên tắc Single Responsibility: Hàm tách nhỏ, chỉ làm 1 việc duy nhất để dễ viết Unit Test và Mock.
+     - Tên Biến/Hàm phải rõ nghĩa bằng tiếng Anh, đọc là hiểu ngay không cần comment giải thích luồng (Clean Code).
+     - Ưu tiên tính tái sử dụng (Reusability) của Functions và UI Components.
+   - **Kiểm định Static Analysis (Lints & Format)**: Trước khi commit tự chạy bộ toolchain:
+     - Rust: Phải pass qua `cargo clippy` không rác (0 Warning) và formatting sạch bằng `cargo fmt`.
+     - Typescript/Astro: Pass lưới kiểm tra của `eslint` và Typecheck tsc.
+     - Python: Pass các check syntax (VD: `flake8`, `black` hoặc `ruff`).
+   - Cần đảm bảo Unit Test pass đầy đủ cho module trước khi khởi chạy chạy Local.
 
 2. **Giai đoạn Containerize (Dockerization)**:
    - Ngay sau khi dev cục bộ hoàn tất mà **"chạy ngon lành"**, cấm chuyển ngay sang module khác!
