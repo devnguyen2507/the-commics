@@ -4,3 +4,5 @@ tmp/
 api-aggregator-*/
 p1/
 imgflux/
+
+/ops/docker/storage_data/

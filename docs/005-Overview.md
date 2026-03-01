@@ -29,20 +29,19 @@ Hệ thống bao gồm các module chính:
 - [x] Khởi tạo `Spec-Architecture.md` (Quy hoạch thư mục Monorepo & Docker Profiles).
 - [x] Scaffold (Tạo khung) thư mục `src/`, `ops/`.
 
-**Phase 2: Crawler Engine Implementation (🔄 In Progress)**
-- [ ] Setup `ops/docker/docker-compose.yml` (Profile `infra` gồm PostgreSQL, Temporal).
-- [ ] Khởi tạo dự án Python (`uv`) tại `src/backend/crawler`.
-- [ ] Viết Models Database (SQLAlchemy) cấu hình Upsert Logic.
-- [ ] Implement proxy & hoạt động User-Agent Rotation.
-- [ ] Dev: **Workflow 1** (Comic Metadata -> Get ID -> Trigger WF 2).
-- [ ] Dev: **Workflow 2** (Tải Ảnh vật lý, Tính toán Order Index).
-- [ ] Chạy *Live Checks TC-LIVE-01 tới 03* (Validation Parsing & Image bytes).
-- [ ] Đóng gói Docker Crawler (`services` profile).
+**Phase 2: Crawler Engine Implementation V2 (✅ Done)**
+- [x] Setup `ops/docker/docker-compose.yml` (Tách Temporal-DB và Business-DB).
+- [x] Refactor Architecture: Strategy Pattern cho Parsers, Structured Logging.
+- [x] Implement Asset Management System (Stage 1: Extract -> Stage 2: Persist).
+- [x] Slug-based ID system & Diesel Migration inside Crawler context.
+- [x] Incremental Sync logic (Check update dựa trên Worker Metadata).
+- [x] Live Verification (Images ordering, Local Storage Bind Mount).
 
-**Phase 3: Database & GraphQL API Layer (⏳ Todo)**
-- [ ] Setup Diesel Migration & Auto-gen Source.
-- [ ] Cấu trúc LRU Cache Memory & Redis Standalone.
+**Phase 3: Database & GraphQL API Layer (🔄 In Progress)**
+- [x] Setup Diesel Migration & Auto-gen Source (Part of Crawler V2).
+- [ ] Thiết lập GraphQL Schema dựa trên Migrations của Crawler.
 - [ ] Viết Resolvers phân trang Relay Connection.
+- [ ] Cấu trúc LRU Cache Memory & Redis Standalone.
 
 **Phase 4: CDN ImageFlux (⏳ Todo)**
 - [ ] Config Webp Encoder & Magic Bytes Validation.

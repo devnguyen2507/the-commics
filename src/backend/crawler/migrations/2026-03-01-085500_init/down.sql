@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS worker_tasks;
+DROP TABLE IF EXISTS chapters;
+DROP TABLE IF EXISTS comics;
