@@ -7,6 +7,13 @@ Dựa theo phản hồi, version đầu tiên của Crawler đang để lại nh
 3. **Thiếu Logging bài bản**: Quá trình chạy crawl dưới nền của Temporal diễn ra hộp đen, thiếu Trace ID hay Logs theo dỏi từng tiến trình bóc tách.
 4. **Infra Risk**: Temporal và App Core đang chung 1 PostgreSQL database. Reset Temporal schema có thể rủi ro làm drop nhầm bảng data.
 5. **Coupled Logic (Mã kẹp)**: Các logic phân tích HTML (Regex, find tags) của `HentaiVN` hiện đang cứng chết trong các hàm của file `activities.py`. Muốn crawl site thứ 2 như nhentai, nettruyen... sẽ phải viết Activity mới làm phình to code trùng lặp (ví dụ các tác vụ tải hình, tải HTML đều gióng nhau).
+**Step 4: Sửa Workflows & Activities (Normalization & Tracking)**
+  - Tính toán Slug ID cho `comic`, `chapter` và `category`.
+  - Cập nhật `upsert_comic_in_db` để thực hiện:
+    1. Upsert từng `category` vào bảng `categories`.
+    2. Xóa và Re-insert mapping trong `comic_categories`.
+  - Test luồng tải ảnh của `chapter_activities.py` đảm bảo lưu file định dạng `<index>_<name>.jpg` và ghi mảng JSON `images` bảo lưu theo thứ tự `order` tuyệt đối.
+  - Log và lưu trạng thái vào `worker_tasks`.
 
 ---
 
@@ -40,8 +47,10 @@ src/backend/
 
 ### 2. Database Schema V2 (Normalized & Asset-centric)
 Tách bạch dữ liệu thành 3 nhóm:
-- **Nhóm Content (Frontend)**: `comics`, `chapters`.
-  - `comics`: `id` (Slug), `source_url`, `title`, `author`, `description`, `categories`, `thumbnail_path`.
+- **Nhóm Content (Frontend)**: `comics`, `chapters`, `categories`, `comic_categories`.
+  - `comics`: `id` (Slug), `source_url`, `title`, `author`, `description`, `thumbnail_path`. (Bỏ cột categories JSON).
+  - `categories`: `id` (Slug), `name`. (Lưu danh sách thể loại chuẩn).
+  - `comic_categories`: `comic_id` (FK), `category_id` (FK). (Quan hệ n-n).
   - `chapters`: `id` (`comic-slug-NN`), `comic_id`, `chapter_number`, `order_index`, `images` (Mảng JSON chứa list reference tới `assets.id`).
 - **Nhóm Assets (Media)**: Tác vụ tải ảnh thường lỗi/chậm, cần track riêng.
   - `assets`:

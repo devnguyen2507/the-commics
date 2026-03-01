@@ -25,9 +25,9 @@ Dựa trên việc phân tích trang truyện mục tiêu thực tế (HentaiVN)
 | Phân hệ             | Yêu cầu thu thập                                       | Trạng thái  | Ghi chú                                   |
 | :------------------ | :----------------------------------------------------- | :---------- | :---------------------------------------- |
 | **Comic Info**      | id, slug, title, alt_titles, author, status, description, views, rating, cover_image | ⚠️ Pending   | Mở rộng thêm rating, view, alt titles      |
-| **Categories**      | id, name, slug                                         | ⚠️ Pending   | Dữ liệu mồi 10 danh mục chính              |
-| **Chapter Info**    | id, comic_id, chapter_number, order_index, source_url, storage_path, images | ⚠️ Pending   | Bổ sung array `images` & `storage_path` để map CDN |
-| **Worker Tracking** | worker_status, worker_last_run, worker_error_log       | ⚠️ Pending   | Tích hợp thẳng vào bảng Comic              |
+| **Categories**      | id, name, slug                                         | ✅ Active    | Chuẩn hóa thành bảng riêng, quan hệ Many-to-Many |
+| **Chapter Info**    | id, comic_id, chapter_number, order_index, source_url, storage_path, images | ✅ Active    | Bổ sung array `images` & `storage_path` để map CDN |
+| **Worker Tracking** | worker_status, worker_last_run, worker_error_log       | ✅ Active    | Đã tách ra các bảng `worker_comics`, `worker_chapters` |
 
 ### 1.2. Sơ đồ Thực thể Liên kết (ERD)
 

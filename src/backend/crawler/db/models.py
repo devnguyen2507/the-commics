@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, String, Float, JSON, DateTime, UniqueConstraint
+from sqlalchemy import Column, String, Float, JSON, DateTime, UniqueConstraint, ForeignKey
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -14,7 +14,6 @@ class Comic(Base):
     author = Column(String)
     description = Column(String)
     status = Column(String)
-    categories = Column(JSON)
     logo_path = Column(String)
     banner_path = Column(String)
     thumbnail_path = Column(String)
@@ -87,3 +86,15 @@ class WorkerChapter(Base):
     last_sync_at = Column(DateTime, default=datetime.utcnow)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Category(Base):
+    __tablename__ = 'categories'
+    id = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class ComicCategory(Base):
+    __tablename__ = 'comic_categories'
+    comic_id = Column(String, ForeignKey('comics.id', ondelete='CASCADE'), primary_key=True)
+    category_id = Column(String, ForeignKey('categories.id', ondelete='CASCADE'), primary_key=True)

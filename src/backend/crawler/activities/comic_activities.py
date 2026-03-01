@@ -2,11 +2,11 @@ import uuid
 from datetime import datetime
 from temporalio import activity
 from db.database import async_session_maker
-from db.models import Comic, WorkerTask, Asset, WorkerComic, WorkerChapter
+from db.models import Comic, WorkerTask, Asset, WorkerComic, WorkerChapter, Category, ComicCategory
 from models.comic_models import ComicMetadata, ChapterInfo, AssetMetadata
 from utils.http_client import fetch_html
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from parsers.factory import get_parser
 from core.logger import logger
 
@@ -88,7 +88,6 @@ async def upsert_comic_in_db(metadata: ComicMetadata) -> dict:
             author=metadata.author,
             description=metadata.description,
             status=metadata.status,
-            categories=metadata.categories,
             thumbnail_path=metadata.thumbnail_path
         )
         
@@ -101,7 +100,6 @@ async def upsert_comic_in_db(metadata: ComicMetadata) -> dict:
                 author=stmt.excluded.author,
                 description=stmt.excluded.description,
                 status=stmt.excluded.status,
-                categories=stmt.excluded.categories,
                 thumbnail_path=stmt.excluded.thumbnail_path,
                 updated_at=datetime.utcnow()
             )
@@ -180,6 +178,32 @@ async def upsert_comic_in_db(metadata: ComicMetadata) -> dict:
                 )
             )
         )
+
+        # Normalize Categories
+        if metadata.categories:
+            # 1. Upsert Categories
+            for cat_name in metadata.categories:
+                # Basic slugify
+                import re
+                cat_id = re.sub(r'[^a-z0-9]+', '-', cat_name.lower()).strip('-')
+                
+                await session.execute(
+                    insert(Category).values(
+                        id=cat_id,
+                        name=cat_name
+                    ).on_conflict_do_update(
+                        index_elements=['id'],
+                        set_={"name": cat_name, "updated_at": datetime.utcnow()}
+                    )
+                )
+                
+                # 2. Link to Comic
+                await session.execute(
+                    insert(ComicCategory).values(
+                        comic_id=internal_id,
+                        category_id=cat_id
+                    ).on_conflict_do_nothing()
+                )
             
         await session.commit()
         logger.info("Comic upsert completed", internal_id=internal_id)
