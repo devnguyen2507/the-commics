@@ -185,6 +185,30 @@ enum ComicSortInput {
 - **GraphQL Schema Definition**: Xây dựng Schema file-based (`schema.graphql`) cung cấp Connection types hỗ trợ chuẩn Relay Pagination/Cursor-based nếu danh sách truyện quá lớn. Bỏ qua hoàn toàn chiến lược Offset/Limit dễ sập băng thông (Full-Scan DB). Bắt buộc Cursor List API.
 - **Connection Pool**: Sử dụng `bb8` hoặc `deadpool` cho Postgres/Redis trong Rust để giữ Pool luôn Warm, đảm bảo Time-To-First-Byte (TTFB) siêu thấp cho khâu SSR của Frontend.
 
+---
+
+## 5. Gaps & Post-Implementation Notes (Lưu ý về các Khoảng cách Triển khai)
+
+Tính đến ngày **2026-03-02**, quá trình triển khai thực tế có một số khác biệt so với Spec ban đầu cần được lưu ý để Frontend phối hợp:
+
+### 5.1. Pagination (Phân trang)
+- **Hiện trạng**: Sử dụng `first` (limit) và `after` (offset dạng chuỗi). 
+- **Gap**: Chưa triển khai chuẩn **Relay Connection** (`edges`, `node`, `pageInfo`, `cursor`). Hệ thống đang trả về mảng trực tiếp `[Comic]`.
+- **Kế hoạch**: Sẽ nâng cấp lên chuẩn Connection khi dữ liệu vượt ngưỡng 10.000 records để tối ưu SEO và Load-more.
+
+### 5.2. Breadcrumbs & Navigation
+- **Hiện trạng**: Từng `Chapter` có trường `comic` để lấy metadata của truyện cha.
+- **Gap**: Thiếu Query `breadcrumbs` chuyên dụng trả về mảng cây danh mục tĩnh lồng nhau để render chính xác SEO Breadcrumbs mà không cần nhiều vòng query.
+- **Giải pháp tạm thời**: Frontend sử dụng `comic { categories }` từ Chapter response để xây dựng Breadcrumbs thủ công.
+
+### 5.3. Missing Fields (Các trường bị thiếu)
+Một số trường trong Spec hiện chưa được Resolver hỗ trợ (trả về null hoặc chưa map):
+- `Comic.alternative_titles`: Do crawler chưa trích xuất đủ hoặc chưa đồng bộ schema.
+- `Comic.created_at` & `Chapter.created_at`: Đã có trong DB nhưng chưa được expose ra GraphQL Layer.
+
+### 5.4. Lớp Caching
+- **Lưu ý**: L1 Cache (Moka) đang có TTL rất ngắn (60s) để đảm bảo tính thời gian thực. Đối với mảng ảnh ChapterImages, dữ liệu được ưu tiên đọc từ L2 (Redis) để tránh áp lực `Jsonb` parse liên tục.
+
 ## Tham chiếu
 - [[020-Requirements/PRD-GraphQL]]
 - [[030-Specs/Spec-Frontend]]

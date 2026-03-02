@@ -18,10 +18,16 @@ The following migrations were added during this phase:
 - **`2026-03-02-153000_add_rating_and_views`**: Added `rating_score`, `rating_count`, and `view_count` to the `comics` table to support Frontend sorting and displays.
 
 ## 4. GraphQL Schema Highlights
-- `comics(first, after, filter, sort)`: Relay-compliant list with caching.
+- `comics(first, after, filter, sort)`: Trả về mảng `[Comic]` (Chưa áp dụng Relay Connection chuẩn).
 - `comic(comicSlug)`: Detailed metadata with auto-resolved nested chapters.
 - `chapter(chapterId)`: Full reading payload with image dimensions (`w`, `h`) to eliminate Layout Shift.
 - `categories`: Global navigation data.
+
+## 5. Known Gaps & Future Improvements (Khoảng cách & Cải tiến)
+- **Pagination**: Cần chuyển đổi từ `offset-based` sang `cursor-based` (Relay specification) để hỗ trợ lazy-load hiệu quả hơn trên thiết bị di động.
+- **Breadcrumbs API**: Cần bổ sung Resolver tính toán Breadcrumbs path từ Category ID để Frontend không phải xử lý logic phức tạp.
+- **Data Completeness**: Bổ sung `alternative_titles` và timestamps vào schema GraphQL.
+- **Auth Layer**: Chưa triển khai Authentication/Authorization cho các mutation (nếu có sau này).
 
 ## 5. Deployment
 - **Dockerized**: Multi-stage `Dockerfile` (Alpine-based) for minimal footprint.
@@ -29,5 +35,5 @@ The following migrations were added during this phase:
 - **Exposed Port**: `18000` (Mapping internal `8000`).
 
 ---
-**Status**: COMPLETED & ARCHIVED
+**Status**: COMPLETED (With known gaps)
 **Date**: 2026-03-02

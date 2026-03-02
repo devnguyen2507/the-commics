@@ -81,6 +81,7 @@ impl Comic {
             .into_iter()
             .map(|c| Chapter {
                 id: ID::from(c.id),
+                comic_id: c.comic_id,
                 chapter_number: c.chapter_number,
                 order_index: c.order_index,
             })
@@ -112,9 +113,9 @@ pub struct Category {
     pub slug: String,
 }
 
-#[derive(Default)]
 pub struct Chapter {
     pub id: ID,
+    pub comic_id: String,
     pub chapter_number: String,
     pub order_index: f64,
 }
@@ -129,6 +130,19 @@ impl Chapter {
     }
     async fn order_index(&self) -> f64 {
         self.order_index
+    }
+
+    /// Parent comic info — for breadcrumbs, SEO title, navbar
+    async fn comic(&self, ctx: &Context<'_>) -> Result<Option<Comic>> {
+        let pool = ctx.data::<DbPool>()?;
+        let mut conn = pool.get().await.map_err(|e| e.to_string())?;
+        let result = crate::schema::comics::table
+            .filter(crate::schema::comics::id.eq(&self.comic_id))
+            .first::<crate::models::Comic>(&mut conn)
+            .await
+            .optional()
+            .map_err(|e| e.to_string())?;
+        Ok(result.map(Comic::from))
     }
 
     async fn images(&self, ctx: &Context<'_>) -> Result<Vec<ChapterImage>> {
