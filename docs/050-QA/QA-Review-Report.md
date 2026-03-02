@@ -56,6 +56,9 @@
    - *Đề xuất*: Phải set Slice Array / Eviction (Mỗi thiết bị chỉ lưu lịch sử 500 truyện đọc gần nhất, cũ hơn bị pop ra).
 
 ## KẾT LUẬN & HÀNH ĐỘNG
-Các lỗ hổng này hoàn toàn có thể làm sập hệ thống (Crash CPU, OOM, Layout Shift). 
-- Các Đề xuất kỹ thuật trên đã được đánh giá là Mức độ Nhanh (High Value - Low Cost) cho dự án nên có thể áp thẳng vào Docs.
-- Hệ thống sẽ tiến hành tự động Update (Mutate) lại 5 file PRD để lấp bít các lỗ hổng trên, sau đó sẽ xuất ra **Biên Bản Nghiệm Thu (Acceptance Criteria)** cho toàn bộ.
+Các lỗ hổng nghiêm trọng đã được khắc phục hoàn toàn trong Phase 3:
+- [x] **Memory Leak**: Đã chuyển sang `moka` LRU Cache với giới hạn capacity.
+- [x] **Pagination Performance**: Đã áp dụng `first/after` logic cho bảng lớn.
+- [x] **CLS Layout Shift**: Đã chuẩn hóa JSONB `images` và resolver GraphQL để trả về `w/h`.
+
+Hệ thống hiện tại đã đủ điều kiện bàn giao cho Frontend.

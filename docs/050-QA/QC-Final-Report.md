@@ -34,5 +34,13 @@
 -- Chapters: 52 items (Match with Source)
 ```
 
-## 4. Kết luận
-Hệ thống đạt tiêu chuẩn để bàn giao Phase 3. Dữ liệu cực kỳ sạch và sẵn sàng cho tầng GQL/Frontend.
+## 4. GraphQL API Tier (GQL-TC)
+- **Status**: **100% PASS**
+- **Criteria**:
+    - [x] Schema compliance with Spec-004.
+    - [x] Zero N+1 issues (DataLoaders verified).
+    - [x] Cache L1 + L2 active and verified by curl profiling.
+    - [x] Docker multi-stage build verified.
+
+## 5. Kết luận
+Hệ thống hoàn thành Phase 3 (GraphQL API). Toàn bộ dữ liệu crawler, database layer và API layer đã sẵn sàng 100% cho việc tích hợp Frontend Astro.
