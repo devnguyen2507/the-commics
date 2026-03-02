@@ -1,0 +1,53 @@
+{
+  "name": "ui",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "codegen": "graphql-codegen --config codegen.ts"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.5.4",
+    "@astrojs/react": "^4.4.2",
+    "@heroicons/react": "^2.2.0",
+    "astro": "^5.17.1",
+    "clsx": "^2.1.1",
+    "dompurify": "^3.3.1",
+    "dotenv": "^17.3.1",
+    "html-react-parser": "^5.2.17",
+    "ioredis": "^5.10.0",
+    "lru-cache": "^11.2.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-icons": "^5.5.0",
+    "react-share": "^5.2.2",
+    "sanitize-html": "^2.17.1",
+    "winston": "^3.19.0",
+    "xml-escape": "^1.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@eslint/js": "^10.0.1",
+    "@graphql-codegen/cli": "^6.1.2",
+    "@graphql-codegen/typed-document-node": "^6.1.6",
+    "@graphql-codegen/typescript": "^5.0.8",
+    "@graphql-codegen/typescript-operations": "^5.0.8",
+    "@tailwindcss/vite": "^4.2.1",
+    "astro-eslint-parser": "^1.3.0",
+    "autoprefixer": "^10.4.27",
+    "cssnano": "^7.1.2",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.6.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "rollup-plugin-visualizer": "^6.0.5",
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

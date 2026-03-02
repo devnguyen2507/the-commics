@@ -33,38 +33,51 @@ API Layer cần cung cấp các Queries riêng biệt tối ưu cho từng loạ
 
 ---
 
-## 2. Sơ đồ Kiến trúc Kết nối (Architecture Diagram)
+## 2. Quy trình Truy vấn & Pattern Adapter (Frontend Client Flow)
 
-Sơ đồ Mermaid dưới đây mô tả sự tương tác của tầng GraphQL với CSDL và vai trò cung cấp dữ liệu cho Frontend:
+Để đảm bảo code dễ quản lý, trace bug và tách biệt logic dữ liệu với giao diện, hệ thống áp dụng quy trình "Lib -> Adapter -> View" dựa trên source mẫu `p1`.
+
+### 2.1. Sơ đồ luồng dữ liệu (Data Flow Diagram)
 
 ```mermaid
-graph TD
-    FE[Astro Frontend] -->|GraphQL Queries / Mutations| GQL[Rust GraphQL API Layer]
-    
-    subgraph Rust GraphQL Server
-        Router[API Gateway / Router]
-        Resolvers[GraphQL Resolvers]
-        DataLoaders[DataLoaders: Anti N+1]
-        CacheLayer[Redis Cache Check]
+graph LR
+    subgraph Client [Frontend Astro]
+        View[Astro Component / View]
+        Adapter[Adapter Layer: Mapping]
+        GQL_Lib[GraphQL Client Lib: generated.ts]
     end
     
-    GQL --> Router
-    Router --> Resolvers
-    Resolvers --> CacheLayer
-    Resolvers --> DataLoaders
+    subgraph Server [Backend Rust]
+        GQL_Server[Async-graphql Server]
+        DB[(PostgreSQL)]
+    end
+
+    View -->|Yêu cầu data| Adapter
+    Adapter -->|Call Function| GQL_Lib
+    GQL_Lib -->|Query/Mutation| GQL_Server
+    GQL_Server -->|SQL| DB
     
-    CacheLayer -.->|Cache Hit| Resolvers
-    CacheLayer -->|Cache Miss| DataLoaders
-    
-    DataLoaders -->|SQL Queries / Bulk Fetch| PG[(PostgreSQL Database)]
-    DataLoaders -->|Set Cache| Redis[(Redis Cache)]
-    
-    PG --> Crawler[(Temporal Crawler Database state)]
-    
-    style GQL fill:#3399ff,stroke:#333,stroke-width:2px
-    style PG fill:#3366cc,color:#fff,stroke:#333,stroke-width:2px
-    style Redis fill:#dc382d,color:#fff,stroke:#333,stroke-width:2px
+    DB --> GQL_Server
+    GQL_Server -->|Raw JSON Data| GQL_Lib
+    GQL_Lib -->|Raw Types| Adapter
+    Adapter -->|Mapped View Model| View
 ```
+
+### 2.2. Chi tiết các thành phần
+
+1.  **GraphQL Lib & Codegen**:
+    - Sử dụng `@graphql-codegen/cli` để tự động sinh ra file `generated.ts`.
+    - Định nghĩa các query trong file `.graphql` chuyên biệt (Ví dụ: `src/lib/api/commics/queries.graphql`).
+    - **Lưu ý**: Không tự viết type thủ công cho response, luôn dùng type từ `generated.ts`.
+
+2.  **Adapter Layer (Mapping)**:
+    - Nhiệm vụ: Chuyển đổi (Map) dữ liệu thô từ GraphQL sang Interface mà Component cần.
+    - Giúp xử lý các giá trị `null`, format ngày tháng, hoặc lắp ghép URL CDN trước khi đưa ra View.
+    - **Trace Bug**: Khi dữ liệu hiển thị sai, chỉ cần kiểm tra Adapter thay vì lục lọi trong từng Component.
+
+3.  **View (Astro Components)**:
+    - Chỉ nhận dữ liệu đã được "làm sạch" từ Adapter.
+    - Không chứa logic xử lý data thô hay parse JSON.
 
 ---
 

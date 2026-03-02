@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { getCategories } from '../../lib/api/commics';
+
+let categories = [];
+try {
+  categories = await getCategories();
+} catch (e) {
+  console.error("Fetch error:", e);
+}
+
+const breadcrumbs = [{ label: 'Thể loại' }];
+---
+
+<Layout title="Tất cả Thể loại - Commics" description="Danh sách toàn bộ thể loại truyện tranh tại Commics.">
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <Breadcrumb items={breadcrumbs} />
+    
+    <header class="border-l-4 border-blue-500 pl-4">
+      <h1 class="text-3xl font-black uppercase tracking-tight">Tất cả Thể loại</h1>
+    </header>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+      {categories.map((cat: any) => (
+        <a href={`/the-loai/${cat.slug}`} class="p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-blue-600 hover:border-blue-500 transition-all text-center group">
+          <span class="font-bold uppercase tracking-tight text-zinc-300 group-hover:text-white transition-colors">{cat.name}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Layout>

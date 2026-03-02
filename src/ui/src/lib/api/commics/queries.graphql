@@ -1,0 +1,66 @@
+query getComics($first: Int, $after: String, $filter: ComicFilter, $sort: ComicSort) {
+  comics(first: $first, after: $after, filter: $filter, sort: $sort) {
+    id
+    slug
+    title
+    author
+    status
+    ratingScore
+    ratingCount
+    viewCount
+    coverImage
+  }
+}
+
+query getComic($comicSlug: String!) {
+  comic(comicSlug: $comicSlug) {
+    id
+    slug
+    title
+    author
+    status
+    description
+    ratingScore
+    ratingCount
+    viewCount
+    coverImage
+    categories {
+      id
+      name
+      slug
+    }
+    chapters {
+      id
+      chapterNumber
+      orderIndex
+    }
+  }
+}
+
+query getChapter($chapterId: ID!) {
+  chapter(chapterId: $chapterId) {
+    id
+    chapterNumber
+    orderIndex
+    comic {
+       id
+       slug
+       title
+    }
+    images {
+      url
+      w
+      h
+    }
+    nextChapterId
+    prevChapterId
+  }
+}
+
+query getCategories {
+  categories {
+    id
+    name
+    slug
+  }
+}

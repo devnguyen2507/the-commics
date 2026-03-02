@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroSlider from '../components/feature/home/HeroSlider.astro';
+import ComicCard from '../components/ui/ComicCard.astro';
+import { getComics } from '../lib/api/commics';
+
+let latestComics = [];
+try {
+	latestComics = await getComics({ first: 12 });
+} catch (e) {
+	console.error("Fetch error:", e);
+	// Mock fallback for development if API is down
+	latestComics = Array(12).fill(null).map((_, i) => ({
+		id: `mock-${i}`,
+		slug: `truyen-mau-${i}`,
+		title: `Truyện comic mẫu số ${i + 1}`,
+		coverImage: `https://picsum.photos/seed/${i}/300/400`,
+		ratingScore: 4.5,
+		viewCount: 12500,
+		status: "Đang tiến hành",
+		author: "Tác giả mẫu"
+	}));
+}
+---
+
+<Layout title="Commics - Đọc truyện tranh online" isHome={true}>
+	<HeroSlider comics={latestComics} />
+	
+	<div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
+		<header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
+			<h2 class="text-2xl font-black uppercase tracking-tight">Mới cập nhật</h2>
+			<a href="/the-loai" class="text-xs font-bold text-zinc-500 hover:text-blue-500 uppercase tracking-widest transition-colors">
+				Xem tất cả →
+			</a>
+		</header>
+		
+		<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8">
+			{latestComics.map((comic) => (
+				<ComicCard comic={comic} />
+			))}
+		</div>
+	</div>
+	
+	<!-- SEO Box -->
+	<section class="max-w-6xl mx-auto px-4 pb-16">
+		<div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+			<h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">Đọc truyện tranh online tại Commics</h1>
+			<div class="text-zinc-500 text-sm leading-relaxed space-y-4">
+				<p>
+					Chào mừng bạn đến với <strong>Commics</strong>, nền tảng đọc truyện tranh online hàng đầu với hàng nghìn bộ truyện hấp dẫn, được cập nhật liên tục mỗi ngày. 
+					Chúng tôi cung cấp trải nghiệm đọc truyện mượt mà trên cả máy tính và điện thoại.
+				</p>
+				<p>
+					Tại Commics, bạn có thể tìm thấy đa dạng các thể loại từ Action, Adventure, Comedy đến các bộ truyện Drama sâu sắc. 
+					Hệ thống tìm kiếm thông minh và phân loại thể loại chi tiết giúp bạn dễ dàng tìm thấy bộ truyện ưng ý nhất.
+				</p>
+			</div>
+		</div>
+	</section>
+</Layout>

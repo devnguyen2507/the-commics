@@ -1,0 +1,104 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import { BookmarkButton } from '../components/ui/BookmarkButton';
+import { getComic } from '../lib/api/commics';
+
+const { slug } = Astro.params;
+
+let comic;
+try {
+  comic = await getComic(slug!);
+} catch (e) {
+  console.error("Fetch error:", e);
+  // Fallback / 404
+  return Astro.redirect('/404');
+}
+
+if (!comic) {
+  return Astro.redirect('/404');
+}
+
+const breadcrumbs = [
+  { label: comic.categories?.[0]?.name || 'Truyện', href: `/the-loai/${comic.categories?.[0]?.slug || ''}` },
+  { label: comic.title }
+];
+---
+
+<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description}>
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <Breadcrumb items={breadcrumbs} />
+    
+    <section class="flex flex-col md:flex-row gap-8">
+      <div class="w-full md:w-64 shrink-0">
+        <div class="aspect-[3/4] rounded-xl overflow-hidden shadow-2xl border border-zinc-800 bg-zinc-900">
+          <img src={comic.coverImage} alt={comic.title} class="w-full h-full object-cover" />
+        </div>
+      </div>
+      
+      <div class="flex-grow space-y-6">
+        <div class="space-y-2">
+          <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tighter leading-none">{comic.title}</h1>
+          <p class="text-zinc-500 font-medium">Tác giả: <span class="text-zinc-300">{comic.author}</span></p>
+        </div>
+        
+        <div class="flex flex-wrap gap-2">
+          {comic.categories?.map((cat: any) => (
+            <a href={`/the-loai/${cat.slug}`} class="px-3 py-1 bg-zinc-900 hover:bg-blue-600 border border-zinc-800 rounded-full text-xs font-bold uppercase tracking-tight transition-colors">
+              {cat.name}
+            </a>
+          ))}
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800">
+           <div class="text-center">
+             <div class="text-zinc-500 text-[10px] uppercase font-bold">Rating</div>
+             <div class="text-yellow-500 font-black">{comic.ratingScore.toFixed(1)}</div>
+           </div>
+           <div class="text-center border-l border-zinc-800">
+             <div class="text-zinc-500 text-[10px] uppercase font-bold">Views</div>
+             <div class="font-black">{comic.viewCount.toLocaleString()}</div>
+           </div>
+           <div class="text-center border-l border-zinc-800">
+             <div class="text-zinc-500 text-[10px] uppercase font-bold">Status</div>
+             <div class="text-blue-500 font-black uppercase text-xs">{comic.status}</div>
+           </div>
+           <div class="text-center border-l border-zinc-800">
+             <div class="text-zinc-500 text-[10px] uppercase font-bold">Chapters</div>
+             <div class="font-black text-xs">{comic.chapters?.length || 0}</div>
+           </div>
+        </div>
+        
+        <div class="space-y-2">
+          <h2 class="text-xs font-black uppercase tracking-widest text-zinc-500 border-b border-zinc-800 pb-2">Nội dung</h2>
+          <p class="text-zinc-400 text-sm leading-relaxed">
+            {comic.description || "Chưa có mô tả cho bộ truyện này."}
+          </p>
+        </div>
+        
+        <div class="flex gap-4">
+          <a href={`/${comic.slug}/${comic.chapters?.[0]?.id || ''}`} class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-lg transition-all uppercase text-sm tracking-wide">
+            Đọc từ đầu
+          </a>
+          <BookmarkButton client:load comic={comic} />
+        </div>
+      </div>
+    </section>
+    
+    <section class="space-y-4">
+       <header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
+         <h2 class="text-xl font-black uppercase tracking-tight">Danh sách chương</h2>
+         <span class="text-[10px] font-bold text-zinc-500 uppercase">Mới nhất: {comic.chapters?.[comic.chapters.length - 1]?.chapter_number || 'N/A'}</span>
+       </header>
+       
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+         {comic.chapters?.reverse().map((ch: any) => (
+           <a href={`/${comic.slug}/${ch.id}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
+             <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapter_number}</span>
+             <span class="text-[10px] text-zinc-600 uppercase font-medium">{ch.created_at || 'Vừa xong'}</span>
+           </a>
+         ))}
+       </div>
+    </section>
+  </div>
+</Layout>

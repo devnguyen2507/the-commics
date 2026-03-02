@@ -1,0 +1,105 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
+import { getChapter } from '../../lib/api/commics';
+
+const { slug, chapterId } = Astro.params;
+
+let chapter;
+try {
+  chapter = await getChapter(chapterId!);
+} catch (e) {
+  console.error("Fetch error:", e);
+  return Astro.redirect('/404');
+}
+
+if (!chapter) {
+  return Astro.redirect('/404');
+}
+
+const comicTitle = chapter.comic?.title || "Truyện";
+---
+
+<Layout title={`Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - Commics`} description={`Đọc chương ${chapter.chapterNumber} của bộ truyện ${comicTitle} online bản đẹp, tải nhanh.`}>
+  <div class="max-w-4xl mx-auto flex flex-col pt-4 pb-32 min-h-screen bg-black">
+    {chapter.images.map((img: any, index: number) => (
+      <div 
+        class="w-full relative bg-zinc-900 overflow-hidden" 
+        style={`aspect-ratio: ${img.w}/${img.h}; content-visibility: auto;`}
+        data-page={index + 1}
+      >
+        <img 
+          src={img.url} 
+          alt={`${comicTitle} - Chương ${chapter.chapterNumber} - Trang ${index + 1}`}
+          class="w-full h-auto block"
+          loading={index < 3 ? "eager" : "lazy"}
+          decoding="async"
+        />
+        <div class="absolute bottom-2 right-4 text-[10px] text-zinc-700 font-bold uppercase tracking-widest pointer-events-none">
+          Page {index + 1}
+        </div>
+      </div>
+    ))}
+    
+    <div class="py-20 flex flex-col items-center gap-6">
+       <p class="text-zinc-500 text-sm font-bold uppercase tracking-widest">Bạn đã đọc hết chương này</p>
+       <div class="flex gap-4">
+         {chapter.nextChapterId && (
+           <a 
+             href={`/${slug}/${chapter.nextChapterId}`} 
+             data-astro-prefetch="load"
+             class="px-12 py-4 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl transition-all uppercase tracking-tighter"
+           >
+             Tiếp theo
+           </a>
+         )}
+         <a href={`/${slug}`} class="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-black rounded-xl transition-all uppercase tracking-tighter">
+           Quay lại
+         </a>
+       </div>
+    </div>
+  </div>
+
+  <ReaderNavbar 
+    comicTitle={comicTitle}
+    chapterNumber={chapter.chapterNumber}
+    comicSlug={slug!}
+    nextChapterId={chapter.nextChapterId}
+    prevChapterId={chapter.prevChapterId}
+  />
+</Layout>
+
+<div 
+  id="reader-data" 
+  data-comic-id={chapter.comic?.id} 
+  data-comic-slug={slug} 
+  data-comic-title={comicTitle} 
+  data-chapter-id={chapterId} 
+  data-chapter-number={chapter.chapterNumber}
+></div>
+
+<script>
+  import { storage } from '../../lib/utils/storage';
+  
+  const dataset = document.getElementById('reader-data')?.dataset;
+  if (dataset) {
+    storage.addHistory({
+      id: dataset.comicId!,
+      slug: dataset.comicSlug!,
+      title: dataset.comicTitle!,
+      coverImage: "", // We could pass this too if needed
+      chapterId: dataset.chapterId,
+      chapterNumber: dataset.chapterNumber
+    });
+  }
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

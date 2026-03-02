@@ -41,10 +41,11 @@ impl QueryRoot {
 
         if let Some(f) = filter {
             if let Some(cat_slug) = f.category_slug {
-                use crate::schema::comic_categories::dsl as cc;
-                let comic_ids: Vec<String> = cc::comic_categories
-                    .filter(cc::category_id.eq(&cat_slug))
-                    .select(cc::comic_id)
+                use crate::schema::{categories, comic_categories};
+                let comic_ids: Vec<String> = comic_categories::table
+                    .inner_join(categories::table)
+                    .filter(categories::id.eq(cat_slug))
+                    .select(comic_categories::comic_id)
                     .load::<String>(&mut conn)
                     .await
                     .map_err(|e| e.to_string())?;

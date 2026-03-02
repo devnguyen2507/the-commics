@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import ComicCard from '../../components/ui/ComicCard.astro';
+import { getComics, getCategories } from '../../lib/api/commics';
+
+const { slug } = Astro.params;
+
+let comics = [];
+let targetCategoryName = "Thể loại";
+try {
+  const [categories, categoryComics] = await Promise.all([
+     getCategories(),
+     getComics({ filter: { category_slug: slug }, first: 24 })
+  ]);
+  comics = categoryComics;
+  targetCategoryName = categories.find((c: any) => c.slug === slug)?.name || "Thể loại";
+} catch (e) {
+  console.error("Fetch error:", e);
+}
+
+const breadcrumbs = [
+  { label: 'Thể loại', href: '/the-loai' },
+  { label: targetCategoryName }
+];
+---
+
+<Layout title={`Truyện Thể loại ${targetCategoryName} - Commics`} description={`Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục.`}>
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <Breadcrumb items={breadcrumbs} />
+    
+    <header class="border-l-4 border-blue-500 pl-4">
+      <h1 class="text-3xl font-black uppercase tracking-tight">Truyện {targetCategoryName}</h1>
+    </header>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
+      {comics.map((comic) => (
+        <ComicCard comic={comic} />
+      ))}
+    </div>
+    
+    {comics.length === 0 && (
+      <div class="py-20 text-center text-zinc-500 font-bold uppercase tracking-widest italic">
+        Chưa có truyện nào trong thể loại này
+      </div>
+    )}
+  </div>
+</Layout>

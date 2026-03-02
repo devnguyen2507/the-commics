@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import ComicCard from '../components/ui/ComicCard.astro';
+import { getComics } from '../lib/api/commics';
+
+const query = Astro.url.searchParams.get('q') || '';
+
+let comics = [];
+if (query) {
+  try {
+    comics = await getComics({ filter: { search_query: query }, first: 24 });
+  } catch (e) {
+    console.error("Fetch error:", e);
+  }
+}
+
+const breadcrumbs = [
+  { label: 'Tìm kiếm' }
+];
+---
+
+<Layout title={`Kết quả tìm kiếm cho "${query}" - Commics`} description={`Tìm thấy ${comics.length} bộ truyện khớp với từ khóa "${query}" tại Commics.`}>
+  <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
+    <Breadcrumb items={breadcrumbs} />
+    
+    <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-l-4 border-blue-500 pl-4">
+      <div class="space-y-1">
+        <h1 class="text-3xl font-black uppercase tracking-tight">Tìm kiếm</h1>
+        <p class="text-zinc-500 text-sm">Kết quả cho từ khóa: <span class="text-zinc-300 font-bold">"{query}"</span></p>
+      </div>
+      <form action="/tim-kiem" method="GET" class="relative w-full md:w-96">
+        <input 
+          type="text" 
+          name="q" 
+          value={query}
+          placeholder="Nhập tên truyện..." 
+          class="w-full bg-zinc-900 border border-zinc-800 rounded-full py-3 px-6 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+        />
+        <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-600 hover:bg-blue-500 rounded-full transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </form>
+    </header>
+    
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
+      {comics.map((comic) => (
+        <ComicCard comic={comic} />
+      ))}
+    </div>
+    
+    {query && comics.length === 0 && (
+      <div class="py-20 text-center text-zinc-500 font-bold uppercase tracking-widest italic">
+        Không tìm thấy truyện nào khớp với từ khóa "{query}"
+      </div>
+    )}
+
+    {!query && (
+      <div class="py-20 text-center text-zinc-500 font-bold uppercase tracking-widest italic">
+        Nhập từ khóa để bắt đầu tìm kiếm
+      </div>
+    )}
+  </div>
+</Layout>
