@@ -1,0 +1,22 @@
+[package]
+name = "commics-graphql"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-graphql = { version = "=7.0.5", features = ["dataloader"] }
+async-graphql-axum = "=7.0.5"
+axum = "0.7.5"
+tokio = { version = "1.37.0", features = ["full"] }
+diesel = { version = "2.1.4", features = ["postgres", "r2d2", "chrono", "serde_json"] }
+diesel-async = { version = "0.4.1", features = ["postgres", "bb8"] }
+redis = { version = "0.25.3", features = ["tokio-comp"] }
+moka = { version = "0.12.7", features = ["future"] }
+serde = { version = "1.0.198", features = ["derive"] }
+serde_json = "1.0.116"
+dotenvy = "0.15.7"
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+chrono = { version = "0.4.38", features = ["serde"] }
+uuid = { version = "1.8.0", features = ["v4", "serde"] }
+tower-http = { version = "0.5.2", features = ["cors"] }

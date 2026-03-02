@@ -66,6 +66,23 @@ services:
     networks:
       - commics-net
 
+  graphql:
+    build:
+      context: ../../src/backend/graphql
+      dockerfile: Dockerfile
+    container_name: commics-graphql
+    environment:
+      - DATABASE_URL=postgres://commics:secret@db:5432/commics
+      - REDIS_URL=redis://redis:6379/1
+    ports:
+      - "18000:8000"
+    depends_on:
+      - db
+      - redis
+    profiles: [ "services" ]
+    networks:
+      - commics-net
+
   crawler:
     build:
       context: ../../src/backend/crawler
