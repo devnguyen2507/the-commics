@@ -1,0 +1,40 @@
+services:
+  app:
+    privileged: true
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: ops/docker/imgflux.Dockerfile
+      # platforms:
+      #   - linux/amd64
+      #   - linux/arm64
+    image: git.aqualab.dev/h/imgflux:testing
+    env_file:
+      - ./.env
+    environment:
+      - IMGFLUX__IMAGE__BASE_DIR=/app
+    ports:
+      - "8686:8686"
+    volumes:
+      - ./tmp/www/public:/app/public
+      - ./tmp/www/cache:/app/cache
+
+  app_remote_http:
+    privileged: true
+    platform: linux/arm64
+    build:
+      context: .
+      dockerfile: ops/docker/imgflux.Dockerfile
+      # platforms:
+      #   - linux/amd64
+      #   - linux/arm64
+    image: git.aqualab.dev/h/imgflux:testing
+    env_file:
+      - ./.env
+    environment:
+      - IMGFLUX__IMAGE__BASE_DIR=/app
+    ports:
+      - "8686:8686"
+    volumes:
+      - ./tmp/www/public:/app/public
+      - ./tmp/www/cache:/app/cache

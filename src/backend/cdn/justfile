@@ -1,0 +1,19 @@
+# Justfile
+fmt:
+    CARGO_BUILD_TARGET_DIR="target/test" cargo +nightly fmt --all
+
+clippy: 
+    CARGO_BUILD_TARGET_DIR="target/test" cargo clippy --all --all-targets --all-features -- \
+    -D warnings \
+    -D clippy::enum_glob_use \
+    -D clippy::expect_used -D clippy::panic \
+    -D clippy::unwrap_used
+
+run:
+    CARGO_BUILD_TARGET_DIR="target/test" cargo run
+
+test:
+    CARGO_BUILD_TARGET_DIR="target/test" cargo test --all -- --show-output
+
+build-docker:
+	docker compose build app

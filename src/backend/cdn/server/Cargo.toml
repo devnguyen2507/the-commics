@@ -1,0 +1,27 @@
+[package]
+name = "imgflux-server"
+version = "0.1.0"
+description = "ImgFlux server"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[dependencies]
+imgflux-logic = { path = "../logic" }
+
+tracing.workspace = true
+dotenv.workspace = true
+actix-web.workspace = true
+serde.workspace = true
+config.workspace = true
+anyhow.workspace = true
+tracing-subscriber.workspace = true
+tokio.workspace = true
+
+[target.'cfg(not(target_os = "linux"))'.dependencies]
+actix-files = { workspace = true }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+actix-files = { workspace = true, features = ["experimental-io-uring"] }

@@ -1,0 +1,131 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: imgflux
+  labels:
+    app: imgflux
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: imgflux-pvc
+  namespace: testing
+  labels:
+    app: imgflux
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imgflux
+  labels:
+    app: imgflux
+  annotations:
+    sidecar.jaegertracing.io/inject: 'true'
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: imgflux
+  template:
+    metadata:
+      labels:
+        app: imgflux
+      annotations:
+        prometheus.io/port: '14271'
+        prometheus.io/scrape: 'true'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/agent-inject-status: 'update'
+        vault.hashicorp.com/role: 'testing-imgflux'
+        vault.hashicorp.com/agent-inject-secret-secrets: 'kv-testing/data/imgflux-env'
+        vault.hashicorp.com/agent-inject-template-secrets: |
+          {{- with secret "kv-testing/data/imgflux-env" -}}
+          {{- range $k, $v := .Data.data }}
+          export {{ $k }}="{{ $v }}"
+          {{- end }}
+          {{- end }}
+    spec:
+      serviceAccountName: imgflux
+      imagePullSecrets:
+        - name: ghcr
+      containers:
+        - name: imgflux
+          image: git.maxcoda.com/h/imgflux:latest
+          command: ['/bin/bash', '-c']
+          args: ['source /vault/secrets/secrets && imgflux-server']
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8686
+          resources:
+            requests:
+              cpu: 100m
+              memory: 32Mi
+            limits:
+              cpu: '1'
+              memory: 512Mi
+          volumeMounts:
+            - name: wordpress-storage
+              mountPath: /app/public
+              readOnly: true
+            - name: imgflux-cache-storage
+              mountPath: /app/cache
+      restartPolicy: Always
+      volumes:
+        - name: wordpress-storage
+          persistentVolumeClaim:
+            claimName: new-wp-up2-pvc
+        - name: imgflux-cache-storage
+          persistentVolumeClaim:
+            claimName: imgflux-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imgflux
+  labels:
+    app: imgflux
+spec:
+  ports:
+    - name: imgflux-api
+      port: 8686
+      protocol: TCP
+      targetPort: 8686
+  selector:
+    app: imgflux
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: imgflux-ingress
+  namespace: testing
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: api.gabbasoft.dev
+      http:
+        paths:
+          - path: /imgflux(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: imgflux
+                port:
+                  number: 8686

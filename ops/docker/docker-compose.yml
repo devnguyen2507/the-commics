@@ -103,6 +103,28 @@ services:
     networks:
       - commics-net
 
+  cdn:
+    privileged: true
+    build:
+      context: ../../src/backend/cdn
+      dockerfile: Dockerfile
+    container_name: commics-cdn
+    environment:
+      - CDN__LISTEN=0.0.0.0:8686
+      - CDN__FORMAT_NEGOTIATION=true
+      - CDN__IMAGE__BASE_DIR=/storage_data
+      - CDN__IMAGE__NO_WAIT=false
+      - RUST_LOG=trace
+      - CDN__IMAGE__DEFAULT_QUALITY=85
+      - CDN__IMAGE__MAX_QUEUE=100
+    ports:
+      - "3005:8686"
+    volumes:
+      - ./storage_data:/storage_data
+    profiles: [ "services" ]
+    networks:
+      - commics-net
+
 volumes:
   postgres_data:
   temporal_data:

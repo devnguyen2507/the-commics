@@ -1,0 +1,65 @@
+[workspace.package]
+authors = ["X <x@x.dev>"]
+edition = "2021"
+homepage = "https://git.maxcoda.com/h/imgflux"
+repository = "https://git.maxcoda.com/h/imgflux"
+publish = false
+
+[workspace]
+resolver = "2"
+members = [
+    "logic",
+    "server"
+]
+
+exclude = ["actix-files"]
+
+[workspace.dependencies]
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+actix-web = "4.0"
+actix-web-thiserror = "0.2.7"
+tokio = { version = "1", features = ["full"] }
+image = { version = "0.24", features = ["avif-encoder"] }
+anyhow = "1"
+dotenv = "0.15.0"
+thiserror = "2.0.12"
+log = "0.4.26"
+serde_json = "1"
+actix-files = { path = "actix-files" }
+serde = "1"
+config = "0.15.9"
+reqwest = "0.13.1"
+
+[profile.release]
+# debug = 1 means line charts only, which is minimum needed for good stack traces
+debug = 1
+# Write debug info into a separate file.
+split-debuginfo = 'packed'
+# Without stripping, binary size would be > 1GB.
+strip = 'debuginfo'
+# Exit process with SIGABRT when any thread panics
+panic = 'abort'
+
+# Same as release, but build binary with debug symbols (binary size will be ~ 1GB).
+[profile.release-dbgsym]
+inherits = "release"
+split-debuginfo = 'off'
+strip = 'none'
+
+# Inherits from the release profile above.
+[profile.bench]
+# For convenience.
+strip = 'none'
+
+[profile.test]
+# opt-level 2 for test reduces the size of some of its
+# (recursive) stack frames by up to 10x, avoiding stack overflows.
+opt-level = 2
+
+[profile.simulator]
+inherits = "test"
+debug = true
+debug-assertions = true
+overflow-checks = true
+# opt-level 1 gives >5x speedup for simulator tests without slowing down build times very much.

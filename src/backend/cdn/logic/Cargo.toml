@@ -1,0 +1,25 @@
+[package]
+name = "imgflux-logic"
+version = "0.1.0"
+description = "ImgFlux Logic"
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[features]
+test_utils = []
+
+[dependencies]
+actix-web.workspace = true
+actix-web-thiserror.workspace = true
+tokio.workspace = true
+anyhow.workspace = true
+image.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+log.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+reqwest.workspace = true
