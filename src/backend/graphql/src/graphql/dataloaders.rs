@@ -107,3 +107,38 @@ impl Loader<String> for ChapterLoader {
         Ok(map)
     }
 }
+
+pub struct AssetLoader {
+    pool: DbPool,
+}
+
+impl AssetLoader {
+    pub fn new(pool: DbPool) -> Self {
+        Self { pool }
+    }
+}
+
+impl Loader<String> for AssetLoader {
+    type Value = Vec<crate::models::Asset>;
+    type Error = String;
+
+    async fn load(&self, keys: &[String]) -> Result<HashMap<String, Self::Value>, Self::Error> {
+        let mut conn = self.pool.get().await.map_err(|e| e.to_string())?;
+
+        use crate::schema::assets::dsl::*;
+
+        let results = assets
+            .filter(comic_id.eq_any(keys))
+            .order(order_index.asc())
+            .load::<crate::models::Asset>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        let mut map: HashMap<String, Vec<crate::models::Asset>> = HashMap::new();
+        for asset in results {
+            map.entry(asset.comic_id.clone()).or_default().push(asset);
+        }
+
+        Ok(map)
+    }
+}

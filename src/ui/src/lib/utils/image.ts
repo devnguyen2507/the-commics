@@ -7,13 +7,16 @@ import { env } from '../config/env';
 export function getImageUrl(url: string | null | undefined): string {
     if (!url) return 'https://placehold.co/300x400?text=No+Image';
 
+    // If it's a relative path (doesn't start with http), it's a local storage path
+    if (!url.startsWith('http')) {
+        const path = url.startsWith('/') ? url : `/${url}`;
+        return `${env.PUBLIC_CDN_URL}/cdn-cgi/image/original${path}`;
+    }
+
     // In local development, we want to replace production domains with our local CDN
     // The backend might return http://cdn.imgflux.com/path
-    // Our local CDN is at env.PUBLIC_CDN_URL (e.g., http://127.0.0.1:3005)
-
     if (url.includes('cdn.imgflux.com')) {
         const path = url.split('cdn.imgflux.com').pop();
-        // Local imgflux expects /cdn-cgi/image/{opts}/{path}
         return `${env.PUBLIC_CDN_URL}/cdn-cgi/image/original${path}`;
     }
 

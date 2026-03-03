@@ -17,7 +17,7 @@ pub struct Comic {
     pub rating_score: Option<f32>,
     pub rating_count: Option<i32>,
     pub view_count: Option<i32>,
-    pub cover_image: Option<String>,
+    pub thumbnail_path: Option<String>,
 }
 
 #[Object]
@@ -49,8 +49,22 @@ impl Comic {
     async fn view_count(&self) -> &Option<i32> {
         &self.view_count
     }
-    async fn cover_image(&self) -> &Option<String> {
-        &self.cover_image
+    async fn cover_image(&self, ctx: &Context<'_>) -> Result<Option<String>> {
+        let loader = ctx.data::<DataLoader<crate::graphql::dataloaders::AssetLoader>>()?;
+        let assets = loader
+            .load_one(self.id.to_string())
+            .await?
+            .unwrap_or_default();
+
+        // Find the thumbnail asset
+        if let Some(asset) = assets.into_iter().find(|a| a.asset_type == "thumbnail") {
+            if let Some(path) = asset.storage_path {
+                return Ok(Some(path));
+            }
+        }
+
+        // Fallback to backup crawl URL
+        Ok(self.thumbnail_path.clone())
     }
 
     async fn categories(&self, ctx: &Context<'_>) -> Result<Vec<Category>> {
@@ -101,7 +115,7 @@ impl From<models::Comic> for Comic {
             rating_score: m.rating_score,
             rating_count: m.rating_count,
             view_count: m.view_count,
-            cover_image: m.thumbnail_path,
+            thumbnail_path: m.thumbnail_path,
         }
     }
 }
@@ -175,7 +189,7 @@ impl Chapter {
                 let result = asset_ids
                     .into_iter()
                     .filter_map(|id| asset_map.get(&id).map(|path| ChapterImage {
-                        url: format!("https://cdn.imgflux.com/{}", path),
+                        url: path.clone(),
                         w: 0,
                         h: 0,
                     }))

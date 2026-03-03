@@ -1,4 +1,5 @@
 import type { GetChapterQuery } from '../generated';
+import { getImageUrl } from '../../../utils/image';
 
 export interface ChapterView {
     id: string;
@@ -31,7 +32,7 @@ export function mapChapterToView(raw: RawChapter): ChapterView {
             title: raw.comic.title
         } : null,
         images: raw.images.map(img => ({
-            url: img.url,
+            url: getImageUrl(img.url),
             w: img.w,
             h: img.h
         })),

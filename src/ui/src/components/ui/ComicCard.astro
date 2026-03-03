@@ -1,5 +1,6 @@
 ---
 import type { ComicView } from '../../lib/api/commics/adapters/comic';
+import { getImageUrl } from '../../lib/utils/image';
 
 interface Props {
   comic: ComicView;
@@ -11,7 +12,7 @@ const { comic } = Astro.props;
 <a href={`/${comic.slug}`} class="group space-y-2 block transition-all duration-300 hover:-translate-y-1">
   <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 relative group-hover:border-blue-500/50 shadow-lg transition-all">
     <img 
-      src={comic.coverImage} 
+      src={getImageUrl(comic.coverImage)} 
       alt={comic.title}
       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       loading="lazy"
