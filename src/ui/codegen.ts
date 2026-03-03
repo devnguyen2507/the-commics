@@ -8,6 +8,7 @@ const config: CodegenConfig = {
             plugins: ['typescript', 'typescript-operations', 'typed-document-node'],
             config: {
                 avoidOptionals: true,
+                useTypeImports: true,
             },
         },
     },

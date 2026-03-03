@@ -3,13 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
+import { mapComicsToView } from '../lib/api/commics/adapters/comic';
 
 const query = Astro.url.searchParams.get('q') || '';
 
 let comics = [];
 if (query) {
   try {
-    comics = await getComics({ filter: { search_query: query }, first: 24 });
+    const rawComics = await getComics(24, undefined, { searchQuery: query });
+    comics = mapComicsToView(rawComics);
   } catch (e) {
     console.error("Fetch error:", e);
   }

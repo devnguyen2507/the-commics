@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
 import { getChapter } from '../../lib/api/commics';
+import { getImageUrl } from '../../lib/utils/image';
 
 const { slug, chapterId } = Astro.params;
 
@@ -29,7 +30,7 @@ const comicTitle = chapter.comic?.title || "Truyện";
         data-page={index + 1}
       >
         <img 
-          src={img.url} 
+          src={getImageUrl(img.url)} 
           alt={`${comicTitle} - Chương ${chapter.chapterNumber} - Trang ${index + 1}`}
           class="w-full h-auto block"
           loading={index < 3 ? "eager" : "lazy"}

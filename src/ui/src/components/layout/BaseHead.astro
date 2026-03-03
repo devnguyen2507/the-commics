@@ -8,7 +8,7 @@ interface Props {
 	canonicalURL?: URL;
 }
 
-const { title, description, image = '/blog-placeholder-1.jpg', canonicalURL = new URL(Astro.url.pathname, Astro.site) } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg', canonicalURL = Astro.url } = Astro.props;
 const publicEnv = getPublicEnv();
 
 // Ensure no trailing slash for canonical

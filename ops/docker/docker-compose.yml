@@ -125,6 +125,23 @@ services:
     networks:
       - commics-net
 
+  ui:
+    build:
+      context: ../../src/ui
+      dockerfile: Dockerfile
+    container_name: commics-ui
+    environment:
+      - PUBLIC_GRAPHQL_URL=http://host.docker.internal:18000/graphql
+      - PUBLIC_CDN_URL=http://host.docker.internal:3005
+      - NODE_ENV=production
+    ports:
+      - "4321:4321"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles: [ "services" ]
+    networks:
+      - commics-net
+
 volumes:
   postgres_data:
   temporal_data:

@@ -1,4 +1,5 @@
 import type { GetComicsQuery, GetComicQuery } from '../generated';
+import { getImageUrl } from '../../../utils/image';
 
 export interface ComicView {
     id: string;
@@ -28,7 +29,7 @@ export function mapComicToView(raw: RawComic): ComicView {
         ratingScore: raw.ratingScore || 0,
         ratingCount: raw.ratingCount || 0,
         viewCount: raw.viewCount || 0,
-        coverImage: raw.coverImage || 'https://placehold.co/300x400?text=No+Cover',
+        coverImage: getImageUrl(raw.coverImage),
         categories: (raw as any).categories || [],
         chapters: (raw as any).chapters || [],
     };

@@ -3,12 +3,15 @@ import Layout from '../layouts/Layout.astro';
 import HeroSlider from '../components/feature/home/HeroSlider.astro';
 import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
+import { env } from '../lib/config/env';
+import { mapComicsToView } from '../lib/api/commics/adapters/comic';
 
 let latestComics = [];
 try {
-	latestComics = await getComics({ first: 12 });
+  const rawComics = await getComics(12);
+  latestComics = mapComicsToView(rawComics);
 } catch (e) {
-	console.error("Fetch error:", e);
+  console.error("Fetch error:", e);
 	// Mock fallback for development if API is down
 	latestComics = Array(12).fill(null).map((_, i) => ({
 		id: `mock-${i}`,

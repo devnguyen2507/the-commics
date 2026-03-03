@@ -158,31 +158,29 @@ impl Chapter {
             .map_err(|e| e.to_string())?;
 
         if let Some(images_json) = db_chapter.images {
-            if let Ok(images) = serde_json::from_value::<Vec<serde_json::Value>>(images_json) {
-                let mut result = Vec::new();
-                for img in images {
-                    let file_path = if let Some(s) = img.as_str() {
-                        s.to_string()
-                    } else if let Some(obj) = img.as_object() {
-                        obj.get("file")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("")
-                            .to_string()
-                    } else {
-                        String::new()
-                    };
+            if let Ok(asset_ids) = serde_json::from_value::<Vec<String>>(images_json) {
+                use crate::schema::assets::dsl as assets_dsl;
+                let db_assets: Vec<crate::models::Asset> = assets_dsl::assets
+                    .filter(assets_dsl::id.eq_any(&asset_ids))
+                    .load::<crate::models::Asset>(&mut conn)
+                    .await
+                    .map_err(|e| e.to_string())?;
 
-                    let w = img.get("w").and_then(|v| v.as_i64()).unwrap_or(0);
-                    let h = img.get("h").and_then(|v| v.as_i64()).unwrap_or(0);
+                // Create a map for quick lookup and preservation of order
+                let asset_map: std::collections::HashMap<String, String> = db_assets
+                    .into_iter()
+                    .filter_map(|a| a.storage_path.map(|p| (a.id, p)))
+                    .collect();
 
-                    if !file_path.is_empty() {
-                        result.push(ChapterImage {
-                            url: format!("https://cdn.imgflux.com/{}", file_path),
-                            w: w as i32,
-                            h: h as i32,
-                        });
-                    }
-                }
+                let result = asset_ids
+                    .into_iter()
+                    .filter_map(|id| asset_map.get(&id).map(|path| ChapterImage {
+                        url: format!("https://cdn.imgflux.com/{}", path),
+                        w: 0,
+                        h: 0,
+                    }))
+                    .collect();
+
                 return Ok(result);
             }
         }
