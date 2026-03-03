@@ -1,13 +1,14 @@
 ---
 id: Spec-006
 type: technical-spec
-status: draft
+status: in-progress
 project: commics
 owner: "DevNguyen"
-tags: [frontend, astro, seo, reader]
+tags: [frontend, astro, seo, reader, cache, sitemap]
 created: 2026-03-01
-updated: 2026-03-01
+updated: 2026-03-03
 linked-to: [[020-Requirements/PRD-Frontend]]
+---
 ---
 
 # Spec: Giao diện Người dùng (Astro Frontend)
@@ -43,7 +44,7 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
   - Tối ưu SSR (Server-Side Rendering) cho các vùng nội dung cần SEO (Box thông tin truyện, Tên truyện, Tags, Text description).
   - Lazy load cho các dữ liệu API như danh sách truyện đề xuất hoặc mảng hình ảnh. Nếu chưa tải được hình, JS vẫn render trước thuộc tính `alt` chứa từ khóa mô tả để bot đọc được nội dung ảnh.
   - **Canonical Tags**: Phải trỏ đúng URL gốc để tránh duplicate content.
-  - **Sitemap & Robots**: Sitemap.xml được tự động sinh (auto-generated) bằng Astro. File `robots.txt` luôn mở cho phép index toàn bộ content crawl được.
+  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) để bao phủ toàn bộ URL động từ DB. File `robots.txt` trỏ đến `sitemap-index.xml`.
 
 ---
 
@@ -58,21 +59,25 @@ graph TD
     
     subgraph Astro Frontend
         SSR[SSR Engine: Render SEO Box, H1, Breadcrumbs]
+        CacheLayer[Cache Layer: Redis L2 + LRU Memory L1]
         ClientJS[Client JS: Lazy Load, Pagination, UI State]
     end
     
     FE --> SSR
     FE --> ClientJS
     
-    SSR -->|Fetch metadata & Initial Data| GQL[GraphQL API Layer]
-    ClientJS -->|Fetch Lazy Lists / Pagination data| GQL
+    SSR -->|1. Check cache| CacheLayer
+    CacheLayer -->|Miss: Fetch metadata & Initial Data| GQL[GraphQL API Layer]
+    CacheLayer -->|Hit: Return cached data| SSR
     
+    ClientJS -->|Fetch Lazy Lists / Pagination data| GQL
     ClientJS -->|Load Images natively via &lt;img src&gt;| CDN[imgflux CDN Edge]
     
-    CDN -.->|Cache Miss| Storage[(Disk Storage)]
-    GQL -.->|Query| DB[(PostgreSQL / Redis)]
+    CDN -..->|Cache Miss| Storage[(Disk Storage)]
+    GQL -..->|Query| DB[(PostgreSQL / Redis)]
     
     style FE fill:#ff9900,stroke:#333,stroke-width:2px
+    style CacheLayer fill:#cc44ff,stroke:#333,stroke-width:2px
     style CDN fill:#00cc66,stroke:#333,stroke-width:2px
     style GQL fill:#3399ff,stroke:#333,stroke-width:2px
 ```
@@ -98,6 +103,57 @@ graph TD
 ### 3.4. Quản lý Tracking Trạng thái (Browser Only)
 - Khách tự lưu bookmark và History thông qua `LocalStorage`. Hoàn toàn cấm Network POST Tracking Call chọc vào GraphQL Layer (Stateless). 
 - **Chống Tràn Quota**: Vì LocalStorage cực bé (~5MB), bắt buộc Component Sync Storage phải áp dụng cấu trúc **Eviction Slice**: Mảng History/Bookmark chốt tối đa 500 Object. Vượt ngưỡng sẽ tự Pop() đuôi để thoát lỗi `QuotaExceededError`.
+
+### 3.5. SSR Cache Layer
+
+Để giảm tải GraphQL và tăng tốc SSR, mọi API call từ server-side Astro đều đi qua cache layer.
+
+- **Driver**: `ioredis` + `lru-cache` — Redis L2 (persistent) + LRU Memory L1 (per-process)
+- **Pattern**: `withCache(fn, { mode, ttl, tags })` — Higher-Order Function bọc ngoài các API function
+- **Mode**: `stale-while-revalidate` — Trả về data cũ ngay, refresh ngầm sau TTL
+- **Flight Dedupe**: Nhiều request đồng thời cùng key → chỉ 1 lần gọi GraphQL
+- **Tag Invalidation**: `revalidateTag('comics')` xóa cache ngay khi crawler thêm data mới
+
+| API Function | TTL Fresh | Mode |
+|---|---|---|
+| `getCategories()` | 1 giờ | SWR |
+| `getComics()` | 5 phút | SWR |
+| `getComic(slug)` | 10 phút | SWR |
+| `getChapter(id)` | 30 phút | SWR |
+
+**Files**:
+- `src/lib/cache/redis.ts` — ioredis singleton
+- `src/lib/cache/driver.ts` — CacheDriver (get/set/del/tags), prefix `commics:`
+- `src/lib/cache/index.ts` — `cacheFetch` + `withCache` HOC + `revalidateTag`
+- `src/lib/api/commics/index.ts` — wrap tất cả API functions với `withCache`
+
+### 3.6. Chiến lược Sitemap (Multi-Sitemap Structure)
+
+Vì Astro chạy `output: 'server'` (SSR), `@astrojs/sitemap` mặc định **không** tự sinh URL cho dynamic routes. Giải pháp là tạo custom sitemap endpoints query từ GraphQL (qua cache).
+
+```
+sitemap-index.xml
+  ├── sitemap-page.xml         # Trang tĩnh: /, /truyen-hot, /tim-kiem, /the-loai
+  ├── sitemap-categories.xml   # /the-loai/[slug] — từ getCategories()
+  ├── sitemap-comics.xml       # /[slug] — từ getComics()
+  └── sitemap-chapters.xml     # /[slug]/[chapterId] — từ comics.chapters[]
+```
+
+**Auto-update khi crawl thêm data**:
+- **Tự nhiên**: TTL SWR hết hạn → data mới từ GraphQL được lấy tự động
+- **Tức thì**: Crawler gọi `POST /api/revalidate` (Bearer token) → `revalidateTag(['comics'])` → cache bị xóa ngay
+- **HTTP**: `Cache-Control: public, max-age=3600` trên sitemap response → Google re-fetch đúng lịch
+
+**Files**:
+- `src/pages/sitemap-index.xml.ts`
+- `src/pages/sitemap-page.xml.ts`
+- `src/pages/sitemap-categories.xml.ts`
+- `src/pages/sitemap-comics.xml.ts`
+- `src/pages/sitemap-chapters.xml.ts`
+- `src/pages/api/revalidate.ts` — Webhook invalidate cache
+- `public/robots.txt` — trỏ đến `sitemap-index.xml`
+
+---
 
 ## 4. Phân tích Kiến trúc Component (DevNguyen's Insight)
 

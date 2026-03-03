@@ -11,7 +11,7 @@ export async function GQLFetch<T, V = Record<string, any>>(
         ? Object.fromEntries(Object.entries(variables).filter(([_, v]) => v !== undefined))
         : undefined;
 
-    const response = await fetch(env.PUBLIC_GRAPHQL_URL, {
+    const response = await fetch(env.GRAPHQL_URL_INTERNAL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
