@@ -5,20 +5,21 @@ import { env } from '../config/env';
  * if necessary, or just returns the URL if it's already correct.
  */
 export function getImageUrl(url: string | null | undefined): string {
-    if (!url) return 'https://placehold.co/300x400?text=No+Image';
+    if (!url) return '/placeholder.svg';
 
-    // If it's a relative path (doesn't start with http), it's a local storage path
-    if (!url.startsWith('http')) {
-        const path = url.startsWith('/') ? url : `/${url}`;
-        return `${env.PUBLIC_CDN_URL}/cdn-cgi/image/original${path}`;
+    let path = url;
+
+    // If it's a full URL, we only process it if it's our production CDN domain
+    if (url.startsWith('http')) {
+        if (url.includes('cdn.imgflux.com')) {
+            path = url.split('cdn.imgflux.com').pop() || '';
+        } else {
+            // Other external URLs (like backups) are returned as-is
+            return url;
+        }
     }
 
-    // In local development, we want to replace production domains with our local CDN
-    // The backend might return http://cdn.imgflux.com/path
-    if (url.includes('cdn.imgflux.com')) {
-        const path = url.split('cdn.imgflux.com').pop();
-        return `${env.PUBLIC_CDN_URL}/cdn-cgi/image/original${path}`;
-    }
-
-    return url;
+    // Default: Ensure leading slash and prefix with local CDN
+    const cleanPath = path.startsWith('/') ? path : `/${path}`;
+    return `${env.PUBLIC_CDN_URL}/cdn-cgi/image/original${cleanPath}`;
 }

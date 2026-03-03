@@ -35,6 +35,7 @@ const comicTitle = chapter.comic?.title || "Truyện";
           class="w-full h-auto block"
           loading={index < 3 ? "eager" : "lazy"}
           decoding="async"
+          onerror="this.onerror=null;this.src='/placeholder.svg';"
         />
         <div class="absolute bottom-2 right-4 text-[10px] text-zinc-700 font-bold uppercase tracking-widest pointer-events-none">
           Page {index + 1}

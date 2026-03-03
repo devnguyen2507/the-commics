@@ -96,9 +96,11 @@ graph TD
 - Sitemap integration: Sử dụng `@astrojs/sitemap` để build sitemap động mỗi khi có route truyện mới.
 
 ### 3.3. Động cực đại hoá hình ảnh (Alt-Text Strategy & CLS = 0)
-- Khai báo component `<Image>` đọc từ API CDN `imgflux`.
+- **Ảnh Bìa (Cover Image)**: Từ GraphQL, `coverImage` trả về path thô. Ở Frontend, Adapter bọc qua helper `getImageUrl(path)` để nối chuỗi tiền tố CDN cục bộ (VD: `/cdn-cgi/image/original/`).
+- **Ảnh Chương (Reader Images)**: Backend GQL resolver (`images` list trong `Chapter`) trả về `storage_path` thô. Frontend map cái `storage_path` đó qua `getImageUrl(path)` để browser gọi lên container CDN.
+- **Biến Môi Trường (Runtime)**: `PUBLIC_CDN_URL` được truy xuất qua `getRuntimeEnv` để đảm bảo tính động trong môi trường Docker, cho phép thay đổi CDN mà không cần rebuild bundle frontend.
 - **Tránh nhảy trang (Cumulative Layout Shift = 0)**: Dữ liệu API GraphQL cho mảng Chapter Images truyền vào phải là Array Objects chứa Image Dimensions (`[{"file": "x", "w": 800, "h": 1200}]`). Component Frontend Astro dựa vào size đó Render sẵn thẻ Box placeholder `<div style="aspect-ratio">` chống sụp khung trước khi ảnh thực từ CDN chạy về.
-- Khi load trang chapter, mảng `alt` tĩnh chứa context (VD: "Tên truyện - Chapter X - Page Y") được SSR render sẵn. Quá trình tải thực tế (src) được defer bằng Lazy Load hoặc Intersection Observer. Điều này giúp dù ảnh load chậm/chưa có, SEO text vẫn hiện diện.
+- **Lazy Loading & SSR Performance**: Quá trình SSR chỉ render thẻ `<img>` với thuộc tính `src` đã được chuẩn hoá. Browser sẽ tự động tải ảnh bất đồng bộ sau khi nhận HTML. Quá trình này **không** block SSR response, giúp page load nhanh ngay từ cái nhìn đầu tiên. Đối với các hình ảnh chapter nằm sâu bên dưới, sử dụng `loading="lazy"` để tối ưu.
 
 ### 3.4. Quản lý Tracking Trạng thái (Browser Only)
 - Khách tự lưu bookmark và History thông qua `LocalStorage`. Hoàn toàn cấm Network POST Tracking Call chọc vào GraphQL Layer (Stateless). 
