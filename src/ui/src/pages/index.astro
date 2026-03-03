@@ -26,7 +26,20 @@ try {
 }
 ---
 
-<Layout title="Commics - Đọc truyện tranh online" isHome={true}>
+<Layout title="Commics - Đọc truyện tranh online" isHome={true} ogType="website">
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "WebSite",
+			"name": "Commics",
+			"url": Astro.url.origin,
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": `${Astro.url.origin}/tim-kiem?q={search_term_string}`,
+				"query-input": "required name=search_term_string"
+			}
+		})} />
+	</Fragment>
 	<HeroSlider comics={latestComics} />
 	
 	<div class="max-w-6xl mx-auto px-4 py-12 space-y-8">

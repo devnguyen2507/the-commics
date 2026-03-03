@@ -25,7 +25,25 @@ const breadcrumbs = [
 ];
 ---
 
-<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description}>
+<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description} ogType="book" image={comic.coverImage}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Book",
+      "name": comic.title,
+      "author": {
+        "@type": "Person",
+        "name": comic.author || "Đang cập nhật"
+      },
+      "image": comic.coverImage,
+      "description": comic.description || `Đọc truyện ${comic.title} online.`,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": comic.ratingScore || 5,
+        "ratingCount": comic.viewCount || 100
+      }
+    })} />
+  </Fragment>
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
     

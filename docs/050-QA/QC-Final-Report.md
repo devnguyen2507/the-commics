@@ -47,8 +47,8 @@
 - **Criteria**:
     - [x] On-the-fly optimization (Resizing: OK).
     - [x] Format Conversion (WebP/AVIF: OK).
-    - [x] Cache Layer (Disk-based LRU: Verified in `/storage_data/cache`).
-    - [x] Shared Crawler Volume access (`/storage_data` root serving).
+    - [x] Cache Layer (Disk-based LRU: Verified in `/cdn_cache`).
+    - [x] Shared Crawler Volume access (`/storage_data` root serving, Read-Only).
 
 ## 6. Kết luận
 Hệ thống hoàn thành Phase 4 (CDN Integration). Toàn bộ dữ liệu crawler, database layer, API layer và Image CDN đã sẵn sàng 100% cho việc tích hợp Frontend Astro. Toàn bộ hạ tầng Docker đã được chuẩn hóa.

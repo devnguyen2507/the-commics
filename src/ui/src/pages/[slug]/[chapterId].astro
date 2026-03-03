@@ -59,6 +59,16 @@ const comicTitle = chapter.comic?.title || "Truyện";
          </a>
        </div>
     </div>
+
+    <!-- SEO Content Box -->
+    <section class="w-full px-4 pb-16">
+        <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+            <h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">{comicTitle} - Chương {chapter.chapterNumber}</h1>
+            <div class="text-zinc-500 text-sm leading-relaxed space-y-4">
+                <p>Đọc ngay <strong>{comicTitle} Chương {chapter.chapterNumber}</strong> online chất lượng cao, cập nhật nhanh nhất tại Commics. Không quảng cáo làm phiền.</p>
+            </div>
+        </div>
+    </section>
   </div>
 
   <ReaderNavbar 
