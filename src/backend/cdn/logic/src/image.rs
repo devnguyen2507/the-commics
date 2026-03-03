@@ -42,6 +42,7 @@ const CACHE_DIR: &str = "cache";
 #[derive(Default, Debug, Clone, Deserialize, Serialize)]
 pub struct Config {
     pub base_dir: String,
+    pub cache_dir: Option<String>,
     pub no_wait: bool,
     pub default_quality: u8,
     pub max_queue: usize,
@@ -210,7 +211,9 @@ pub struct Mgr {
 
 impl Mgr {
     pub fn new(config: Config) -> Self {
-        let cache_path = if CACHE_DIR.is_empty() {
+        let cache_path = if let Some(ref dir) = config.cache_dir {
+            dir.clone()
+        } else if CACHE_DIR.is_empty() {
             config.base_dir.clone()
         } else {
             format!("{}/{}", config.base_dir.trim_end_matches('/'), CACHE_DIR)
