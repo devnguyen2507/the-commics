@@ -5,15 +5,15 @@ Tài liệu này định nghĩa chi tiết các hạng mục cần kiểm thử 
 ## 1. Kiểm duyệt SEO (Search Engine Optimization)
 
 ### 1.1 Khai báo Crawler (Robots & Sitemap)
-- [ ] **robots.txt**:
-  - [ ] Tồn tại file `/robots.txt` ở root (VD: `http://localhost:4321/robots.txt`).
-  - [ ] Allow cho các User-agent chuẩn (`*`, `Googlebot`, v.v.).
-  - [ ] Khai báo đường dẫn trỏ đến Sitemap (VD: `Sitemap: https://domain.com/sitemap-index.xml`).
-- [ ] **sitemap.xml**:
-  - [ ] Tồn tại file Sitemap hợp lệ (ở `/sitemap-index.xml` hoặc `/sitemap.xml`).
-  - [ ] Sitemap liệt kê đầy đủ các trang tĩnh (Home, Thể loại, Truyện Hot).
-  - [ ] Sitemap tự động index các trang động (Chi tiết truyện, Đọc Chapter).
-  - [ ] URL trong sitemap **không có dấu slash (/) ở cuối** (Trailing slash).
+- [x] **robots.txt**:
+  - [x] Tồn tại file `/robots.txt` ở root (đã đổi thành dynamic `robots.txt.ts`).
+  - [x] Allow cho các User-agent chuẩn (`*`, `Googlebot`, v.v.).
+  - [x] Khai báo đường dẫn trỏ đến Sitemap (VD: `Sitemap: https://domain.com/sitemap-index.xml`).
+- [x] **sitemap.xml**:
+  - [x] Tồn tại file Sitemap hợp lệ (chia thành 5 file sitemap động SSR).
+  - [x] Sitemap liệt kê đầy đủ các trang tĩnh (Home, Thể loại, Truyện Hot).
+  - [x] Sitemap tự động index các trang động (Chi tiết truyện, Đọc Chapter).
+  - [x] URL trong sitemap **không có dấu slash (/) ở cuối** (Trailing slash).
 
 ### 1.2 Thẻ Meta & Canonical
 - [ ] **Canonical URL**:

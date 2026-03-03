@@ -2,13 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
-import { mapComicsToView } from '../lib/api/commics/adapters/comic';
 import { ComicSort } from '../lib/api/commics/generated';
 
 let hotComics = [];
 try {
-  const rawComics = await getComics(24, undefined, undefined, ComicSort.MostViewed);
-  hotComics = mapComicsToView(rawComics);
+  hotComics = await getComics({ first: 24, sort: ComicSort.MostViewed });
 } catch (e) {
   console.error("Fetch error:", e);
 }

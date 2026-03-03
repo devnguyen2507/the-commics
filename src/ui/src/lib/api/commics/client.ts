@@ -11,6 +11,9 @@ export async function GQLFetch<T, V = Record<string, any>>(
         ? Object.fromEntries(Object.entries(variables).filter(([_, v]) => v !== undefined))
         : undefined;
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+
     const response = await fetch(env.GRAPHQL_URL_INTERNAL, {
         method: 'POST',
         headers: {
@@ -20,7 +23,8 @@ export async function GQLFetch<T, V = Record<string, any>>(
             query: typeof query === 'string' ? query : print(query),
             variables: cleanVariables,
         }),
-    });
+        signal: controller.signal,
+    }).finally(() => clearTimeout(timeout));
 
     const text = await response.text();
     let result;

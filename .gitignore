@@ -7,3 +7,4 @@ p1/
 imgflux/
 
 /ops/docker/storage_data/
+ops/docker/cdn_cache/

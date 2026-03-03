@@ -11,7 +11,7 @@ let targetCategoryName = "Thể loại";
 try {
   const [categories, categoryComics] = await Promise.all([
      getCategories(),
-     getComics({ filter: { category_slug: slug }, first: 24 })
+     getComics({ filter: { categorySlug: slug }, first: 24 })
   ]);
   comics = categoryComics;
   targetCategoryName = categories.find((c: any) => c.slug === slug)?.name || "Thể loại";

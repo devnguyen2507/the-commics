@@ -37,7 +37,7 @@ export const getComics = withCache(
     staleTTL: 300,
     tags: (vars?: { filter?: ComicFilter }) => [
       'comics',
-      vars?.filter?.category_slug ? `cat:${vars.filter.category_slug}` : 'comics:all',
+      vars?.filter?.categorySlug ? `cat:${vars.filter.categorySlug}` : 'comics:all',
     ],
   }
 );

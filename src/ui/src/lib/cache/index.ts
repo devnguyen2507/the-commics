@@ -43,7 +43,16 @@ const flightMap = new Map<string, Promise<any>>();
 
 function scheduleFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
     if (flightMap.has(key)) return flightMap.get(key)! as Promise<T>;
-    const p = fn().finally(() => flightMap.delete(key));
+    const p = (async () => {
+        try {
+            return await fn();
+        } catch (e) {
+            console.error('[Cache] flight error for key', key, e);
+            throw e;
+        } finally {
+            flightMap.delete(key);
+        }
+    })();
     flightMap.set(key, p);
     return p;
 }

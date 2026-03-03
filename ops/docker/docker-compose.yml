@@ -134,7 +134,8 @@ services:
     container_name: commics-ui
     environment:
       # SSR server-side fetch (đọc qua process.env lúc runtime, không bị bake lúc build)
-      - GRAPHQL_URL_INTERNAL=http://127.0.0.1:18000/graphql
+      # Phải trỏ vào container 'graphql' vì chạy trong cùng network commics-net
+      - GRAPHQL_URL_INTERNAL=http://graphql:8000/graphql
       - CACHE_URL=redis+memory://redis:6379?ttl=300000&lru=5000
       - SITE_URL=http://localhost:4321
       - REVALIDATE_SECRET=change-me-in-production

@@ -4,12 +4,10 @@ import HeroSlider from '../components/feature/home/HeroSlider.astro';
 import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
 import { env } from '../lib/config/env';
-import { mapComicsToView } from '../lib/api/commics/adapters/comic';
 
 let latestComics = [];
 try {
-  const rawComics = await getComics(12);
-  latestComics = mapComicsToView(rawComics);
+  latestComics = await getComics({ first: 12 });
 } catch (e) {
   console.error("Fetch error:", e);
 	// Mock fallback for development if API is down
