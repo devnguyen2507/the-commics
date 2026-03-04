@@ -26,10 +26,13 @@ try {
   if (comic.categories && comic.categories.length > 0) {
     const primaryCat = comic.categories[0];
     const related = await getComics({
-      first: 7,
+      first: env.PUBLIC_HOME_COMICS_LIMIT + 1,
       filter: { categorySlug: primaryCat.slug }
     });
-    relatedComics = related.filter((c: any) => c.id !== comic.id).slice(0, 6);
+    // Filter out current comic and take exactly env.PUBLIC_HOME_COMICS_LIMIT
+    relatedComics = related
+      .filter(c => c.id !== comic.id)
+      .slice(0, env.PUBLIC_HOME_COMICS_LIMIT);
   }
 } catch (e) {
   console.error("Fetch related error:", e);

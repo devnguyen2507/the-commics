@@ -7,7 +7,7 @@ import { env } from '../lib/config/env';
 
 let latestComics = [];
 try {
-  latestComics = await getComics({ first: 12 });
+  latestComics = await getComics({ first: env.PUBLIC_HOME_COMICS_LIMIT });
 } catch (e) {
   console.error("Fetch error:", e);
 	// Mock fallback for development if API is down

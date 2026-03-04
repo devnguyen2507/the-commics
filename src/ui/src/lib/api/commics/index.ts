@@ -8,6 +8,7 @@ import {
   type GetComicQuery,
   type GetChapterQuery,
   type GetCategoriesQuery,
+  type GetComicsCountQuery, // Added GetComicsCountQuery
   type ComicFilter,
   type ComicSort
 } from './generated';
@@ -19,7 +20,7 @@ import { withCache } from '../../cache';
 // ─── getCategories: cache 1 giờ (thể loại ít thay đổi) ───
 export const getCategories = withCache(
   async () => {
-    const data = await GQLFetch<GetCategoriesQuery>(GetCategoriesDocument);
+    const data = await GQLFetch<GetCategoriesQuery>(GetCategoriesDocument as any);
     return mapCategoriesToView(data.categories);
   },
   { mode: 'stale-while-revalidate', ttl: 3600, staleTTL: 3600, tags: ['categories'] }
@@ -28,7 +29,7 @@ export const getCategories = withCache(
 // ─── getComics: cache 5 phút ───
 export const getComics = withCache(
   async (variables?: { first?: number; after?: string; filter?: ComicFilter; sort?: ComicSort }) => {
-    const data = await GQLFetch<GetComicsQuery>(GetComicsDocument, variables);
+    const data = await GQLFetch<GetComicsQuery>(GetComicsDocument as any, variables);
     return mapComicsToView(data.comics);
   },
   {
@@ -42,30 +43,79 @@ export const getComics = withCache(
   }
 );
 
+// ─── getComicsCount: cache 5 phút ───
+export const getComicsCount = withCache(
+  async (variables?: { filter?: ComicFilter }) => {
+    const data = await GQLFetch<GetComicsCountQuery>({
+      kind: 'Document',
+      definitions: [
+        {
+          kind: 'OperationDefinition',
+          operation: 'query',
+          name: { kind: 'Name', value: 'getComicsCount' },
+          variableDefinitions: [
+            {
+              kind: 'VariableDefinition',
+              variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              type: { kind: 'NamedType', name: { kind: 'Name', value: 'ComicFilter' } },
+            },
+          ],
+          selectionSet: {
+            kind: 'SelectionSet',
+            selections: [
+              {
+                kind: 'Field',
+                name: { kind: 'Name', value: 'comicsCount' },
+                arguments: [
+                  {
+                    kind: 'Argument',
+                    name: { kind: 'Name', value: 'filter' },
+                    value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    } as any, variables);
+    return data.comicsCount;
+  },
+  {
+    mode: 'stale-while-revalidate',
+    ttl: 300,
+    staleTTL: 300,
+    tags: (vars?: { filter?: ComicFilter }) => [
+      'comics_count',
+      vars?.filter?.categorySlug ? `count_cat:${vars.filter.categorySlug} ` : 'count_all',
+    ],
+  }
+);
+
 // ─── getComic: cache 10 phút ───
 export const getComic = withCache(
   async (comicSlug: string) => {
-    const data = await GQLFetch<GetComicQuery>(GetComicDocument, { comicSlug });
+    const data = await GQLFetch<GetComicQuery>(GetComicDocument as any, { comicSlug });
     return data.comic ? mapComicToView(data.comic) : null;
   },
   {
     mode: 'stale-while-revalidate',
     ttl: 600,
     staleTTL: 600,
-    tags: (slug: string) => ['comics', `comic:${slug}`],
+    tags: (slug: string) => ['comics', `comic:${slug} `],
   }
 );
 
 // ─── getChapter: cache 30 phút ───
 export const getChapter = withCache(
   async (chapterId: string) => {
-    const data = await GQLFetch<GetChapterQuery>(GetChapterDocument, { chapterId });
+    const data = await GQLFetch<GetChapterQuery>(GetChapterDocument as any, { chapterId });
     return data.chapter ? mapChapterToView(data.chapter) : null;
   },
   {
     mode: 'stale-while-revalidate',
     ttl: 1800,
     staleTTL: 1800,
-    tags: (id: string) => ['chapters', `chapter:${id}`],
+    tags: (id: string) => ['chapters', `chapter:${id} `],
   }
 );

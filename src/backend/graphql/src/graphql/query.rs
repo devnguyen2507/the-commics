@@ -93,6 +93,61 @@ impl QueryRoot {
         Ok(results.into_iter().map(Comic::from).collect())
     }
 
+    async fn comics_count(
+        &self,
+        ctx: &Context<'_>,
+        filter: Option<ComicFilter>,
+    ) -> Result<i64> {
+        let cache = ctx.data::<crate::cache::ArcCache>()?;
+
+        // Generate Cache Key for count
+        let filter_key = filter
+            .as_ref()
+            .map(|f| format!("{:?}{:?}{:?}", f.category_slug, f.search_query, f.status))
+            .unwrap_or_default();
+        let cache_key = format!("comics_count:{:?}", filter_key);
+
+        if let Some(cached) = cache.get::<i64>(&cache_key).await {
+            return Ok(cached);
+        }
+
+        let pool = ctx.data::<crate::db::DbPool>()?;
+        let mut conn = pool.get().await.map_err(|e| e.to_string())?;
+
+        let mut query = crate::schema::comics::table.into_boxed();
+
+        if let Some(f) = filter {
+            if let Some(cat_slug) = f.category_slug {
+                use crate::schema::{categories, comic_categories};
+                let comic_ids: Vec<String> = comic_categories::table
+                    .inner_join(categories::table)
+                    .filter(categories::id.eq(cat_slug))
+                    .select(comic_categories::comic_id)
+                    .load::<String>(&mut conn)
+                    .await
+                    .map_err(|e| e.to_string())?;
+                query = query.filter(crate::schema::comics::id.eq_any(comic_ids));
+            }
+            if let Some(q) = f.search_query {
+                query = query.filter(crate::schema::comics::title.ilike(format!("%{}%", q)));
+            }
+            if let Some(s) = f.status {
+                query = query.filter(crate::schema::comics::status.eq(s));
+            }
+        }
+
+        let count = query
+            .count()
+            .get_result::<i64>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        // Cache the results for 5 minutes
+        cache.set(&cache_key, &count, 300).await;
+
+        Ok(count)
+    }
+
     async fn comic(&self, ctx: &Context<'_>, comic_slug: String) -> Result<Option<Comic>> {
         let cache = ctx.data::<crate::cache::ArcCache>()?;
         let cache_key = format!("comic:{}", comic_slug);

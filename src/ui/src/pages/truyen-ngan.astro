@@ -11,22 +11,27 @@ const page = pageStr ? parseInt(pageStr, 10) : 1;
 const limit = env.PUBLIC_PAGE_COMICS_LIMIT;
 const offset = (page - 1) * limit;
 
-let hotComics = [];
+let truyenNganComics = [];
 let totalPages = 0;
 
 try {
   const [comicsData, countData] = await Promise.all([
-    getComics({ first: limit, after: offset.toString(), sort: ComicSort.MostViewed }),
-    getComicsCount()
+    getComics({ 
+      first: limit, 
+      after: offset.toString(), 
+      sort: ComicSort.Latest,
+      filter: { categorySlug: 'truyen-ngan' }
+    }),
+    getComicsCount({ filter: { categorySlug: 'truyen-ngan' } })
   ]);
-  hotComics = comicsData;
+  truyenNganComics = comicsData;
   totalPages = Math.ceil(countData / limit);
 } catch (e) {
   console.error("Fetch error:", e);
 }
 
-const title = page > 1 ? `Truyện Hot - Đọc nhiều nhất - Trang ${page} - Commics` : "Truyện Hot - Đọc nhiều nhất - Commics";
-const description = "Top truyện tranh hot nhất, được xem nhiều nhất tuần qua. Cập nhật liên tục những siêu phẩm manga, manhwa, manhua hấp dẫn.";
+const title = page > 1 ? `Truyện Ngắn - Trang ${page} - Commics` : "Truyện Ngắn - Commics";
+const description = "Danh sách truyện ngắn hay nhất, cập nhật liên tục các oneshot, truyện ngắn trọn bộ tại Commics.";
 ---
 
 <Layout title={title} description={description}>
@@ -36,37 +41,35 @@ const description = "Top truyện tranh hot nhất, được xem nhiều nhất 
   <main class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">
-        Truyện Hot <span class="text-blue-500">Nhất</span>
+        Truyện Ngắn <span class="text-blue-500">Hay</span>
       </h1>
     </div>
 
-    {hotComics.length > 0 ? (
+    {truyenNganComics.length > 0 ? (
       <>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
-          {hotComics.map((comic) => (
+          {truyenNganComics.map((comic) => (
             <ComicCard comic={comic} />
           ))}
         </div>
-        <Pagination currentPage={page} totalPages={totalPages} baseUrl="/truyen-hot" />
+        <Pagination currentPage={page} totalPages={totalPages} baseUrl="/truyen-ngan" />
       </>
     ) : (
       <div class="py-20 text-center">
-        <p class="text-zinc-500 font-bold uppercase tracking-widest">Đang cập nhật danh sách truyện hot...</p>
+        <p class="text-zinc-500 font-bold uppercase tracking-widest">Không có truyện ngắn nào...</p>
       </div>
     )}
 
     <!-- SEO Content Box -->
     <section class="mt-16 pb-16">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện hot là gì?</h2>
+        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện Ngắn (Oneshot)</h2>
         <div class="text-zinc-500 text-sm leading-relaxed space-y-4">
           <p>
-            <strong>Truyện hot</strong> là những bộ truyện được đọc nhiều nhất trong tuần qua trên Commics.
-            Tụ hập các bộ manga, manhwa, manhua hay nhất đang được cộng đồng đọc nhiều và yêu thích.
+            <strong>Truyện ngắn</strong> hay còn gọi là oneshot, là những câu chuyện được kể và trọn vẹn trong một khoảng thời gian ngắn, thường chỉ có 1 đến vài chapter.
           </p>
           <p>
-            Danh sách được cập nhật liên tục dựa trên lượt xem thực tế.
-            Bắt đầu đọc trực tiếp, không cần đăng ký!
+            Rất phù hợp để đọc giải trí nhanh trong giờ giải lao!
           </p>
         </div>
       </div>

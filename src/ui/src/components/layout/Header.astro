@@ -12,16 +12,18 @@ const { isHome } = Astro.props;
       COMMICS
     </a>
     
-    <nav class="hidden md:flex items-center gap-6">
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
       <a href="/" class="hover:text-blue-500 transition-colors">Trang chủ</a>
-      <a href="/the-loai" class="hover:text-blue-500 transition-colors">Thể loại</a>
+      <a href="/truyen-moi" class="hover:text-blue-500 transition-colors">Truyện Mới</a>
       <a href="/truyen-hot" class="hover:text-blue-500 transition-colors">Truyện Hot</a>
+      <a href="/truyen-ngan" class="hover:text-blue-500 transition-colors">Truyện Ngắn</a>
+      <a href="/the-loai" class="hover:text-blue-500 transition-colors">Thể loại</a>
     </nav>
 
     <div class="flex items-center gap-4">
-      <button class="p-2 hover:bg-zinc-800 rounded-full transition-colors" aria-label="Search">
+      <a href="/tim-kiem" class="p-2 hover:bg-zinc-800 rounded-full transition-colors" aria-label="Search">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      </button>
+      </a>
     </div>
   </div>
 </header>

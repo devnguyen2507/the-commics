@@ -80,6 +80,7 @@ export type QueryRoot = {
   chapter: Maybe<Chapter>;
   comic: Maybe<Comic>;
   comics: Array<Comic>;
+  comicsCount: Scalars['Float']['output'];
 };
 
 
@@ -109,6 +110,13 @@ export type GetComicsQueryVariables = Exact<{
 
 
 export type GetComicsQuery = { __typename?: 'QueryRoot', comics: Array<{ __typename?: 'Comic', id: string, slug: string | null, title: string, author: string | null, status: string | null, ratingScore: number | null, ratingCount: number | null, viewCount: number | null, coverImage: string | null, updatedAt: string | null, chapters: Array<{ __typename?: 'Chapter', id: string, chapterNumber: string }> }> };
+
+export type GetComicsCountQueryVariables = Exact<{
+  filter?: InputMaybe<ComicFilter>;
+}>;
+
+
+export type GetComicsCountQuery = { __typename?: 'QueryRoot', comicsCount: number };
 
 export type GetComicQueryVariables = Exact<{
   comicSlug: Scalars['String']['input'];

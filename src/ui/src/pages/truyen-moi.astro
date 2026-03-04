@@ -1,21 +1,38 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ComicCard from '../components/ui/ComicCard.astro';
-import { getComics } from '../lib/api/commics';
+import Pagination from '../components/ui/Pagination.astro';
+import { getComics, getComicsCount } from '../lib/api/commics';
 import { ComicSort } from '../lib/api/commics/generated';
+import { env } from '../lib/config/env';
+
+const pageStr = Astro.url.searchParams.get('page');
+const page = pageStr ? parseInt(pageStr, 10) : 1;
+const limit = env.PUBLIC_PAGE_COMICS_LIMIT;
+const offset = (page - 1) * limit;
 
 let newComics = [];
+let totalPages = 0;
+
 try {
-  newComics = await getComics({ first: 24, sort: ComicSort.Latest });
+  const [comicsData, countData] = await Promise.all([
+    getComics({ first: limit, after: offset.toString(), sort: ComicSort.Latest }),
+    getComicsCount()
+  ]);
+  newComics = comicsData;
+  totalPages = Math.ceil(countData / limit);
 } catch (e) {
   console.error('Fetch error:', e);
 }
 
-const title = 'Truyện Mới Cập Nhật - Commics';
+const title = page > 1 ? `Truyện Mới Cập Nhật - Trang ${page} - Commics` : 'Truyện Mới Cập Nhật - Commics';
 const description = 'Đọc truyện mới nhất hôm nay: manga, manhwa, manhua vietsub cập nhật liên tục, nhanh nhất tại Commics.';
 ---
 
 <Layout title={title} description={description}>
+  <Fragment slot="head">
+    {page > 1 && <meta name="robots" content="noindex, follow" />}
+  </Fragment>
   <main class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">
@@ -24,11 +41,14 @@ const description = 'Đọc truyện mới nhất hôm nay: manga, manhwa, manhu
     </div>
 
     {newComics.length > 0 ? (
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
-        {newComics.map((comic) => (
-          <ComicCard comic={comic} />
-        ))}
-      </div>
+      <>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
+          {newComics.map((comic) => (
+            <ComicCard comic={comic} />
+          ))}
+        </div>
+        <Pagination currentPage={page} totalPages={totalPages} baseUrl="/truyen-moi" />
+      </>
     ) : (
       <div class="py-20 text-center">
         <p class="text-zinc-500 font-bold uppercase tracking-widest">Đang cập nhật truyện mới...</p>

@@ -19,6 +19,10 @@ export const env = {
     GTM_ID: import.meta.env.GTM_ID || '',
     GOOGLE_SITE_VERIFICATION: import.meta.env.GOOGLE_SITE_VERIFICATION || '',
 
+    // Pagination Limits (tweakable)
+    PUBLIC_HOME_COMICS_LIMIT: parseInt(import.meta.env.PUBLIC_HOME_COMICS_LIMIT || '24', 10),
+    PUBLIC_PAGE_COMICS_LIMIT: parseInt(import.meta.env.PUBLIC_PAGE_COMICS_LIMIT || '24', 10),
+
     // Runtime vars (process.env only)
     SITE_URL: getRuntimeEnv('SITE_URL', 'http://localhost:4321'),
     CACHE_URL: getRuntimeEnv('CACHE_URL', ''),

@@ -22,10 +22,10 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
 ### 1.1. Ba loại màn hình chính
 Đặc tả chi tiết 3 bố cục trang cốt lõi của ứng dụng:
 
-1. **Trang Danh sách (List Pages)**:
-   - *Bao gồm*: Trang Chủ (Home), Trang Danh sách theo Thể loại (Category Tag Pages), Trang Kết quả tìm kiếm.
+2. **Trang Chi tiết Truyện (Comic Detail Page)**:
+   - *Bao gồm*: Trang Chủ (Home), Trang Danh sách theo Thể loại (Category Tag Pages), Trang Kết quả tìm kiếm, Truyện Hot, Truyện Mới, Truyện Ngắn.
    - *Bố cục*: Grid hiển thị thẻ truyện (thumbnail, tên, rating, số chapter). 
-   - *Chức năng*: **Phân trang (Pagination)** bắt buộc phải có để xử lý số lượng truyện lớn. Dữ liệu danh sách có thể lazy-load.
+   - *Chức năng*: **Phân trang (Pagination)** theo tham số query `?page=X`. Sử dụng `PUBLIC_PAGE_COMICS_LIMIT` và `PUBLIC_HOME_COMICS_LIMIT` cấu hình từ biến môi trường để đảm bảo độ tuỳ biến hiển thị.
    
 2. **Trang Chi tiết Truyện (Comic Detail Page)**:
    - *Bố cục*: 
@@ -42,9 +42,10 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
 - **Tiêu chuẩn SEO Khắt khe**:
   - Chỉ duy nhất **1 thẻ H1** trên mỗi trang, chứa từ khóa SEO trọng tâm (Tên truyện ở trang chi tiết, Tên danh mục ở trang Category).
   - Tối ưu SSR (Server-Side Rendering) cho các vùng nội dung cần SEO (Box thông tin truyện, Tên truyện, Tags, Text description).
+  - **Noindex cho trang phân trang**: Tất cả các trang danh sách truyện từ mục lục trang thứ 2 trở lên (`?page=2`, `?page=3`) bắt buộc chèn thẻ `<meta name="robots" content="noindex, follow" />` nhằm tránh rác kết quả tìm kiếm (Google duplicate content).
   - Lazy load cho các dữ liệu API như danh sách truyện đề xuất hoặc mảng hình ảnh. Nếu chưa tải được hình, JS vẫn render trước thuộc tính `alt` chứa từ khóa mô tả để bot đọc được nội dung ảnh.
   - **Canonical Tags**: Phải trỏ đúng URL gốc để tránh duplicate content.
-  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) để bao phủ toàn bộ URL động từ DB. File `robots.txt` trỏ đến `sitemap-index.xml`.
+  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) sử dụng URL chuẩn (như `chap-{number}`). File `robots.txt` trỏ đến `sitemap-index.xml`.
 
 ---
 

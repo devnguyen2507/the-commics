@@ -2,21 +2,31 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import ComicCard from '../../components/ui/ComicCard.astro';
-import { getComics, getCategories } from '../../lib/api/commics';
+import Pagination from '../../components/ui/Pagination.astro';
+import { getComics, getCategories, getComicsCount } from '../../lib/api/commics';
+import { env } from '../../lib/config/env';
 
 const { slug } = Astro.params;
 
+const pageStr = Astro.url.searchParams.get('page');
+const page = pageStr ? parseInt(pageStr, 10) : 1;
+const limit = env.PUBLIC_PAGE_COMICS_LIMIT;
+const offset = (page - 1) * limit;
+
 let comics = [];
+let totalPages = 0;
 let category: any = null;
 let targetCategoryName = 'Thể loại';
 let categoryDescription: string | null = null;
 
 try {
-  const [categories, categoryComics] = await Promise.all([
+  const [categories, categoryComics, countData] = await Promise.all([
     getCategories(),
-    getComics({ filter: { categorySlug: slug }, first: 24 })
+    getComics({ filter: { categorySlug: slug }, first: limit, after: offset.toString() }),
+    getComicsCount({ filter: { categorySlug: slug } })
   ]);
   comics = categoryComics;
+  totalPages = Math.ceil(countData / limit);
   category = categories.find((c: any) => c.slug === slug);
   if (category) {
     targetCategoryName = category.name;
@@ -27,7 +37,10 @@ try {
   console.error('Fetch error:', e);
 }
 
-const pageTitle = `Truyện ${targetCategoryName} - Đọc online tại Commics`;
+const pageTitle = page > 1 
+  ? `Truyện ${targetCategoryName} - Trang ${page} - Đọc online tại Commics` 
+  : `Truyện ${targetCategoryName} - Đọc online tại Commics`;
+
 const pageDesc = categoryDescription
   || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại Commics.`;
 
@@ -60,6 +73,7 @@ const jsonLd = [
 <Layout title={pageTitle} description={pageDesc}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {page > 1 && <meta name="robots" content="noindex, follow" />}
   </Fragment>
 
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
@@ -74,6 +88,8 @@ const jsonLd = [
         <ComicCard comic={comic} />
       ))}
     </div>
+
+    {comics.length > 0 && <Pagination currentPage={page} totalPages={totalPages} baseUrl={`/the-loai/${slug}`} />}
 
     {comics.length === 0 && (
       <div class="py-20 text-center text-zinc-500 font-bold uppercase tracking-widest italic">

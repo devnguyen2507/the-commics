@@ -17,6 +17,10 @@ query getComics($first: Int, $after: String, $filter: ComicFilter, $sort: ComicS
   }
 }
 
+query getComicsCount($filter: ComicFilter) {
+  comicsCount(filter: $filter)
+}
+
 query getComic($comicSlug: String!) {
   comic(comicSlug: $comicSlug) {
     id
