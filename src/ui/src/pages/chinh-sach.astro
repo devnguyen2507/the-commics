@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { env } from '../lib/config/env';
 
-const title = 'Chính sách Bảo mật - Commics';
-const description = 'Chính sách bảo mật, thu thập và xử lý dữ liệu người dùng của Commics. Chúng tôi cam kết bảo vệ quyền riêng tư của bạn.';
+const title = `Chính sách Bảo mật - ${env.SITE_NAME}`;
+const description = `Chính sách bảo mật, thu thập và xử lý dữ liệu người dùng của ${env.SITE_NAME}. Chúng tôi cam kết bảo vệ quyền riêng tư của bạn.`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -25,9 +26,9 @@ const jsonLd = {
 
     <div class="space-y-8 text-zinc-400 text-sm leading-relaxed">
       <section>
-        <h2 class="text-lg font-bold text-zinc-200 mb-3">1. Thông tin chúng tôi thu thập</h2>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">1. Thu thập thông tin</h2>
         <p>
-          Khi bạn sử dụng Commics, chúng tôi có thể thu thập các thông tin sau:
+          Khi bạn sử dụng {env.SITE_NAME}, chúng tôi có thể thu thập các thông tin sau:
         </p>
         <ul class="list-disc pl-5 space-y-2 mt-3">
           <li>Dữ liệu sử dụng: các trang bạn truy cập, thời gian đọc, lịch sử đọc truyện.</li>
@@ -46,10 +47,9 @@ const jsonLd = {
       </section>
 
       <section>
-        <h2 class="text-lg font-bold text-zinc-200 mb-3">3. Cookie</h2>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">3. Cookie và Công nghệ theo dõi</h2>
         <p>
-          Commics có thể sử dụng cookie kỹ thuật cần thiết để hoạt động của trang web.
-          Bạn có thể tắt cookie trong cài đặt trình duyệt, nhưng một số tính năng có thể không hoạt động.
+          {env.SITE_NAME} có thể sử dụng cookie kỹ thuật cần thiết để hoạt động của trang web.
         </p>
       </section>
 

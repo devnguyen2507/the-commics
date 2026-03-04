@@ -17,6 +17,8 @@ pub struct Comic {
     pub logo_path: Option<String>,
     pub banner_path: Option<String>,
     pub thumbnail_path: Option<String>,
+    pub is_publish: Option<bool>,
+    pub published_at: Option<NaiveDateTime>,
     pub created_at: Option<NaiveDateTime>,
     pub updated_at: Option<NaiveDateTime>,
     pub rating_score: Option<f32>,
@@ -38,6 +40,8 @@ pub struct Chapter {
     pub source_url: String,
     pub images: Option<serde_json::Value>,
     pub description: Option<String>,
+    pub is_publish: Option<bool>,
+    pub published_at: Option<NaiveDateTime>,
     pub created_at: Option<NaiveDateTime>,
     pub updated_at: Option<NaiveDateTime>,
 }

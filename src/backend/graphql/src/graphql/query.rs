@@ -37,7 +37,9 @@ impl QueryRoot {
         let pool = ctx.data::<crate::db::DbPool>()?;
         let mut conn = pool.get().await.map_err(|e| e.to_string())?;
 
-        let mut query = crate::schema::comics::table.into_boxed();
+        let mut query = crate::schema::comics::table
+            .filter(crate::schema::comics::is_publish.eq(true))
+            .into_boxed();
 
         if let Some(f) = filter {
             if let Some(cat_slug) = f.category_slug {
@@ -114,7 +116,9 @@ impl QueryRoot {
         let pool = ctx.data::<crate::db::DbPool>()?;
         let mut conn = pool.get().await.map_err(|e| e.to_string())?;
 
-        let mut query = crate::schema::comics::table.into_boxed();
+        let mut query = crate::schema::comics::table
+            .filter(crate::schema::comics::is_publish.eq(true))
+            .into_boxed();
 
         if let Some(f) = filter {
             if let Some(cat_slug) = f.category_slug {
@@ -161,6 +165,7 @@ impl QueryRoot {
 
         let result: Option<crate::models::Comic> = crate::schema::comics::table
             .filter(crate::schema::comics::slug.eq(comic_slug))
+            .filter(crate::schema::comics::is_publish.eq(true))
             .first::<crate::models::Comic>(&mut conn)
             .await
             .optional()
@@ -191,6 +196,8 @@ impl QueryRoot {
                 chapter_number: c.chapter_number,
                 order_index: c.order_index,
                 description: c.description,
+                is_publish: c.is_publish.unwrap_or(false),
+                published_at: c.published_at,
             }))
         } else {
             Ok(None)

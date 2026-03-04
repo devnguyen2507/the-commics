@@ -57,7 +57,7 @@ export type Comic = {
   slug: Maybe<Scalars['String']['output']>;
   status: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
-  updatedAt: Maybe<Scalars['String']['output']>;
+  publishedAt: Maybe<Scalars['String']['output']>;
   viewCount: Maybe<Scalars['Int']['output']>;
 };
 
@@ -109,7 +109,7 @@ export type GetComicsQueryVariables = Exact<{
 }>;
 
 
-export type GetComicsQuery = { __typename?: 'QueryRoot', comics: Array<{ __typename?: 'Comic', id: string, slug: string | null, title: string, author: string | null, status: string | null, ratingScore: number | null, ratingCount: number | null, viewCount: number | null, coverImage: string | null, updatedAt: string | null, chapters: Array<{ __typename?: 'Chapter', id: string, chapterNumber: string }> }> };
+export type GetComicsQuery = { __typename?: 'QueryRoot', comics: Array<{ __typename?: 'Comic', id: string, slug: string | null, title: string, author: string | null, status: string | null, ratingScore: number | null, ratingCount: number | null, viewCount: number | null, coverImage: string | null, publishedAt: string | null, chapters: Array<{ __typename?: 'Chapter', id: string, chapterNumber: string }> }> };
 
 export type GetComicsCountQueryVariables = Exact<{
   filter?: InputMaybe<ComicFilter>;
@@ -123,7 +123,7 @@ export type GetComicQueryVariables = Exact<{
 }>;
 
 
-export type GetComicQuery = { __typename?: 'QueryRoot', comic: { __typename?: 'Comic', id: string, slug: string | null, title: string, author: string | null, status: string | null, description: string | null, ratingScore: number | null, ratingCount: number | null, viewCount: number | null, coverImage: string | null, categories: Array<{ __typename?: 'Category', id: string, name: string, slug: string }>, chapters: Array<{ __typename?: 'Chapter', id: string, chapterNumber: string, orderIndex: number }> } | null };
+export type GetComicQuery = { __typename?: 'QueryRoot', comic: { __typename?: 'Comic', id: string, slug: string | null, title: string, author: string | null, status: string | null, description: string | null, ratingScore: number | null, ratingCount: number | null, viewCount: number | null, coverImage: string | null, publishedAt: string | null, categories: Array<{ __typename?: 'Category', id: string, name: string, slug: string }>, chapters: Array<{ __typename?: 'Chapter', id: string, chapterNumber: string, orderIndex: number }> } | null };
 
 export type GetChapterQueryVariables = Exact<{
   chapterId: Scalars['ID']['input'];

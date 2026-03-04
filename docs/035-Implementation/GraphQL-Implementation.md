@@ -16,11 +16,12 @@ The GraphQL API was implemented using Rust, featuring `async-graphql` and `axum`
 ## 3. Database Changes (Change Log)
 The following migrations were added during this phase:
 - **`2026-03-02-153000_add_rating_and_views`**: Added `rating_score`, `rating_count`, and `view_count` to the `comics` table to support Frontend sorting and displays.
+- **`2026-03-04-160000_add_publish_controls`**: Added `is_publish` and `published_at` to `comics` and `chapters` to support content visibility controls.
 
 ## 4. GraphQL Schema Highlights
-- `comics(first, after, filter, sort)`: Trả về mảng `[Comic]` (Chưa áp dụng Relay Connection chuẩn).
-- `comic(comicSlug)`: Detailed metadata with auto-resolved nested chapters.
-- `chapter(chapterId)`: Full reading payload with image dimensions (`w`, `h`) to eliminate Layout Shift.
+- `comics(first, after, filter, sort)`: Trả về mảng `[Comic]` (Chưa áp dụng Relay Connection chuẩn), tự động lọc nội dung với điều kiện `.filter(is_publish.eq(true))`.
+- `comic(comicSlug)`: Detailed metadata with auto-resolved nested chapters. Tự động kiểm tra `is_publish`.
+- `chapter(chapterId)`: Full reading payload with image dimensions (`w`, `h`) to eliminate Layout Shift. Tự động kiểm tra `is_publish`.
 - `categories`: Global navigation data.
 
 ## 5. Known Gaps & Future Improvements (Khoảng cách & Cải tiến)

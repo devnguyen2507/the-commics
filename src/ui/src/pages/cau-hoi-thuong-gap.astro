@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { env } from '../lib/config/env';
 
-const title = 'Câu hỏi Thường Gặp (FAQ) - Commics';
-const description = 'Giải đáp những câu hỏi thường gặp về cách đọc truyện, tài khoản, báo lỗi và dịch vụ đọc truyện online tại Commics.';
+const title = `Câu hỏi thường gặp - FAQ - ${env.SITE_NAME}`;
+const description = `Tổng hợp các câu hỏi và giải đáp thắc mắc thường gặp khi sử dụng ${env.SITE_NAME}.`;
 
 const faqs = [
   {
@@ -14,8 +15,8 @@ const faqs = [
     answer: 'Truy cập trang Thể loại (/the-loai) để xem danh sách tất cả thể loại. Nhấp vào thể loại muốn đọc để xem danh sách truyện tương ứng.'
   },
   {
-    question: 'Commics cập nhật truyện mới mỗi khi nào?',
-    answer: 'Commics cập nhật truyện mới hàng ngày. Truy cập trang Truyện Mới (/truyen-moi) để xem những bộ vừa được cập nhật chapter mới nhất.'
+    question: `Lịch cập nhật chương mới trên ${env.SITE_NAME} như thế nào?`,
+    answer: `${env.SITE_NAME} cập nhật truyện mới hàng ngày. Truy cập trang Truyện Mới (/truyen-moi) để xem những bộ vừa được cập nhật chapter mới nhất.`
   },
   {
     question: 'Tôi có thể đọc truyện trên điện thoại không?',

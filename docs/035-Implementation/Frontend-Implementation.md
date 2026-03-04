@@ -76,6 +76,7 @@ Khởi chạy độc lập UI với quy trình Dockerization nhiều giai đoạ
 | `PUBLIC_PAGE_COMICS_LIMIT` | `import.meta.env` (build) | Giới hạn phân trang trên List (24) |
 | `CACHE_URL` | `process.env` (runtime) | Redis connection |
 | `SITE_URL` | `process.env` (runtime) | Canonical, sitemap base |
+| `SITE_NAME` | `process.env` (runtime) | Tên hệ thống web hiển thị trên UI, thay thế chuỗi "Commics" |
 | `REVALIDATE_SECRET` | `process.env` (runtime) | Webhook bảo mật |
 
 **Tính Độc Lập Mạng**:
@@ -164,3 +165,11 @@ Sitemap: https://domain.com/sitemap-index.xml
 - [ ] `SITE_URL` env set đúng domain production
 - [ ] SSR Cache layer (Redis + LRU)
 - [ ] Revalidate webhook cho crawler
+
+---
+
+## 8. Dynamic Meta & Publish Timing (Change Log)
+
+- **Tên trang web động**: Cấu hình biến môi trường runtime `SITE_NAME` thay thế toàn bộ chữ cứng "Commics" trên HTML `<title>`, thẻ description, breadcrumb và thân hệ thống (Terms, FAQ, ...).
+- **Logo Gradient Custom**: Component SVG được phân cách thành phần độc lập trong `src/ui/src/components/ui/Logo.astro`.
+- **Hiển thị Publish Data**: Giao diện UI (`index.astro`, `[slug].astro`) và hệ thống sitemaps tự động lấy giá trị biến `publishedAt` thay thế cho `updatedAt`/`createdAt` nhằm đồng bộ logic với các record database có cấu hình `is_publish = true`.

@@ -62,6 +62,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env.staging
+    environment:
+      - SITE_NAME=Commics
     depends_on:
       - graphql
     # Bảo mật port: Chỉ bind vào localhost của VPS

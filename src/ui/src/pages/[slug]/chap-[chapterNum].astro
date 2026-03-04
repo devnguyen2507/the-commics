@@ -43,8 +43,9 @@ const nextChapNum = getChapterNum(chapter.nextChapterId);
 const prevChapNum = getChapterNum(chapter.prevChapterId);
 
 const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/${slug}/chap-${chapter.chapterNumber}`;
-const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
-const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại Commics. Không quảng cáo làm phiền.`;
+const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';import { env } from '../../lib/config/env';
+const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
+const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
 
 const jsonLd = [
   {
@@ -73,7 +74,7 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={`Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - Commics`} description={descriptionText}>
+<Layout title={pageTitle} description={descriptionText}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>

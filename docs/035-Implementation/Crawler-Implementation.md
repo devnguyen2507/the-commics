@@ -14,6 +14,7 @@ Bản báo cáo này mô tả chi tiết quá trình thực thi và hoàn thiệ
     - Bảng `comic_categories`: Lưu mapping giữa truyện và thể loại.
 - **Schema Separation**: 
     - **Public Content**: `comics`, `chapters`, `categories`.
+      - **Publish Control (V2.5 Update)**: Thêm fields `is_publish` và `published_at` (Mặc định `false` cho crawler mới thêm để user duyệt tay).
     - **Asset Management**: `assets` (Track URL gốc, Path vật lý, Trạng thái tải).
     - **Worker State**: `worker_comics`, `worker_chapters` (Dùng để kiểm tra update, sync progress mà không làm bẩn bảng chính).
 - **ID Strategy**: Chuyển đổi hoàn toàn sang **Slug-based IDs** (`truyen-a`, `truyen-a-chap-1`, `harem`).

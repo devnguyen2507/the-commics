@@ -38,11 +38,11 @@ try {
 }
 
 const pageTitle = page > 1 
-  ? `Truyện ${targetCategoryName} - Trang ${page} - Đọc online tại Commics` 
-  : `Truyện ${targetCategoryName} - Đọc online tại Commics`;
+  ? `Truyện ${targetCategoryName} - Trang ${page} - Đọc online tại ${env.SITE_NAME}` 
+  : `Truyện ${targetCategoryName} - Đọc online tại ${env.SITE_NAME}`;
 
 const pageDesc = categoryDescription
-  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại Commics.`;
+  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
   { label: 'Thể loại', href: '/the-loai' },
@@ -108,7 +108,7 @@ const jsonLd = [
             <>
               <p>
                 <strong>Thể loại {targetCategoryName}</strong> là tập hợp các bộ truyện tranh mang phong cách và nội dung đặc trưng của thể loại này.
-                Tại Commics, bạn có thể đọc hàng trăm bộ {targetCategoryName} vietsub chất lượng cao, cập nhật mỗi ngày.
+                Tại {env.SITE_NAME}, bạn có thể đọc hàng trăm bộ {targetCategoryName} vietsub chất lượng cao, cập nhật mỗi ngày.
               </p>
               <p>
                 Tất cả truyện được đọc miễn phí, không cần đăng ký tài khoản.

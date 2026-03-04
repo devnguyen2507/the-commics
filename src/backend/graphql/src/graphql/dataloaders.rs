@@ -92,6 +92,7 @@ impl Loader<String> for ChapterLoader {
 
         let results = chapters
             .filter(comic_id.eq_any(keys))
+            .filter(is_publish.eq(true))
             .order(order_index.asc())
             .load::<crate::models::Chapter>(&mut conn)
             .await

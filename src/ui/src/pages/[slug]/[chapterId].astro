@@ -18,10 +18,13 @@ if (!chapter) {
   return Astro.redirect('/404');
 }
 
-const comicTitle = chapter.comic?.title || "Truyện";
+const comicTitle = chapter.comic?.title || "Truyện"; // Kept optional chaining for safety, as original code had it.
+const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
+const pageDesc = `Đọc chương ${chapter.chapterNumber} của bộ truyện ${comicTitle} online bản đẹp, tải nhanh tại ${env.SITE_NAME}.`;
+
 ---
 
-<Layout title={`Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - Commics`} description={`Đọc chương ${chapter.chapterNumber} của bộ truyện ${comicTitle} online bản đẹp, tải nhanh.`}>
+<Layout title={pageTitle} description={pageDesc}>
   <div class="max-w-4xl mx-auto flex flex-col pt-4 pb-32 min-h-screen bg-black">
     {chapter.images.map((img: any, index: number) => (
       <div 
@@ -66,7 +69,9 @@ const comicTitle = chapter.comic?.title || "Truyện";
         <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
             <h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">{comicTitle} - Chương {chapter.chapterNumber}</h1>
             <div class="text-zinc-500 text-sm leading-relaxed space-y-4">
-                <p>Đọc ngay <strong>{comicTitle} Chương {chapter.chapterNumber}</strong> online chất lượng cao, cập nhật nhanh nhất tại Commics. Không quảng cáo làm phiền.</p>
+              <div>
+                <p>Đọc ngay <strong>{comicTitle} Chương {chapter.chapterNumber}</strong> online chất lượng cao, cập nhật nhanh nhất tại {env.SITE_NAME}. Không quảng cáo làm phiền.</p>
+              </div>
             </div>
         </div>
     </section>

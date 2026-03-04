@@ -30,8 +30,8 @@ try {
   console.error("Fetch error:", e);
 }
 
-const title = page > 1 ? `Truyện Ngắn - Trang ${page} - Commics` : "Truyện Ngắn - Commics";
-const description = "Danh sách truyện ngắn hay nhất, cập nhật liên tục các oneshot, truyện ngắn trọn bộ tại Commics.";
+const title = page > 1 ? `Truyện Ngắn - Trang ${page} - ${env.SITE_NAME}` : `Truyện Ngắn - ${env.SITE_NAME}`;
+const description = `Danh sách truyện ngắn hay nhất, cập nhật liên tục các oneshot, truyện ngắn trọn bộ tại ${env.SITE_NAME}.`;
 ---
 
 <Layout title={title} description={description}>

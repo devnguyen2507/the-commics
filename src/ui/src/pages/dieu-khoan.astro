@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { env } from '../lib/config/env';
 
-const title = 'Điều khoản Sử dụng - Commics';
-const description = 'Điều khoản và quy định sử dụng dịch vụ đọc truyện tranh online tại Commics. Vui lòng đọc kỹ trước khi sử dụng.';
+const title = `Điều khoản Sử dụng - ${env.SITE_NAME}`;
+const description = `Điều khoản và quy định sử dụng dịch vụ đọc truyện tranh online tại ${env.SITE_NAME}. Vui lòng đọc kỹ trước khi sử dụng.`;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -27,7 +28,7 @@ const jsonLd = {
       <section>
         <h2 class="text-lg font-bold text-zinc-200 mb-3">1. Chấp nhận Điều khoản</h2>
         <p>
-          Bằng cách truy cập và sử dụng Commics, bạn đồng ý tuân theo các điều khoản và điều kiện được nêu trong tài liệu này.
+          Bằng cách truy cập và sử dụng {env.SITE_NAME}, bạn đồng ý tuân theo các điều khoản và điều kiện được nêu trong tài liệu này.
           Nếu bạn không đồng ý với bất kỳ phần nào, vui lòng ngừng sử dụng dịch vụ.
         </p>
       </section>
@@ -35,8 +36,8 @@ const jsonLd = {
       <section>
         <h2 class="text-lg font-bold text-zinc-200 mb-3">2. Nội dung và Bản quyền</h2>
         <p>
-          Tất cả nội dung truyện tranh trên Commics thuộc về tác giả và nhà xuất bản gốc.
-          Commics không sở hữu bản quyền nội dung. Nếu bạn là chủ sở hữu bản quyền và muốn yêu cầu gỡ nội dung,
+          Tất cả nội dung truyện tranh trên {env.SITE_NAME} thuộc về tác giả và nhà xuất bản gốc.
+          {env.SITE_NAME} không sở hữu bản quyền nội dung. Nếu bạn là chủ sở hữu bản quyền và muốn yêu cầu gỡ nội dung,
           vui lòng liên hệ qua trang <a href="/lien-he" class="text-blue-400 hover:underline">Liên hệ</a>.
         </p>
       </section>
@@ -53,9 +54,9 @@ const jsonLd = {
 
       <section>
         <h2 class="text-lg font-bold text-zinc-200 mb-3">4. Giới hạn Trách nhiệm</h2>
-        <p>
-          Commics được cung cấp "nguyên trạng" (as-is). Chúng tôi không đảm bảo dịch vụ sẽ hoạt động
-          liên tục không gián đoạn. Chúng tôi không chịu trách nhiệm về bất kỳ thiệt hại trực tiếp
+        <p class="text-zinc-400">
+          {env.SITE_NAME} được cung cấp "nguyên trạng" (as-is). Chúng tôi không đảm bảo dịch vụ sẽ hoạt động
+          liên tục, không có lỗi hoặc không có virus. Chúng tôi không chịu trách nhiệm về bất kỳ thiệt hại trực tiếp
           hoặc gián tiếp nào phát sinh từ việc sử dụng hoặc không thể sử dụng dịch vụ.
         </p>
       </section>

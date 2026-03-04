@@ -1,17 +1,19 @@
 ---
+import { env } from '../../lib/config/env';
+
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = 'COMMICS', description = 'Đọc truyện tranh online miễn phí, cập nhật mới nhất.' } = Astro.props;
+const { title = env.SITE_NAME, description = `Đọc truyện tranh online miễn phí, cập nhật mới nhất tại ${env.SITE_NAME}.` } = Astro.props;
 ---
 
 <footer class="bg-zinc-900 border-t border-zinc-800 py-12 mt-auto">
   <div class="max-w-6xl mx-auto px-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <div class="space-y-4">
-        <h2 class="text-xl font-bold text-blue-500">{title}</h2>
+        <h2 class="text-xl font-bold text-blue-500 uppercase tracking-tighter">{title}</h2>
         <p class="text-zinc-400 text-sm">{description}</p>
       </div>
 

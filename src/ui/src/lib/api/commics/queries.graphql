@@ -9,7 +9,7 @@ query getComics($first: Int, $after: String, $filter: ComicFilter, $sort: ComicS
     ratingCount
     viewCount
     coverImage
-    updatedAt
+    publishedAt
     chapters {
       id
       chapterNumber
@@ -33,7 +33,7 @@ query getComic($comicSlug: String!) {
     ratingCount
     viewCount
     coverImage
-    updatedAt
+    publishedAt
     categories {
       id
       name

@@ -18,6 +18,8 @@ pub struct Comic {
     pub rating_count: Option<i32>,
     pub view_count: Option<i32>,
     pub thumbnail_path: Option<String>,
+    pub is_publish: bool,
+    pub published_at: Option<chrono::NaiveDateTime>,
     pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
@@ -52,6 +54,13 @@ impl Comic {
     }
     async fn updated_at(&self) -> Option<String> {
         self.updated_at
+            .map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string())
+    }
+    async fn is_publish(&self) -> bool {
+        self.is_publish
+    }
+    async fn published_at(&self) -> Option<String> {
+        self.published_at
             .map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string())
     }
     async fn cover_image(&self, ctx: &Context<'_>) -> Result<Option<String>> {
@@ -105,6 +114,8 @@ impl Comic {
                 chapter_number: c.chapter_number,
                 order_index: c.order_index,
                 description: c.description,
+                is_publish: c.is_publish.unwrap_or(false),
+                published_at: c.published_at,
             })
             .collect())
     }
@@ -123,6 +134,8 @@ impl From<models::Comic> for Comic {
             rating_count: m.rating_count,
             view_count: m.view_count,
             thumbnail_path: m.thumbnail_path,
+            is_publish: m.is_publish.unwrap_or(false),
+            published_at: m.published_at,
             updated_at: m.updated_at,
         }
     }
@@ -142,6 +155,8 @@ pub struct Chapter {
     pub chapter_number: String,
     pub order_index: f64,
     pub description: Option<String>,
+    pub is_publish: bool,
+    pub published_at: Option<chrono::NaiveDateTime>,
 }
 
 #[Object]
@@ -157,6 +172,15 @@ impl Chapter {
     }
     async fn description(&self) -> &Option<String> {
         &self.description
+    }
+
+    async fn is_publish(&self) -> bool {
+        self.is_publish
+    }
+
+    async fn published_at(&self) -> Option<String> {
+        self.published_at
+            .map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string())
     }
 
     /// Parent comic info — for breadcrumbs, SEO title, navbar

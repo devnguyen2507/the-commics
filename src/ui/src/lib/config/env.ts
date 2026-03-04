@@ -25,6 +25,7 @@ export const env = {
 
     // Runtime vars (process.env only)
     SITE_URL: getRuntimeEnv('SITE_URL', 'http://localhost:4321'),
+    SITE_NAME: getRuntimeEnv('SITE_NAME', 'Commics'),
     CACHE_URL: getRuntimeEnv('CACHE_URL', ''),
     REVALIDATE_SECRET: getRuntimeEnv('REVALIDATE_SECRET', ''),
 };

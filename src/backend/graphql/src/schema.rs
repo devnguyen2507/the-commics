@@ -34,6 +34,8 @@ diesel::table! {
         source_url -> Varchar,
         images -> Nullable<Jsonb>,
         description -> Nullable<Text>,
+        is_publish -> Nullable<Bool>,
+        published_at -> Nullable<Timestamp>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
     }
@@ -58,6 +60,8 @@ diesel::table! {
         logo_path -> Nullable<Varchar>,
         banner_path -> Nullable<Varchar>,
         thumbnail_path -> Nullable<Varchar>,
+        is_publish -> Nullable<Bool>,
+        published_at -> Nullable<Timestamp>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
         rating_score -> Nullable<Float4>,

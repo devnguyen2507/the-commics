@@ -11,9 +11,10 @@ try {
 }
 
 const breadcrumbs = [{ label: 'Thể loại' }];
+import { env } from '../../lib/config/env';
 ---
 
-<Layout title="Tất cả Thể loại - Commics" description="Danh sách toàn bộ thể loại truyện tranh tại Commics.">
+<Layout title={`Tất cả Thể loại - ${env.SITE_NAME}`} description={`Danh sách toàn bộ thể loại truyện tranh tại ${env.SITE_NAME}.`}>
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
     

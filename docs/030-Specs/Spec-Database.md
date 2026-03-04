@@ -6,7 +6,7 @@ project: commics
 owner: "Dev পণ্ডিত Nguyen"
 tags: [database, postgres, redis, schema]
 created: 2026-03-01
-updated: 2026-03-01
+updated: 2026-03-04
 linked-to: [[020-Requirements/PRD-Database], [020-Requirements/PRD-CDN]]
 ---
 
@@ -51,6 +51,8 @@ erDiagram
         int rating_count "Nullable"
         int view_count "Nullable"
         string cover_image "Local Path/CDN url"
+        bool is_publish "Visibility control"
+        timestamp published_at "Public release date"
         string worker_status "Enum: Pending, Processing, Completed, Failed"
         timestamp worker_last_run "Tracking crawler"
         text worker_error_log "Tracking crawler failures"
@@ -77,6 +79,8 @@ erDiagram
         string source_url "Original crawl link"
         string storage_path "Local base path (e.g. storage/commics/id/chapter/id)"
         jsonb images "Array of object items with dimensions [{'file': '01.jpg', 'w': 800, 'h': 1200}]"
+        bool is_publish "Visibility control"
+        timestamp published_at "Public release date"
         timestamp created_at
     }
 ```

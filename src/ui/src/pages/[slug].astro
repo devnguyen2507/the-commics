@@ -42,16 +42,21 @@ const breadcrumbs = [
   { label: comic.categories?.[0]?.name || 'Truyện', href: `/the-loai/${comic.categories?.[0]?.slug || ''}` },
   { label: comic.title }
 ];
+import { env } from '../lib/config/env';
+
+const pageTitle = `${comic.title} - Đọc truyện online tại ${env.SITE_NAME}`;
+const pageDesc = comic.description || `Đọc truyện ${comic.title} online miễn phí tại ${env.SITE_NAME}. Cập nhật nhanh nhất, chất lượng cao.`;
+
 ---
 
-<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description || `Đọc truyện ${comic.title} online miễn phí tại Commics. Cập nhật nhanh nhất, chất lượng cao.`} ogType="book" image={comic.coverImage}>
+<Layout title={pageTitle} description={pageDesc} ogType="book" image={comic.coverImage}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify([
       {
         "@context": "https://schema.org",
-        "@type": "ComicSeries",
+        "@type": "Book",
         "name": comic.title,
-        "description": comic.description || `Đọc truyện ${comic.title} online tại Commics.`,
+        "description": comic.description || `Đọc truyện ${comic.title} online tại ${env.SITE_NAME}.`,
         "url": `${Astro.url.origin}/${comic.slug}`,
         "image": comic.coverImage,
         "author": {

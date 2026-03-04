@@ -18,7 +18,7 @@ export const GET: APIRoute = async () => {
         changefreq: 'daily' as const,
         priority: '0.8',
         // updatedAt nếu GraphQL expose, fallback về hôm nay
-        lastmod: (c as any).updatedAt?.split('T')[0] ?? undefined,
+        lastmod: (c as any).publishedAt?.split('T')[0] ?? undefined,
     }));
 
     return sitemapResponse(buildSitemapXml(urls));

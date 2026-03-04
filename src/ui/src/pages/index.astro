@@ -22,14 +22,18 @@ try {
 		author: "Tác giả mẫu"
 	}));
 }
+import { env } from '../lib/config/env';
+
+const pageTitle = `${env.SITE_NAME} - Đọc truyện tranh online`;
+
 ---
 
-<Layout title="Commics - Đọc truyện tranh online" isHome={true} ogType="website">
+<Layout title={pageTitle} isHome={true} ogType="website">
 	<Fragment slot="head">
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebSite",
-			"name": "Commics",
+			"name": env.SITE_NAME,
 			"url": Astro.url.origin,
 			"potentialAction": {
 				"@type": "SearchAction",
@@ -58,14 +62,14 @@ try {
 	<!-- SEO Box -->
 	<section class="max-w-6xl mx-auto px-4 pb-16">
 		<div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-			<h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">Đọc truyện tranh online tại Commics</h1>
-			<div class="text-zinc-500 text-sm leading-relaxed space-y-4">
+			<h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">Đọc truyện tranh online tại {env.SITE_NAME}</h1>
+			<div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed">
 				<p>
-					Chào mừng bạn đến với <strong>Commics</strong>, nền tảng đọc truyện tranh online hàng đầu với hàng nghìn bộ truyện hấp dẫn, được cập nhật liên tục mỗi ngày. 
+					Chào mừng bạn đến với <strong>{env.SITE_NAME}</strong>, nền tảng đọc truyện tranh online hàng đầu với hàng nghìn bộ truyện hấp dẫn, được cập nhật liên tục mỗi ngày. 
 					Chúng tôi cung cấp trải nghiệm đọc truyện mượt mà trên cả máy tính và điện thoại.
 				</p>
 				<p>
-					Tại Commics, bạn có thể tìm thấy đa dạng các thể loại từ Action, Adventure, Comedy đến các bộ truyện Drama sâu sắc. 
+					Tại {env.SITE_NAME}, bạn có thể tìm thấy đa dạng các thể loại từ Action, Adventure, Comedy đến các bộ truyện Drama sâu sắc. 
 					Hệ thống tìm kiếm thông minh và phân loại thể loại chi tiết giúp bạn dễ dàng tìm thấy bộ truyện ưng ý nhất.
 				</p>
 			</div>
