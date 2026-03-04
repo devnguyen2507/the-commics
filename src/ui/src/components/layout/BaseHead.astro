@@ -9,7 +9,7 @@ interface Props {
 	ogType?: string;
 }
 
-const { title, description, image = '/blog-placeholder-1.jpg', canonicalURL = Astro.url, ogType = 'website' } = Astro.props;
+const { title, description, image = '/og-default.jpg', canonicalURL = Astro.url, ogType = 'website' } = Astro.props;
 const publicEnv = getPublicEnv();
 
 // Ensure no trailing slash for canonical
@@ -39,14 +39,16 @@ const cleanCanonical = canonicalURL.toString().replace(/\/$/, "");
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:url" content={cleanCanonical} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<!-- Fonts (non-blocking) -->
+<link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+</noscript>
 
 {publicEnv.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={publicEnv.GOOGLE_SITE_VERIFICATION} />}

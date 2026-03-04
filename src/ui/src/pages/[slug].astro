@@ -2,7 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
 import { BookmarkButton } from '../components/ui/BookmarkButton';
-import { getComic } from '../lib/api/commics';
+import { getComic, getComics } from '../lib/api/commics';
+import { getImageUrl } from '../lib/utils/image';
+import { env } from '../lib/config/env';
 
 const { slug } = Astro.params;
 
@@ -19,30 +21,58 @@ if (!comic) {
   return Astro.redirect('/404');
 }
 
+let relatedComics = [];
+try {
+  if (comic.categories && comic.categories.length > 0) {
+    const primaryCat = comic.categories[0];
+    const related = await getComics({
+      first: 7,
+      filter: { categorySlug: primaryCat.slug }
+    });
+    relatedComics = related.filter((c: any) => c.id !== comic.id).slice(0, 6);
+  }
+} catch (e) {
+  console.error("Fetch related error:", e);
+}
+
 const breadcrumbs = [
   { label: comic.categories?.[0]?.name || 'Truyện', href: `/the-loai/${comic.categories?.[0]?.slug || ''}` },
   { label: comic.title }
 ];
 ---
 
-<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description} ogType="book" image={comic.coverImage}>
+<Layout title={`${comic.title} - Đọc truyện online tại Commics`} description={comic.description || `Đọc truyện ${comic.title} online miễn phí tại Commics. Cập nhật nhanh nhất, chất lượng cao.`} ogType="book" image={comic.coverImage}>
   <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Book",
-      "name": comic.title,
-      "author": {
-        "@type": "Person",
-        "name": comic.author || "Đang cập nhật"
+    <script type="application/ld+json" set:html={JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "ComicSeries",
+        "name": comic.title,
+        "description": comic.description || `Đọc truyện ${comic.title} online tại Commics.`,
+        "url": `${Astro.url.origin}/${comic.slug}`,
+        "image": comic.coverImage,
+        "author": {
+          "@type": "Person",
+          "name": comic.author || "Đang cập nhật"
+        },
+        "genre": comic.categories?.map((c: any) => c.name) || [],
+        "inLanguage": "vi",
+        "aggregateRating": comic.ratingScore ? {
+          "@type": "AggregateRating",
+          "ratingValue": comic.ratingScore,
+          "ratingCount": comic.ratingCount || comic.viewCount || 100
+        } : undefined
       },
-      "image": comic.coverImage,
-      "description": comic.description || `Đọc truyện ${comic.title} online.`,
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": comic.ratingScore || 5,
-        "ratingCount": comic.viewCount || 100
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": Astro.url.origin },
+          { "@type": "ListItem", "position": 2, "name": comic.categories?.[0]?.name || "Truyện", "item": `${Astro.url.origin}/the-loai/${comic.categories?.[0]?.slug || ''}` },
+          { "@type": "ListItem", "position": 3, "name": comic.title, "item": `${Astro.url.origin}/${comic.slug}` }
+        ]
       }
-    })} />
+    ])} />
   </Fragment>
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
@@ -106,17 +136,42 @@ const breadcrumbs = [
     <section class="space-y-4">
        <header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
          <h2 class="text-xl font-black uppercase tracking-tight">Danh sách chương</h2>
-         <span class="text-[10px] font-bold text-zinc-500 uppercase">Mới nhất: {comic.chapters?.[comic.chapters.length - 1]?.chapter_number || 'N/A'}</span>
+         <span class="text-[10px] font-bold text-zinc-500 uppercase">Mới nhất: {comic.chapters?.[comic.chapters.length - 1]?.chapterNumber || 'N/A'}</span>
        </header>
        
        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
          {comic.chapters?.reverse().map((ch: any) => (
-           <a href={`/${comic.slug}/${ch.id}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
-             <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapter_number}</span>
-             <span class="text-[10px] text-zinc-600 uppercase font-medium">{ch.created_at || 'Vừa xong'}</span>
+           <a href={`/${comic.slug}/chap-${ch.chapterNumber}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
+             <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapterNumber}</span>
+             <span class="text-[10px] text-zinc-600 uppercase font-medium">Ch.{ch.orderIndex}</span>
            </a>
          ))}
        </div>
     </section>
+
+    {relatedComics.length > 0 && (
+      <section class="space-y-4">
+        <header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
+          <h2 class="text-xl font-black uppercase tracking-tight">Truyện {comic.categories?.[0]?.name} hay khác</h2>
+        </header>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {relatedComics.map((c: any) => (
+            <a href={`/${c.slug}`} class="group space-y-2 block">
+              <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900">
+                <img 
+                  src={getImageUrl(c.coverImage)} 
+                  alt={c.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+              </div>
+              <h3 class="font-medium text-sm line-clamp-2 leading-snug group-hover:text-blue-500 transition-colors">
+                {c.title}
+              </h3>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
   </div>
 </Layout>

@@ -18,6 +18,7 @@ pub struct Comic {
     pub rating_count: Option<i32>,
     pub view_count: Option<i32>,
     pub thumbnail_path: Option<String>,
+    pub updated_at: Option<chrono::NaiveDateTime>,
 }
 
 #[Object]
@@ -49,6 +50,10 @@ impl Comic {
     async fn view_count(&self) -> &Option<i32> {
         &self.view_count
     }
+    async fn updated_at(&self) -> Option<String> {
+        self.updated_at
+            .map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string())
+    }
     async fn cover_image(&self, ctx: &Context<'_>) -> Result<Option<String>> {
         let loader = ctx.data::<DataLoader<crate::graphql::dataloaders::AssetLoader>>()?;
         let assets = loader
@@ -79,7 +84,8 @@ impl Comic {
             .map(|c| Category {
                 id: ID::from(c.id.clone()),
                 name: c.name,
-                slug: c.id, // ID is the slug
+                slug: c.id,
+                description: c.description,
             })
             .collect())
     }
@@ -98,6 +104,7 @@ impl Comic {
                 comic_id: c.comic_id,
                 chapter_number: c.chapter_number,
                 order_index: c.order_index,
+                description: c.description,
             })
             .collect())
     }
@@ -116,6 +123,7 @@ impl From<models::Comic> for Comic {
             rating_count: m.rating_count,
             view_count: m.view_count,
             thumbnail_path: m.thumbnail_path,
+            updated_at: m.updated_at,
         }
     }
 }
@@ -125,6 +133,7 @@ pub struct Category {
     pub id: ID,
     pub name: String,
     pub slug: String,
+    pub description: Option<String>,
 }
 
 pub struct Chapter {
@@ -132,6 +141,7 @@ pub struct Chapter {
     pub comic_id: String,
     pub chapter_number: String,
     pub order_index: f64,
+    pub description: Option<String>,
 }
 
 #[Object]
@@ -144,6 +154,9 @@ impl Chapter {
     }
     async fn order_index(&self) -> f64 {
         self.order_index
+    }
+    async fn description(&self) -> &Option<String> {
+        &self.description
     }
 
     /// Parent comic info — for breadcrumbs, SEO title, navbar

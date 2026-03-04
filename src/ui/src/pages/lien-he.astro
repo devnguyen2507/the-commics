@@ -1,0 +1,87 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Liên hệ - Commics';
+const description = 'Liên hệ với đội ngũ Commics để hỗ trợ, hợp tác hoặc báo cáo vi phạm bản quyền (DMCA).';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: `${Astro.url.origin}/lien-he`,
+};
+---
+
+<Layout title={title} description={description}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4 mb-8">
+      Liên hệ
+    </h1>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="space-y-6 text-zinc-400 text-sm">
+        <div>
+          <h2 class="text-zinc-200 font-bold mb-2">📧 Email</h2>
+          <p>contact@commics.io</p>
+        </div>
+        <div>
+          <h2 class="text-zinc-200 font-bold mb-2">⚠️ Báo cáo DMCA / Bản quyền</h2>
+          <p>
+            Nếu bạn là chủ sở hữu bản quyền, vui lòng gửi email kèm thông tin bộ truyện
+            và bằng chứng sở hữu. Chúng tôi sẽ xử lý trong vòng 72 giờ.
+          </p>
+        </div>
+        <div>
+          <h2 class="text-zinc-200 font-bold mb-2">🤝 Hợp tác</h2>
+          <p>Để hợp tác quảng cáo hoặc nội dung, vui lòng liên hệ qua email.</p>
+        </div>
+        <div>
+          <h2 class="text-zinc-200 font-bold mb-2">🐛 Báo lỗi</h2>
+          <p>Gặp lỗi kỹ thuật? Mô tả chi tiết lỗi và gửi email cho chúng tôi.</p>
+        </div>
+      </div>
+
+      <div class="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800 space-y-4">
+        <h2 class="text-zinc-200 font-bold">Gửi tin nhắn</h2>
+        <form class="space-y-4" action="#" method="POST">
+          <div>
+            <label for="contact-name" class="block text-xs font-bold text-zinc-500 uppercase mb-1">Tên</label>
+            <input
+              id="contact-name"
+              type="text"
+              name="name"
+              placeholder="Nguyễn Văn A"
+              class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label for="contact-email" class="block text-xs font-bold text-zinc-500 uppercase mb-1">Email</label>
+            <input
+              id="contact-email"
+              type="email"
+              name="email"
+              placeholder="email@example.com"
+              class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+            />
+          </div>
+          <div>
+            <label for="contact-msg" class="block text-xs font-bold text-zinc-500 uppercase mb-1">Nội dung</label>
+            <textarea
+              id="contact-msg"
+              name="message"
+              rows="4"
+              placeholder="Nội dung tin nhắn..."
+              class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors resize-none"
+            ></textarea>
+          </div>
+          <p class="text-zinc-600 text-xs italic">Tính năng gửi form đang được phát triển. Vui lòng gửi email trực tiếp.</p>
+        </form>
+      </div>
+    </div>
+  </main>
+</Layout>

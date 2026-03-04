@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ComicCard from '../components/ui/ComicCard.astro';
+import { getComics } from '../lib/api/commics';
+import { ComicSort } from '../lib/api/commics/generated';
+
+let newComics = [];
+try {
+  newComics = await getComics({ first: 24, sort: ComicSort.Latest });
+} catch (e) {
+  console.error('Fetch error:', e);
+}
+
+const title = 'Truyện Mới Cập Nhật - Commics';
+const description = 'Đọc truyện mới nhất hôm nay: manga, manhwa, manhua vietsub cập nhật liên tục, nhanh nhất tại Commics.';
+---
+
+<Layout title={title} description={description}>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">
+        Truyện Mới <span class="text-blue-500">Nhất</span>
+      </h1>
+    </div>
+
+    {newComics.length > 0 ? (
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
+        {newComics.map((comic) => (
+          <ComicCard comic={comic} />
+        ))}
+      </div>
+    ) : (
+      <div class="py-20 text-center">
+        <p class="text-zinc-500 font-bold uppercase tracking-widest">Đang cập nhật truyện mới...</p>
+      </div>
+    )}
+
+    <!-- SEO Content Box -->
+    <section class="max-w-6xl mx-auto px-0 pb-16 mt-16">
+      <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện mới cập nhật hôm nay</h2>
+        <div class="text-zinc-500 text-sm leading-relaxed space-y-4">
+          <p>
+            <strong>Commics</strong> cập nhật truyện mới liên tục mỗi ngày từ các nguồn manga Nhật Bản,
+            manhwa Hàn Quốc và manhua Trung Quốc. Tất cả đều được dịch sang tiếng Việt chất lượng cao.
+          </p>
+          <p>
+            Danh sách truyện mới được sắp xếp theo thứ tự cập nhật chapter mới nhất,
+            giúp bạn không bỏ lỡ bất kỳ bộ truyện hấp dẫn nào. Bookmark ngay để theo dõi!
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>

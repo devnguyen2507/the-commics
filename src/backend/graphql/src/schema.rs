@@ -19,6 +19,7 @@ diesel::table! {
     categories (id) {
         id -> Varchar,
         name -> Varchar,
+        description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
     }
@@ -32,6 +33,7 @@ diesel::table! {
         order_index -> Float8,
         source_url -> Varchar,
         images -> Nullable<Jsonb>,
+        description -> Nullable<Text>,
         created_at -> Nullable<Timestamp>,
         updated_at -> Nullable<Timestamp>,
     }

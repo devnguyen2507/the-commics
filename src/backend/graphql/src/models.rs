@@ -37,6 +37,7 @@ pub struct Chapter {
     pub order_index: f64,
     pub source_url: String,
     pub images: Option<serde_json::Value>,
+    pub description: Option<String>,
     pub created_at: Option<NaiveDateTime>,
     pub updated_at: Option<NaiveDateTime>,
 }
@@ -47,6 +48,7 @@ pub struct Chapter {
 pub struct Category {
     pub id: String,
     pub name: String,
+    pub description: Option<String>,
     pub created_at: Option<NaiveDateTime>,
     pub updated_at: Option<NaiveDateTime>,
 }

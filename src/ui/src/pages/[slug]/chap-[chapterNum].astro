@@ -1,0 +1,172 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
+import { getComic, getChapter } from '../../lib/api/commics';
+import { getImageUrl } from '../../lib/utils/image';
+import { env } from '../../lib/config/env';
+
+const { slug, chapterNum } = Astro.params;
+
+let comic;
+try {
+  comic = await getComic(slug!);
+} catch (e) {
+  console.error("Fetch comic error:", e);
+  return Astro.redirect('/404');
+}
+
+const chapterMeta = comic?.chapters.find((c: any) => c.chapterNumber === chapterNum);
+if (!chapterMeta) {
+  return Astro.redirect('/404');
+}
+
+let chapter;
+try {
+  chapter = await getChapter(chapterMeta.id);
+} catch (e) {
+  console.error("Fetch chapter error:", e);
+  return Astro.redirect('/404');
+}
+
+if (!chapter) {
+  return Astro.redirect('/404');
+}
+
+const comicTitle = chapter.comic?.title || comic?.title || "Truyện";
+
+const getChapterNum = (id?: string | null) => {
+  if (!id) return null;
+  return comic?.chapters.find((c: any) => c.id === id)?.chapterNumber;
+}
+
+const nextChapNum = getChapterNum(chapter.nextChapterId);
+const prevChapNum = getChapterNum(chapter.prevChapterId);
+
+const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/${slug}/chap-${chapter.chapterNumber}`;
+const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
+const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại Commics. Không quảng cáo làm phiền.`;
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": `${comicTitle} - Chương ${chapter.chapterNumber}`,
+    "description": descriptionText,
+    "url": pageUrl,
+    "image": firstPageImage,
+    "isPartOf": {
+      "@type": "ComicSeries",
+      "name": comicTitle,
+      "url": `${env.SITE_URL.replace(/\/$/, '')}/${slug}`
+    },
+    "inLanguage": "vi"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": env.SITE_URL.replace(/\/$/, '') },
+      { "@type": "ListItem", "position": 2, "name": comicTitle, "item": `${env.SITE_URL.replace(/\/$/, '')}/${slug}` },
+      { "@type": "ListItem", "position": 3, "name": `Chương ${chapter.chapterNumber}`, "item": pageUrl }
+    ]
+  }
+];
+---
+
+<Layout title={`Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - Commics`} description={descriptionText}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+  <div class="max-w-4xl mx-auto flex flex-col pt-4 pb-32 min-h-screen bg-black">
+    {chapter.images.map((img: any, index: number) => (
+      <div 
+        class="w-full relative bg-zinc-900 overflow-hidden" 
+        style={`aspect-ratio: ${img.w}/${img.h}; content-visibility: auto;`}
+        data-page={index + 1}
+      >
+        <img 
+          src={getImageUrl(img.url)} 
+          alt={`${comicTitle} - Chương ${chapter.chapterNumber} - Trang ${index + 1}`}
+          class="w-full h-auto block"
+          loading={index < 3 ? "eager" : "lazy"}
+          decoding="async"
+          onerror="this.onerror=null;this.src='/placeholder.svg';"
+        />
+        <div class="absolute bottom-2 right-4 text-[10px] text-zinc-700 font-bold uppercase tracking-widest pointer-events-none">
+          Page {index + 1}
+        </div>
+      </div>
+    ))}
+    
+    <div class="py-20 flex flex-col items-center gap-6">
+       <p class="text-zinc-500 text-sm font-bold uppercase tracking-widest">Bạn đã đọc hết chương này</p>
+       <div class="flex gap-4">
+         {nextChapNum && (
+           <a 
+             href={`/${slug}/chap-${nextChapNum}`} 
+             data-astro-prefetch="load"
+             class="px-12 py-4 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl transition-all uppercase tracking-tighter"
+           >
+             Tiếp theo
+           </a>
+         )}
+         <a href={`/${slug}`} class="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-black rounded-xl transition-all uppercase tracking-tighter">
+           Quay lại
+         </a>
+       </div>
+    </div>
+
+    <!-- SEO Content Box -->
+    <section class="w-full px-4 pb-16">
+        <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+            <h1 class="text-xl font-bold text-zinc-300 mb-4 uppercase tracking-tighter">{comicTitle} - Chương {chapter.chapterNumber}</h1>
+            <div class="text-zinc-500 text-sm leading-relaxed space-y-4">
+                <p>{descriptionText}</p>
+            </div>
+        </div>
+    </section>
+  </div>
+
+  <ReaderNavbar 
+    comicTitle={comicTitle}
+    chapterNumber={chapter.chapterNumber}
+    comicSlug={slug!}
+    nextChapterUrl={nextChapNum ? `/${slug}/chap-${nextChapNum}` : undefined}
+    prevChapterUrl={prevChapNum ? `/${slug}/chap-${prevChapNum}` : undefined}
+  />
+</Layout>
+
+<div 
+  id="reader-data" 
+  data-comic-id={chapter.comic?.id} 
+  data-comic-slug={slug} 
+  data-comic-title={comicTitle} 
+  data-chapter-id={chapterMeta.id} 
+  data-chapter-number={chapter.chapterNumber}
+></div>
+
+<script>
+  import { storage } from '../../lib/utils/storage';
+  
+  const dataset = document.getElementById('reader-data')?.dataset;
+  if (dataset) {
+    storage.addHistory({
+      id: dataset.comicId!,
+      slug: dataset.comicSlug!,
+      title: dataset.comicTitle!,
+      coverImage: "", // We could pass this too if needed
+      chapterId: dataset.chapterId,
+      chapterNumber: dataset.chapterNumber
+    });
+  }
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

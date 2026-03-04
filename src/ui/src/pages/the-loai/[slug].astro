@@ -7,42 +7,100 @@ import { getComics, getCategories } from '../../lib/api/commics';
 const { slug } = Astro.params;
 
 let comics = [];
-let targetCategoryName = "Thể loại";
+let category: any = null;
+let targetCategoryName = 'Thể loại';
+let categoryDescription: string | null = null;
+
 try {
   const [categories, categoryComics] = await Promise.all([
-     getCategories(),
-     getComics({ filter: { categorySlug: slug }, first: 24 })
+    getCategories(),
+    getComics({ filter: { categorySlug: slug }, first: 24 })
   ]);
   comics = categoryComics;
-  targetCategoryName = categories.find((c: any) => c.slug === slug)?.name || "Thể loại";
+  category = categories.find((c: any) => c.slug === slug);
+  if (category) {
+    targetCategoryName = category.name;
+    // description từ DB (Phase 2: sau khi migration + GraphQL expose)
+    categoryDescription = (category as any).description ?? null;
+  }
 } catch (e) {
-  console.error("Fetch error:", e);
+  console.error('Fetch error:', e);
 }
+
+const pageTitle = `Truyện ${targetCategoryName} - Đọc online tại Commics`;
+const pageDesc = categoryDescription
+  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại Commics.`;
 
 const breadcrumbs = [
   { label: 'Thể loại', href: '/the-loai' },
   { label: targetCategoryName }
 ];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: pageTitle,
+    description: pageDesc,
+    url: `${Astro.url.origin}/the-loai/${slug}`,
+    inLanguage: 'vi',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: Astro.url.origin },
+      { '@type': 'ListItem', position: 2, name: 'Thể loại', item: `${Astro.url.origin}/the-loai` },
+      { '@type': 'ListItem', position: 3, name: targetCategoryName, item: `${Astro.url.origin}/the-loai/${slug}` },
+    ],
+  },
+];
 ---
 
-<Layout title={`Truyện Thể loại ${targetCategoryName} - Commics`} description={`Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục.`}>
+<Layout title={pageTitle} description={pageDesc}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
-    
+
     <header class="border-l-4 border-blue-500 pl-4">
       <h1 class="text-3xl font-black uppercase tracking-tight">Truyện {targetCategoryName}</h1>
     </header>
-    
+
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
       {comics.map((comic) => (
         <ComicCard comic={comic} />
       ))}
     </div>
-    
+
     {comics.length === 0 && (
       <div class="py-20 text-center text-zinc-500 font-bold uppercase tracking-widest italic">
         Chưa có truyện nào trong thể loại này
       </div>
     )}
+
+    <!-- SEO Content Box — hiển thị description từ DB nếu có -->
+    <section class="pb-16">
+      <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện {targetCategoryName} là gì?</h2>
+        <div class="text-zinc-500 text-sm leading-relaxed space-y-3">
+          {categoryDescription ? (
+            <p>{categoryDescription}</p>
+          ) : (
+            <>
+              <p>
+                <strong>Thể loại {targetCategoryName}</strong> là tập hợp các bộ truyện tranh mang phong cách và nội dung đặc trưng của thể loại này.
+                Tại Commics, bạn có thể đọc hàng trăm bộ {targetCategoryName} vietsub chất lượng cao, cập nhật mỗi ngày.
+              </p>
+              <p>
+                Tất cả truyện được đọc miễn phí, không cần đăng ký tài khoản.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    </section>
   </div>
 </Layout>

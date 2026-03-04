@@ -13,7 +13,7 @@ const { comic } = Astro.props;
   <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 relative group-hover:border-blue-500/50 shadow-lg transition-all">
     <img 
       src={getImageUrl(comic.coverImage)} 
-      alt={comic.title}
+      alt={`${comic.title} - đọc truyện online tại Commics`}
       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       loading="lazy"
       onerror="this.onerror=null;this.src='/placeholder.svg';"

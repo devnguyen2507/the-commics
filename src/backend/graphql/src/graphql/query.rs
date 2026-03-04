@@ -135,6 +135,7 @@ impl QueryRoot {
                 comic_id: c.comic_id,
                 chapter_number: c.chapter_number,
                 order_index: c.order_index,
+                description: c.description,
             }))
         } else {
             Ok(None)
@@ -152,6 +153,7 @@ impl QueryRoot {
                     id: ID::from(c.id.clone()),
                     name: c.name,
                     slug: c.id,
+                    description: c.description,
                 })
                 .collect());
         }
@@ -172,6 +174,7 @@ impl QueryRoot {
                 id: ID::from(c.id.clone()),
                 name: c.name,
                 slug: c.id,
+                description: c.description,
             })
             .collect())
     }

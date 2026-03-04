@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const title = 'Điều khoản Sử dụng - Commics';
+const description = 'Điều khoản và quy định sử dụng dịch vụ đọc truyện tranh online tại Commics. Vui lòng đọc kỹ trước khi sử dụng.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: `${Astro.url.origin}/dieu-khoan`,
+};
+---
+
+<Layout title={title} description={description}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <main class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4 mb-8">
+      Điều khoản Sử dụng
+    </h1>
+
+    <div class="prose prose-invert prose-zinc max-w-none space-y-8 text-zinc-400 text-sm leading-relaxed">
+      <section>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">1. Chấp nhận Điều khoản</h2>
+        <p>
+          Bằng cách truy cập và sử dụng Commics, bạn đồng ý tuân theo các điều khoản và điều kiện được nêu trong tài liệu này.
+          Nếu bạn không đồng ý với bất kỳ phần nào, vui lòng ngừng sử dụng dịch vụ.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">2. Nội dung và Bản quyền</h2>
+        <p>
+          Tất cả nội dung truyện tranh trên Commics thuộc về tác giả và nhà xuất bản gốc.
+          Commics không sở hữu bản quyền nội dung. Nếu bạn là chủ sở hữu bản quyền và muốn yêu cầu gỡ nội dung,
+          vui lòng liên hệ qua trang <a href="/lien-he" class="text-blue-400 hover:underline">Liên hệ</a>.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">3. Quy tắc Sử dụng</h2>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Không sử dụng dịch vụ cho mục đích thương mại mà không có sự cho phép.</li>
+          <li>Không crawl, scrape hoặc sao chép nội dung tự động.</li>
+          <li>Không cố gắng xâm nhập hoặc phá hoại hệ thống.</li>
+          <li>Tuân thủ tất cả luật pháp hiện hành của Việt Nam.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">4. Giới hạn Trách nhiệm</h2>
+        <p>
+          Commics được cung cấp "nguyên trạng" (as-is). Chúng tôi không đảm bảo dịch vụ sẽ hoạt động
+          liên tục không gián đoạn. Chúng tôi không chịu trách nhiệm về bất kỳ thiệt hại trực tiếp
+          hoặc gián tiếp nào phát sinh từ việc sử dụng hoặc không thể sử dụng dịch vụ.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-zinc-200 mb-3">5. Thay đổi Điều khoản</h2>
+        <p>
+          Chúng tôi có quyền cập nhật điều khoản này bất kỳ lúc nào. Việc tiếp tục sử dụng dịch vụ
+          sau khi thay đổi đồng nghĩa với việc bạn chấp nhận điều khoản mới.
+        </p>
+      </section>
+
+      <section>
+        <p class="text-zinc-500 text-xs mt-12">Cập nhật lần cuối: Tháng 3, 2026</p>
+      </section>
+    </div>
+  </main>
+</Layout>
