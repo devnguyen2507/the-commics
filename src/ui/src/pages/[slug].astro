@@ -134,8 +134,8 @@ const pageDesc = comic.description || `Đọc truyện ${comic.title} online mi�
            </div>
         </div>
         
-        <div class="space-y-2">
-          <h2 class="text-xs font-black uppercase tracking-widest text-zinc-500 border-b border-zinc-800 pb-2">Nội dung</h2>
+        <div class="space-y-4">
+          <h2 class="text-xs font-black uppercase tracking-widest text-zinc-500 border-b border-zinc-800 pb-2">Thông tin chi tiết và tóm tắt nội dung truyện {comic.title}</h2>
           <p class="text-zinc-400 text-sm leading-relaxed">
             {comic.description || "Chưa có mô tả cho bộ truyện này."}
           </p>
@@ -152,7 +152,7 @@ const pageDesc = comic.description || `Đọc truyện ${comic.title} online mi�
     
     <section class="space-y-4">
        <header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
-         <h2 class="text-xl font-black uppercase tracking-tight">Danh sách chương</h2>
+         <h2 class="text-xl font-black uppercase tracking-tight">Danh sách các chương mới nhất của {comic.title}</h2>
          <span class="text-[10px] font-bold text-zinc-500 uppercase">Mới nhất: {comic.chapters?.[comic.chapters.length - 1]?.chapterNumber || 'N/A'}</span>
        </header>
        
@@ -169,7 +169,7 @@ const pageDesc = comic.description || `Đọc truyện ${comic.title} online mi�
     {relatedComics.length > 0 && (
       <section class="space-y-4">
         <header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
-          <h2 class="text-xl font-black uppercase tracking-tight">Truyện {comic.categories?.[0]?.name} hay khác</h2>
+          <h2 class="text-xl font-black uppercase tracking-tight">Các bộ truyện {comic.categories?.[0]?.name} tương tự {comic.title}</h2>
         </header>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {relatedComics.map((c: any) => (
@@ -190,5 +190,23 @@ const pageDesc = comic.description || `Đọc truyện ${comic.title} online mi�
         </div>
       </section>
     )}
+
+    <!-- SEO Summary Box -->
+    <section class="mt-12 pt-8 border-t border-zinc-800">
+      <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
+        <h2 class="text-lg font-bold text-zinc-300 mb-4 uppercase tracking-tighter">Đọc truyện {comic.title} tại {env.SITE_NAME}</h2>
+        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed">
+          <p>
+            Bạn đang đọc bộ truyện <strong>{comic.title}</strong>, một trong những tác phẩm hấp dẫn nhất thuộc các thể loại 
+            {comic.categories?.map((c: any) => c.name).join(', ')}. 
+            Hiện tại truyện đang ở trạng thái <strong>{comic.status}</strong> và đã được cập nhật đến chương <strong>{comic.chapters?.length || 0}</strong> tại {env.SITE_NAME}.
+          </p>
+          <p>
+            Chúng tôi cam kết mang đến trải nghiệm đọc truyện <em>{comic.title}</em> mượt mà nhất, hình ảnh sắc nét và tốc độ tải trang cực nhanh. 
+            Đừng quên nhấn <strong>Bookmark</strong> để theo dõi những diễn biến mới nhất của bộ truyện này.
+          </p>
+        </div>
+      </div>
+    </section>
   </div>
 </Layout>
