@@ -1,12 +1,8 @@
 ---
 import { env } from '../../lib/config/env';
 
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const { title = env.SITE_NAME, description = `Đọc truyện tranh online miễn phí, cập nhật mới nhất tại ${env.SITE_NAME}.` } = Astro.props;
+const { title = env.SITE_NAME } = Astro.props;
+const description = `Chào mừng bạn đến với ${env.SITE_NAME}, nền tảng đọc truyện tranh online hàng đầu với hàng nghìn bộ truyện hấp dẫn, được cập nhật liên tục mỗi ngày. Chúng tôi cung cấp trải nghiệm đọc truyện mượt mà trên cả máy tính và điện thoại.`;
 ---
 
 <footer class="bg-zinc-900 border-t border-zinc-800 py-12 mt-auto">
