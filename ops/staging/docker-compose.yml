@@ -74,6 +74,36 @@ services:
     cap_drop:
       - ALL
 
+  cms-api:
+    build:
+      context: ../../cms/api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.staging
+    network_mode: host
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
+  cms-fe:
+    build:
+      context: ../../cms/fe
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env.staging
+    network_mode: host
+    user: "1000:1000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
 networks:
   internal_network:
     driver: bridge

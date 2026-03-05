@@ -150,6 +150,39 @@ services:
     networks:
       - commics-net
 
+  cms-api:
+    build:
+      context: ../../cms/api
+      dockerfile: Dockerfile
+    container_name: commics-cms-api
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://commics:secret@db:5432/commics
+      - ADMIN_USER=admin
+      - ADMIN_PASS=admin
+      - JWT_SECRET=super_secret_key
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    profiles: [ "services" ]
+    networks:
+      - commics-net
+    restart: always
+
+  cms-fe:
+    build:
+      context: ../../cms/fe
+      dockerfile: Dockerfile
+    container_name: commics-cms-fe
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+    ports:
+      - "5174:5173"
+    profiles: [ "services" ]
+    networks:
+      - commics-net
+    restart: always
+
 volumes:
   postgres_data:
   temporal_data:
