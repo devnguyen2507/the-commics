@@ -15,14 +15,17 @@ export default defineConfig({
         })
     ],
 
-    output: process.env.OUTPUT_MODE === 'server' ? 'server' : 'static',
+    output: process.env.OUTPUT_MODE === 'static' ? 'static' : 'server',
     adapter: node({ mode: 'standalone' }),
 
     vite: {
         plugins: [
-            visualizer({ open: process.env.ANALYZE === 'true' }),
+            process.env.ANALYZE === 'true' && visualizer({
+                open: true,
+                filename: 'stats.html'
+            }),
             tailwindcss({ optimize: { minify: true } }),
-        ],
+        ].filter(Boolean),
 
         build: {
             target: 'esnext',

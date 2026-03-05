@@ -5,7 +5,7 @@ import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
 import { env } from '../lib/config/env';
 
-export const prerender = process.env.OUTPUT_MODE !== 'server';
+export const prerender = process.env.OUTPUT_MODE === 'static';
 
 let latestComics = [];
 try {

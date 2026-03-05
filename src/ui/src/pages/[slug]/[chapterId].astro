@@ -1,15 +1,16 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
+import { ReaderImage } from '../../components/feature/reader/ReaderImage';
 import { getChapter } from '../../lib/api/commics';
 import { getImageUrl } from '../../lib/utils/image';
 import { env } from '../../lib/config/env';
 
-export const prerender = process.env.OUTPUT_MODE !== 'server';
+export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
   const { getComics } = await import('../../lib/api/commics');
-  const comics = await getComics({ first: 24 }); // Limit for static build
+  const comics = await getComics({ first: 1000 }); // Increase limit for full static build
   return comics.flatMap(comic => 
     comic.chapters.map(ch => ({
       params: { slug: comic.slug, chapterId: ch.id },
@@ -40,23 +41,13 @@ const pageDesc = `Đọc chương ${chapter.chapterNumber} của bộ truyện $
 <Layout title={pageTitle} description={pageDesc}>
   <div class="max-w-4xl mx-auto flex flex-col pt-4 pb-32 min-h-screen bg-black">
     {chapter.images.map((img: any, index: number) => (
-      <div 
-        class="w-full relative bg-zinc-900 overflow-hidden" 
-        style={`aspect-ratio: ${img.w}/${img.h}; content-visibility: auto;`}
-        data-page={index + 1}
-      >
-        <img 
-          src={getImageUrl(img.url)} 
-          alt={`${comicTitle} - Chương ${chapter.chapterNumber} - Trang ${index + 1}`}
-          class="w-full h-auto block"
-          loading={index < 3 ? "eager" : "lazy"}
-          decoding="async"
-          onerror="this.onerror=null;this.src='/placeholder.svg';"
-        />
-        <div class="absolute bottom-2 right-4 text-[10px] text-zinc-700 font-bold uppercase tracking-widest pointer-events-none">
-          Page {index + 1}
-        </div>
-      </div>
+      <ReaderImage 
+        client:visible
+        src={getImageUrl(img.url)}
+        alt={`${comicTitle} - Chương ${chapter.chapterNumber} - Trang ${index + 1}`}
+        aspectRatio={`${img.w}/${img.h}`}
+        page={index + 1}
+      />
     ))}
     
     <div class="py-20 flex flex-col items-center gap-6">

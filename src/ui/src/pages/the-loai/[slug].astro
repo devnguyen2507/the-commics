@@ -8,7 +8,7 @@ import { env } from '../../lib/config/env';
 
 const { slug } = Astro.params;
 
-export const prerender = process.env.OUTPUT_MODE !== 'server';
+export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
   const { getCategories } = await import('../../lib/api/commics');

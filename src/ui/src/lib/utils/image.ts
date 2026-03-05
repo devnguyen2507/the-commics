@@ -7,6 +7,11 @@ import { env } from '../config/env';
 export function getImageUrl(url: string | null | undefined): string {
     if (!url) return '/placeholder.svg';
 
+    // In static mode (e.g. for landing pages on Cloudflare without API/CDN), return placeholder
+    if (env.OUTPUT_MODE === 'static') {
+        return '/placeholder.svg'
+    }
+
     let path = url;
 
     // If it's a full URL, we only process it if it's our production CDN domain

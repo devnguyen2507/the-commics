@@ -8,7 +8,7 @@ import { env } from '../lib/config/env';
 
 const { slug } = Astro.params;
 
-export const prerender = process.env.OUTPUT_MODE !== 'server';
+export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
   const { getComics } = await import('../lib/api/commics');
@@ -156,14 +156,14 @@ const pageDesc = comic.description || `Đọc truyện ${comic.title} online mi�
          <span class="text-[10px] font-bold text-zinc-500 uppercase">Mới nhất: {comic.chapters?.[comic.chapters.length - 1]?.chapterNumber || 'N/A'}</span>
        </header>
        
-       <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-         {comic.chapters?.reverse().map((ch: any) => (
-           <a href={`/${comic.slug}/chap-${ch.chapterNumber}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
-             <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapterNumber}</span>
-             <span class="text-[10px] text-zinc-600 uppercase font-medium">Ch.{ch.orderIndex}</span>
-           </a>
-         ))}
-       </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+          {comic.chapters?.slice().reverse().map((ch: any) => (
+            <a href={`/${comic.slug}/chap-${ch.chapterNumber}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
+              <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapterNumber}</span>
+              <span class="text-[10px] text-zinc-600 uppercase font-medium">Ch.{ch.orderIndex}</span>
+            </a>
+          ))}
+        </div>
     </section>
 
     {relatedComics.length > 0 && (

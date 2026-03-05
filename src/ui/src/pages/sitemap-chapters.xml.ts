@@ -8,24 +8,38 @@ export const GET: APIRoute = async () => {
 
     let comics: Awaited<ReturnType<typeof getComics>> = [];
     try {
-        // chapters[] đã có sẵn trong ComicView
-        comics = await getComics({ first: 5000 });
+        // Fetch more for sitemap (e.g., 1000 instead of 5000 to be safe on memory during build)
+        comics = await getComics({ first: 1000 });
     } catch (err) {
         console.error('[sitemap-chapters] fetch error:', err);
     }
 
     // Flatten: mỗi comic → mỗi chapter → 1 URL
-    // NOTE: URL format dùng chap-{chapterNumber} (Phase 3 SEO)
-    const urls = comics.flatMap((comic) => {
-        if (!comic.slug || !comic.chapters?.length) return [];
-        return comic.chapters
-            .filter((ch) => ch.chapterNumber)
-            .map((ch) => ({
-                loc: `${base}/${comic.slug}/chap-${ch.chapterNumber}`,
-                changefreq: 'monthly' as const,
-                priority: '0.6',
-            }));
+    // NOTE: Cần fetch chi tiết từng truyện để đảm bảo có chapters[] (do GraphQL query list có thể bị filter)
+    const { getComic } = await import('../lib/api/commics');
+
+    const urlPromises = comics.map(async (comic) => {
+        if (!comic.slug) return [];
+
+        try {
+            const detailedComic = await getComic(comic.slug);
+            if (!detailedComic || !detailedComic.chapters?.length) return [];
+
+            return detailedComic.chapters
+                .filter((ch) => ch.chapterNumber)
+                .map((ch) => ({
+                    loc: `${base}/${comic.slug}/chap-${ch.chapterNumber}`,
+                    changefreq: 'monthly' as const,
+                    priority: '0.6',
+                }));
+        } catch (e) {
+            console.error(`[sitemap-chapters] Failed to fetch chapters for ${comic.slug}:`, e);
+            return [];
+        }
     });
+
+    const results = await Promise.all(urlPromises);
+    const urls = results.flat();
 
     return sitemapResponse(buildSitemapXml(urls));
 };
