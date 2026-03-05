@@ -13,6 +13,8 @@ services:
       - /var/run/postgresql
     volumes:
       - db_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432" # Bind to localhost so host-mode services can reach it
     networks:
       - internal_network
     cap_drop:
@@ -28,6 +30,8 @@ services:
       - /tmp
     volumes:
       - redis_data:/data
+    ports:
+      - "127.0.0.1:6379:6379" # Bind to localhost for host-mode app services
     networks:
       - internal_network
     cap_drop:
@@ -43,15 +47,11 @@ services:
     depends_on:
       - db
       - redis
-    # Bảo mật port: Chỉ bind vào localhost của VPS, KHÔNG bind ra 0.0.0.0
-    ports:
-      - "127.0.0.1:3001:3001"
+    network_mode: host
     user: "1000:1000"
     read_only: true
     tmpfs:
       - /tmp
-    networks:
-      - internal_network
     cap_drop:
       - ALL
 
@@ -66,15 +66,11 @@ services:
       - SITE_NAME=Commics
     depends_on:
       - graphql
-    # Bảo mật port: Chỉ bind vào localhost của VPS
-    ports:
-      - "127.0.0.1:4321:4321"
+    network_mode: host
     user: "1000:1000"
     read_only: true
     tmpfs:
       - /tmp
-    networks:
-      - internal_network
     cap_drop:
       - ALL
 

@@ -8,6 +8,16 @@ import { env } from '../../lib/config/env';
 
 const { slug } = Astro.params;
 
+export const prerender = process.env.OUTPUT_MODE !== 'server';
+
+export async function getStaticPaths() {
+  const { getCategories } = await import('../../lib/api/commics');
+  const categories = await getCategories();
+  return categories.map(cat => ({
+    params: { slug: cat.slug },
+  }));
+}
+
 const pageStr = Astro.url.searchParams.get('page');
 const page = pageStr ? parseInt(pageStr, 10) : 1;
 const limit = env.PUBLIC_PAGE_COMICS_LIMIT;

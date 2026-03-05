@@ -5,6 +5,8 @@ import ComicCard from '../components/ui/ComicCard.astro';
 import { getComics } from '../lib/api/commics';
 import { env } from '../lib/config/env';
 
+export const prerender = process.env.OUTPUT_MODE !== 'server';
+
 let latestComics = [];
 try {
   latestComics = await getComics({ first: env.PUBLIC_HOME_COMICS_LIMIT });
@@ -22,7 +24,6 @@ try {
 		author: "Tác giả mẫu"
 	}));
 }
-import { env } from '../lib/config/env';
 
 const pageTitle = `${env.SITE_NAME} - Đọc truyện tranh online`;
 

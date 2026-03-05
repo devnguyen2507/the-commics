@@ -7,6 +7,18 @@ import { env } from '../../lib/config/env';
 
 const { slug, chapterNum } = Astro.params;
 
+export const prerender = process.env.OUTPUT_MODE !== 'server';
+
+export async function getStaticPaths() {
+  const { getComics } = await import('../../lib/api/commics');
+  const comics = await getComics({ first: 24 }); // Limit for static build
+  return comics.flatMap(comic => 
+    comic.chapters.map(ch => ({
+      params: { slug: comic.slug, chapterNum: ch.chapterNumber?.toString() },
+    }))
+  );
+}
+
 let comic;
 try {
   comic = await getComic(slug!);
@@ -43,7 +55,7 @@ const nextChapNum = getChapterNum(chapter.nextChapterId);
 const prevChapNum = getChapterNum(chapter.prevChapterId);
 
 const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/${slug}/chap-${chapter.chapterNumber}`;
-const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';import { env } from '../../lib/config/env';
+const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
 const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
 const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
 

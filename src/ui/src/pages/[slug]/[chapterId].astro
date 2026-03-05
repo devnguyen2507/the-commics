@@ -3,6 +3,19 @@ import Layout from '../../layouts/Layout.astro';
 import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
 import { getChapter } from '../../lib/api/commics';
 import { getImageUrl } from '../../lib/utils/image';
+import { env } from '../../lib/config/env';
+
+export const prerender = process.env.OUTPUT_MODE !== 'server';
+
+export async function getStaticPaths() {
+  const { getComics } = await import('../../lib/api/commics');
+  const comics = await getComics({ first: 24 }); // Limit for static build
+  return comics.flatMap(comic => 
+    comic.chapters.map(ch => ({
+      params: { slug: comic.slug, chapterId: ch.id },
+    }))
+  );
+}
 
 const { slug, chapterId } = Astro.params;
 

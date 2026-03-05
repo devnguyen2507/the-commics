@@ -1,37 +1,52 @@
 #!/bin/bash
-# =======================================================
-# CHỈ CHO PHÉP CLOUDFLARE XUYÊN QUA CỔNG 80/443
-# Cloudflare proxy giấu IP gốc của VPS. Tuyệt đối không xóa rule này.
-# =======================================================
 
-echo "🛡 Cấu hình IPTables IPv4 cho Nginx..."
+# Script setup Firewall (UFW) cho Production VPS
+# Mục tiêu: Chặn tất cả các port ngoại trừ Web (80, 443) và SSH (22)
 
-# Xóa các Rule cũ
-iptables -F
-iptables -X
+# Đảm bảo lệnh chạy với quyền sudo
+if [ "$EUID" -ne 0 ]; then 
+  echo "Vui lòng chạy script này với quyền sudo (sudo bash setup-firewall.sh)"
+  exit 1
+fi
 
-# Luôn cho phép Loopback (rất quan trọng cho Nginx proxy -> 127.0.0.1)
-iptables -A INPUT -i lo -j ACCEPT
-iptables -A OUTPUT -o lo -j ACCEPT
+echo "--- Đang cấu hình Firewall (UFW) ---"
 
-# Cho phép các connection đã thiết lập
-iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+# Cài đặt UFW và fail2ban
+apt-get update && apt-get install -y ufw fail2ban
 
-# Cho phép SSH mọi nơi (Hoặc cấu hình YOUR_IP tại đây để khóa SSH)
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+# Cấu hình fail2ban cơ bản cho SSH
+cat <<EOF > /etc/fail2ban/jail.local
+[sshd]
+enabled = true
+port = 22
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+EOF
 
-# Mở cổng cho Cloudflare IPs (v4)
-echo "Tải danh sách IP v4 của Cloudflare..."
-curl -s https://www.cloudflare.com/ips-v4 | while read -r ip; do
-    iptables -A INPUT -p tcp -s "$ip" --dport 80 -j ACCEPT
-    iptables -A INPUT -p tcp -s "$ip" --dport 443 -j ACCEPT
-done
+systemctl restart fail2ban
 
-# DROP tất cả HTTP/HTTPS không đến từ Cloudflare
-iptables -A INPUT -p tcp --dport 80 -j DROP
-iptables -A INPUT -p tcp --dport 443 -j DROP
+# Thiết lập mặc định: Chặn vào, Cho phép ra
+ufw default deny incoming
+ufw default allow outgoing
 
-# Save cấu hình để restore khi khởi động lại
-iptables-save > /etc/iptables/rules.v4 || echo "Cảnh báo: Chưa cài iptables-persistent, rule có thể mất khi reboot"
+# Mở các cổng cần thiết
+echo "[+] Đang mở cổng SSH (22)..."
+ufw allow 22/tcp
 
-echo "✅ Đã thiết lập IPTables thành công! Chỉ Cloudflare mới vào được port 80/443."
+echo "[+] Đang mở cổng HTTP (80)..."
+ufw allow 80/tcp
+
+echo "[+] Đang mở cổng HTTPS (443)..."
+ufw allow 443/tcp
+
+# Kích hoạt UFW (dùng --force để không hỏi xác nhận)
+echo "[+] Đang kích hoạt UFW..."
+ufw --force enable
+
+echo "--- Hoàn tất! Trạng thái Firewall hiện tại: ---"
+ufw status numbered
+
+echo "QUAN TRỌNG: Các ứng dụng chạy chế độ 'network_mode: host' hiện đã được bảo vệ."
+echo "Hacker chỉ có thể quét thấy cổng 22, 80, 443 từ bên ngoài."

@@ -28,6 +28,7 @@ export const env = {
     SITE_NAME: getRuntimeEnv('SITE_NAME', 'Commics'),
     CACHE_URL: getRuntimeEnv('CACHE_URL', ''),
     REVALIDATE_SECRET: getRuntimeEnv('REVALIDATE_SECRET', ''),
+    OUTPUT_MODE: getRuntimeEnv('OUTPUT_MODE', 'server'),
 };
 
 export const getPublicEnv = () => ({

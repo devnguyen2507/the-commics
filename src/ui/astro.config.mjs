@@ -15,7 +15,7 @@ export default defineConfig({
         })
     ],
 
-    output: 'server',
+    output: process.env.OUTPUT_MODE === 'server' ? 'server' : 'static',
     adapter: node({ mode: 'standalone' }),
 
     vite: {

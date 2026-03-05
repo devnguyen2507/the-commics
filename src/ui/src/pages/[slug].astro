@@ -8,6 +8,16 @@ import { env } from '../lib/config/env';
 
 const { slug } = Astro.params;
 
+export const prerender = process.env.OUTPUT_MODE !== 'server';
+
+export async function getStaticPaths() {
+  const { getComics } = await import('../lib/api/commics');
+  const comics = await getComics({ first: 24 }); // Limit for static build
+  return comics.map(comic => ({
+    params: { slug: comic.slug },
+  }));
+}
+
 let comic;
 try {
   comic = await getComic(slug!);
@@ -42,7 +52,6 @@ const breadcrumbs = [
   { label: comic.categories?.[0]?.name || 'Truyện', href: `/the-loai/${comic.categories?.[0]?.slug || ''}` },
   { label: comic.title }
 ];
-import { env } from '../lib/config/env';
 
 const pageTitle = `${comic.title} - Đọc truyện online tại ${env.SITE_NAME}`;
 const pageDesc = comic.description || `Đọc truyện ${comic.title} online miễn phí tại ${env.SITE_NAME}. Cập nhật nhanh nhất, chất lượng cao.`;
