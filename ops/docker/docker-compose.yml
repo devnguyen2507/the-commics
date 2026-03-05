@@ -138,7 +138,7 @@ services:
       - GRAPHQL_URL_INTERNAL=http://graphql:8000/graphql
       - CACHE_URL=redis+memory://redis:6379?ttl=300000&lru=5000
       - SITE_URL=http://localhost:4321
-      - SITE_NAME=Commics
+      - SITE_NAME=FanManga
       - REVALIDATE_SECRET=change-me-in-production
       # Public vars (baked lúc build, dùng cho client-side / HTML meta tags)
       - PUBLIC_GRAPHQL_URL=http://localhost:18000/graphql
