@@ -43,7 +43,9 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
 - **Breadcrumbs**: Bắt buộc có cấu trúc Breadcrumbs rõ ràng (VD: `Trang chủ > Thể loại > Tên truyện > Chapter 1`) để người dùng dễ định vị và Google Bot hiểu cấu trúc site.
 - **Tiêu chuẩn SEO Khắt khe**:
   - Chỉ duy nhất **1 thẻ H1** trên mỗi trang, chứa từ khóa SEO trọng tâm (Tên truyện ở trang chi tiết, Tên danh mục ở trang Category).
-  - Tối ưu SSR (Server-Side Rendering) cho các vùng nội dung cần SEO (Box thông tin truyện, Tên truyện, Tags, Text description).
+  - Tối ưu SSR (Server-Side Rendering) cho các vùng nội dung cần SEO (Box thông tin truyện, Tên truyện, Tags, Text description). Tuy nhiên, đối với **thẻ meta description** và nội dung description trong JSON-LD, **TUYỆT ĐỐI KHÔNG DÙNG** trường `description` từ API backend mà thay bằng một Template string tĩnh để không bị nhiễu mã HTML và tách biệt với Description Box.
+  - **Mảng JSON-LD Schema**: Các thẻ script JSON-LD (Schema) được sinh tập trung qua utils và loop qua một array `schemas` linh hoạt ở `BaseHead.astro` và cấp tại tằng Page.
+  - **RSS Feed**: Mở cổng `/rss.xml` tự động tạo news feed cập nhật lượng truyện mới nhất. Số lượng truyện trong RSS bị kiểm soát bởi biến `STATIC_BUILD_LIMIT` của môi trường.
   - **Noindex cho trang phân trang**: Tất cả các trang danh sách truyện từ mục lục trang thứ 2 trở lên (`?page=2`, `?page=3`) bắt buộc chèn thẻ `<meta name="robots" content="noindex, follow" />` nhằm tránh rác kết quả tìm kiếm (Google duplicate content).
   - Lazy load cho các dữ liệu API như danh sách truyện đề xuất hoặc mảng hình ảnh. Nếu chưa tải được hình, JS vẫn render trước thuộc tính `alt` chứa từ khóa mô tả để bot đọc được nội dung ảnh.
   - **Canonical Tags**: Phải trỏ đúng URL gốc để tránh duplicate content.

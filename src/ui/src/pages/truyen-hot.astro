@@ -5,6 +5,7 @@ import Pagination from '../components/ui/Pagination.astro';
 import { getComics, getComicsCount } from '../lib/api/commics';
 import { ComicSort } from '../lib/api/commics/generated';
 import { env } from '../lib/config/env';
+import { generateBreadcrumbSchema, generateCollectionSchema } from '../lib/utils/schema';
 
 const pageStr = Astro.url.searchParams.get('page');
 const page = pageStr ? parseInt(pageStr, 10) : 1;
@@ -27,9 +28,17 @@ try {
 
 const title = page > 1 ? `Truyện Hot - Đọc nhiều nhất - Trang ${page} - ${env.SITE_NAME}` : `Truyện Hot - Đọc nhiều nhất - ${env.SITE_NAME}`;
 const description = `Top truyện tranh hot nhất, được xem nhiều nhất tuần qua. Cập nhật liên tục những siêu phẩm manga, manhwa, manhua hấp dẫn tại ${env.SITE_NAME}.`;
+
+const schemas = [
+  generateCollectionSchema(title, description, `${Astro.url.origin}/truyen-hot`),
+  generateBreadcrumbSchema([
+    { label: 'Trang chủ', url: Astro.url.origin },
+    { label: 'Truyện Hot', url: `${Astro.url.origin}/truyen-hot` }
+  ])
+];
 ---
 
-<Layout title={title} description={description} robots={page > 1 ? "noindex, follow" : undefined}>
+<Layout title={title} description={description} schemas={schemas} robots={page > 1 ? "noindex, follow" : undefined}>
   <main class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">

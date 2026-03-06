@@ -80,6 +80,7 @@ Khởi chạy độc lập UI với quy trình Dockerization nhiều giai đoạ
 | `SITE_URL` | `process.env` (runtime) | Canonical, sitemap base |
 | `SITE_NAME` | `process.env` (runtime) | Tên hệ thống web hiển thị trên UI, thay thế chuỗi "Commics" |
 | `REVALIDATE_SECRET` | `process.env` (runtime) | Webhook bảo mật |
+| `STATIC_BUILD_LIMIT` | `process.env` (build) | Giới hạn số lượng bản ghi render lúc ssg generate (dùng cho list và rss) |
 
 **Tính Độc Lập Mạng**:
 - Container UI không phụ thuộc (`depends_on`) cứng vào `graphql` và `cdn`.
@@ -156,21 +157,31 @@ Sitemap: https://domain.com/sitemap-index.xml
 
 ---
 
-## 7. Check List SEO (Cập nhật)
-- [x] `Layout.astro` chuẩn cho toàn trang
-- [x] Meta tags cơ bản (`description`, `title`, `og:*`)
-- [x] JSON-LD schema (WebSite, Book)
-- [x] Breadcrumbs trên tất cả trang
-- [ ] `sitemap-index.xml` và 4 sub-sitemaps
-- [ ] `robots.txt` trỏ đúng sitemap
-- [ ] Canonical URL dùng `Astro.site` đúng domain
-- [ ] `SITE_URL` env set đúng domain production
-- [ ] SSR Cache layer (Redis + LRU)
-- [ ] Revalidate webhook cho crawler
+## 7. Tối Ưu Hóa Kỹ Thuật SEO Chuyên Sâu (SEO & Metadata)
+
+Trong quá trình triển khai thực tế, một bộ tiêu chuẩn con được thiết lập trong kiến trúc layout của UI:
+- **Tập trung JSON-LD Generation**: Tất cả HTML `<script type="application/ld+json">` được quản lý bởi file helper `src/lib/utils/schema.ts` ( Breadcrumbs, Organization, WebSite, CollectionPage, Book, ...), tự stringify và gom lại thành một Array truyền qua các file layout như `Layout.astro` và `BaseHead.astro` để output tự động.
+- **Tên mô tả tĩnh (Static Template Description)**: Yêu cầu bắt buộc là HTML meta component không sử dụng trường JSON raw string `description` của database entity (`comic.description` và `chapter.description`). Do database description bị format lẫn content của box SEO, nên các metadata thuần dùng để parse cho Crawler phải được string templates tĩnh.
+- **Nguồn cấp RSS Feed**: Mở route tại endpoint `/rss.xml.ts` tự động phát sinh XML feed với content giới hạn item count theo `STATIC_BUILD_LIMIT` build limit configuration.
+- **Accessibility Compatibility**: Rà soát qua mọi thẻ `<img />` và `<svg>` bổ sung thẻ property bảo trợ `alt` và `aria-hidden="true"`.
 
 ---
 
-## 8. Dynamic Meta & Publish Timing (Change Log)
+## 8. Check List Định Hướng Công Tác Frontend (Cập nhật)
+
+- [x] `Layout.astro` chuẩn cho toàn trang
+- [x] Meta tags cơ bản (`description`, `title`, `og:*`) tích hợp metadata template tĩnh.
+- [x] JSON-LD schema (WebSite, Book, CollectionPage, ...)
+- [x] Hệ thống Breadcrumbs UI/JSON-LD đồng bộ trên tất cả trang
+- [x] RSS Generator endpoint (`/rss.xml`) tích hợp thư viện standard
+- [ ] `sitemap-index.xml` và 4 sub-sitemaps
+- [ ] `robots.txt` trỏ đúng sitemap
+- [ ] Canonical URL dùng `Astro.site` đúng domain
+- [ ] SSR Cache layer (Redis + LRU)
+
+---
+
+## 9. Dynamic Meta & Publish Timing (Change Log)
 
 - **Tên trang web động**: Cấu hình biến môi trường runtime `SITE_NAME` thay thế toàn bộ chữ cứng "Commics" trên HTML `<title>`, thẻ description, breadcrumb và thân hệ thống (Terms, FAQ, ...).
 - **Logo Gradient Custom**: Component SVG được phân cách thành phần độc lập trong `src/ui/src/components/ui/Logo.astro`.

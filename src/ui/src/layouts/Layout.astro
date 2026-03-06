@@ -11,15 +11,17 @@ interface Props {
 	isHome?: boolean;
 	ogType?: string;
 	robots?: string;
+  schemas?: string[];
+  siteName?: string;
 }
 
-const { title, description = "Đọc truyện tranh hentai online hay nhất, cập nhật mới mỗi ngày.", image, isHome, ogType, robots } = Astro.props;
+const { title, description = "Đọc truyện tranh hentai online hay nhất, cập nhật mới mỗi ngày.", image, isHome, ogType, robots, schemas, siteName } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="vi">
 	<head>
-		<BaseHead title={title} description={description} image={image} ogType={ogType} robots={robots} />
+		<BaseHead title={title} description={description} image={image} ogType={ogType} robots={robots} schemas={schemas} siteName={siteName} />
 		<slot name="head" />
 	</head>
 	<body class="bg-black text-white font-sans min-h-screen flex flex-col">

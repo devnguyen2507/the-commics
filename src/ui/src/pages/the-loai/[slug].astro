@@ -5,6 +5,7 @@ import ComicCard from '../../components/ui/ComicCard.astro';
 import Pagination from '../../components/ui/Pagination.astro';
 import { getComics, getCategories, getComicsCount } from '../../lib/api/commics';
 import { env } from '../../lib/config/env';
+import { generateBreadcrumbSchema, generateCollectionSchema } from '../../lib/utils/schema';
 
 const { slug } = Astro.params;
 
@@ -58,40 +59,25 @@ const pageDesc = categoryDescription
   || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
-  { label: 'Thể loại', href: '/the-loai' },
-  { label: targetCategoryName }
+  { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` },
+  { label: targetCategoryName, url: `${Astro.url.origin}/the-loai/${slug}` }
 ];
 
-const jsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: pageTitle,
-    description: pageDesc,
-    url: `${Astro.url.origin}/the-loai/${slug}`,
-    inLanguage: 'vi',
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Trang chủ', item: Astro.url.origin },
-      { '@type': 'ListItem', position: 2, name: 'Thể loại', item: `${Astro.url.origin}/the-loai` },
-      { '@type': 'ListItem', position: 3, name: targetCategoryName, item: `${Astro.url.origin}/the-loai/${slug}` },
-    ],
-  },
+const schemas = [
+  generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/the-loai/${slug}`),
+  generateBreadcrumbSchema([
+    { label: 'Trang chủ', url: Astro.url.origin },
+    ...breadcrumbs
+  ])
 ];
 ---
 
 <Layout 
   title={pageTitle} 
   description={pageDesc} 
+  schemas={schemas}
   robots={(!category || page > 1) ? "noindex, follow" : undefined}
 >
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </Fragment>
-
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
 

@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
 import { getCategories } from '../../lib/api/commics';
+import { env } from '../../lib/config/env';
+import { generateBreadcrumbSchema, generateCollectionSchema } from '../../lib/utils/schema';
 
 let categories = [];
 try {
@@ -10,11 +12,20 @@ try {
   console.error("Fetch error:", e);
 }
 
-const breadcrumbs = [{ label: 'Thể loại' }];
-import { env } from '../../lib/config/env';
+const breadcrumbs = [{ label: 'Thể loại', url: `${Astro.url.origin}/the-loai` }];
+const pageTitle = `Tất cả Thể loại - ${env.SITE_NAME}`;
+const pageDesc = `Danh sách toàn bộ thể loại truyện tranh tại ${env.SITE_NAME}.`;
+
+const schemas = [
+  generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/the-loai`),
+  generateBreadcrumbSchema([
+    { label: 'Trang chủ', url: Astro.url.origin },
+    { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` }
+  ])
+];
 ---
 
-<Layout title={`Tất cả Thể loại - ${env.SITE_NAME}`} description={`Danh sách toàn bộ thể loại truyện tranh tại ${env.SITE_NAME}.`}>
+<Layout title={pageTitle} description={pageDesc} schemas={schemas}>
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
     

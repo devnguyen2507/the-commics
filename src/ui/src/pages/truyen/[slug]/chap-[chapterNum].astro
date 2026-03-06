@@ -6,6 +6,7 @@ import { getComic, getChapter } from '../../../lib/api/commics';
 import { getImageUrl } from '../../../lib/utils/image';
 import { env } from '../../../lib/config/env';
 import { slugify } from '../../../lib/utils/slug';
+import { generateBreadcrumbSchema, generateChapterSchema } from '../../../lib/utils/schema';
 
 const { slug, chapterNum } = Astro.params;
 
@@ -59,40 +60,20 @@ const prevChapNum = slugify(getChapterNum(chapter.prevChapterId) || '');
 
 const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}/chap-${slugify(chapter.chapterNumber)}`;
 const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
-const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
+const descriptionText = `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
 const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": `${comicTitle} - Chương ${chapter.chapterNumber}`,
-    "description": descriptionText,
-    "url": pageUrl,
-    "image": firstPageImage,
-    "isPartOf": {
-      "@type": "ComicSeries",
-      "name": comicTitle,
-      "url": `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}`
-    },
-    "inLanguage": "vi"
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": env.SITE_URL.replace(/\/$/, '') },
-      { "@type": "ListItem", "position": 2, "name": comicTitle, "item": `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}` },
-      { "@type": "ListItem", "position": 3, "name": `Chương ${chapter.chapterNumber}`, "item": pageUrl }
-    ]
-  }
+const schemas = [
+  generateChapterSchema(chapter, comicTitle, slug!, pageUrl, firstPageImage, env.SITE_URL.replace(/\/$/, '')),
+  generateBreadcrumbSchema([
+    { label: 'Trang chủ', url: env.SITE_URL.replace(/\/$/, '') },
+    { label: comicTitle, url: `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}` },
+    { label: `Chương ${chapter.chapterNumber}`, url: pageUrl }
+  ])
 ];
 ---
 
-<Layout title={pageTitle} description={descriptionText}>
-  <Fragment slot="head">
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  </Fragment>
+<Layout title={pageTitle} description={descriptionText} schemas={schemas}>
   <div class="max-w-4xl mx-auto flex flex-col pt-4 pb-32 min-h-screen bg-black">
     {chapter.images.map((img: any, index: number) => (
       <ReaderImage 
