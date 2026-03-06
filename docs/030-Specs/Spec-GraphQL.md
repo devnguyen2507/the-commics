@@ -142,6 +142,7 @@ type Chapter {
   id: ID!
   chapter_number: String!
   order_index: Float!
+  description: String
   images: [ChapterImage]
   next_chapter_id: ID
   prev_chapter_id: ID

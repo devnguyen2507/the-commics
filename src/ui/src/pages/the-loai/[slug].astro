@@ -42,6 +42,9 @@ try {
     targetCategoryName = category.name;
     // description từ DB (Phase 2: sau khi migration + GraphQL expose)
     categoryDescription = (category as any).description ?? null;
+  } else {
+    // Nếu không tìm thấy category => 404
+    return Astro.redirect('/404');
   }
 } catch (e) {
   console.error('Fetch error:', e);
@@ -80,7 +83,11 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={pageTitle} description={pageDesc} robots={page > 1 ? "noindex, follow" : undefined}>
+<Layout 
+  title={pageTitle} 
+  description={pageDesc} 
+  robots={(!category || page > 1) ? "noindex, follow" : undefined}
+>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>

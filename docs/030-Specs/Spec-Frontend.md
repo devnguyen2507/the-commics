@@ -34,7 +34,9 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
      - Danh sách truyện đề xuất (Recommended / Có thể bạn sẽ thích).
      
 3. **Trang Đọc Truyện (Chapter Reading Page)**:
-   - *Bố cục*: Luồng cuộn dọc (Long strip) chứa danh sách hình ảnh của truyện.
+   - *Bố cục*: 
+     - Luồng cuộn dọc (Long strip) chứa danh sách hình ảnh của truyện.
+     - *SEO Content Box*: Nằm ở cuối trang (trên thanh Navbar và Footer), hiển thị mô tả tóm tắt của chương truyện hỗ trợ **Rich HTML** và **Custom Scrollbar**.
    - *Điều hướng*: Thanh công cụ (Floating Navbar) trượt ẩn/hiện chứa các link: Next Chapter, Previous Chapter, Cuộn lên đầu trang (Top), Cuộn xuống cuối trang (Bottom).
 
 ### 1.2. Mở rộng Hệ thống Điều hướng & SEO
@@ -45,7 +47,10 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
   - **Noindex cho trang phân trang**: Tất cả các trang danh sách truyện từ mục lục trang thứ 2 trở lên (`?page=2`, `?page=3`) bắt buộc chèn thẻ `<meta name="robots" content="noindex, follow" />` nhằm tránh rác kết quả tìm kiếm (Google duplicate content).
   - Lazy load cho các dữ liệu API như danh sách truyện đề xuất hoặc mảng hình ảnh. Nếu chưa tải được hình, JS vẫn render trước thuộc tính `alt` chứa từ khóa mô tả để bot đọc được nội dung ảnh.
   - **Canonical Tags**: Phải trỏ đúng URL gốc để tránh duplicate content.
-  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) sử dụng URL chuẩn (như `/truyen/{slug}/chap-{number}`). File `robots.txt` trỏ đến `sitemap-index.xml`.
+  - **Sitemap & Robots**: 
+  - Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) sử dụng URL chuẩn (như `/truyen/{slug}/chap-{number}`). File `robots.txt` trỏ đến `sitemap-index.xml`.
+  - **Trang 404**: Cố định thẻ `<meta name="robots" content="noindex, nofollow" />`.
+  - **Redirection**: Các trang không tồn tại (slug sai, category không có) phải thực hiện server-side redirect (302) về trang `/404`.
 
 ---
 

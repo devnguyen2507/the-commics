@@ -43,6 +43,8 @@ Tài liệu này đặc tả kế hoạch tối ưu SEO trên toàn bộ fronten
 | 11 | Chính sách | `/chinh-sach` | **Chưa có** | Tạo mới |
 | 12 | Liên hệ | `/lien-he` | **Chưa có** | Tạo mới |
 | 13 | FAQ | `/cau-hoi-thuong-gap` | **Chưa có** | Tạo mới |
+| 14 | Lỗi 404 | `/404` | Đã xong | ✅ Cố định `noindex, nofollow`, redirect từ slug lỗi |
+| 15 | Google Verify | Head meta | Đã xong | ✅ Tích hợp `google-site-verification` qua environment |
 
 ---
 
@@ -112,8 +114,8 @@ Sau:    /iraira-enanan-no-ecchi-na-nadamekata/chap-1
 | Hạng mục | Chi tiết |
 |----------|----------|
 | Migration | `ALTER TABLE chapters ADD COLUMN description TEXT;` |
-| GraphQL | Expose `description` field trong `Chapter` type |
-| Frontend | Dùng `description` cho meta tag + SEO content box |
+| GraphQL | Expose `description` field trong `Chapter` type (Done) |
+| Frontend | Dùng `description` cho meta tag + SEO content box (Done) |
 | Nội dung | Phase 1: AI-generated tóm tắt dựa trên tiêu đề truyện + chapter number. Phase 2: Viết tay bổ sung keyword chiến lược |
 
 ### 4.3. Ví dụ Impact
@@ -271,12 +273,12 @@ Mỗi trang cần có **SEO content box** (block text nền) ở cuối trang:
 - [x] Populate category descriptions (In progress - using `seo_report_cat_2.html` for missing slugs)
 
 ### Phase 3: Chapter SEO + URL Migration
-- [x] Migration: `chapters.description`
-- [x] Expose `description` trong GraphQL `Chapter` type
-- [x] Đổi URL chapter sang `/truyen/{slug}/chap-{N}` + slugify (VD: `chap-ch-1`)
+- [x] Migration: `chapters.description` (Done)
+- [x] Expose `description` trong GraphQL `Chapter` type (Done - manual patch generated.ts)
+- [x] Đổi URL chapter sang `/truyen/{slug}/chap-{N}` + slugify (Done)
 - [x] Cập nhật `sitemap-chapters.xml` dùng `chap-{N}` URLs
+- [x] Nâng cấp SEO box trong chapter reader (dùng `chapters.description`) (Done)
 - [ ] JSON-LD: `Article` + `BreadcrumbList` cho chapter reader (Đã update canonical & breadcrumb)
-- [ ] Nâng cấp SEO box trong chapter reader (dùng `chapters.description`)
 - [ ] Populate chapter descriptions (AI-generated Phase 1)
 
 ### Phase 4: Internal Linking + Pagination

@@ -17,6 +17,7 @@ export interface ChapterView {
     }[];
     nextChapterId: string | null;
     prevChapterId: string | null;
+    description: string | null;
 }
 
 type RawChapter = NonNullable<GetChapterQuery['chapter']>;
@@ -37,6 +38,7 @@ export function mapChapterToView(raw: RawChapter): ChapterView {
             h: img.h
         })),
         nextChapterId: raw.nextChapterId,
-        prevChapterId: raw.prevChapterId
+        prevChapterId: raw.prevChapterId,
+        description: raw.description ?? null
     };
 }

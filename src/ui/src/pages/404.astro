@@ -3,7 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import { env } from '../lib/config/env';
 ---
 
-<Layout title={`404 - Không tìm thấy trang - ${env.SITE_NAME}`} description="Trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.">
+<Layout 
+  title={`404 - Không tìm thấy trang - ${env.SITE_NAME}`} 
+  description="Trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa." 
+  robots="noindex, nofollow"
+>
   <div class="min-h-[70vh] flex flex-col items-center justify-center text-center space-y-6 px-4">
     <h1 class="text-8xl font-black text-white px-8 py-2 border-y-4 border-blue-600">404</h1>
     <div class="space-y-2">
