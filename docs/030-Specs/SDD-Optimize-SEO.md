@@ -829,6 +829,35 @@ Cần kiểm tra file robots.txt hiện tại hoặc cấu hình Astro có snipp
 
 ---
 
+## 17. URL Trailing Slash & Static Build Limit Strategy
+
+> [!IMPORTANT]
+> **Quyết định**: Sử dụng trailing slash (`/`) cho toàn bộ URL thống nhất trên toàn site. Giới hạn số lượng trang build tĩnh bằng một cấu hình thống nhất `STATIC_BUILD_LIMIT`.
+
+### 17.1. Chuẩn hóa Trailing Slash
+
+**Vấn đề:** Astro static build xuất ra thư mục (VD: `dist/client/truyen/slug/index.html`). Các server HTTP tĩnh thường tự chuyển hướng URL bỏ đuôi `/` sang có đuôi `/`. Nếu canonical URL hoặc thẻ a href trỏ đến URL không slash, sẽ gây dư thừa redirect và dilute dòng chảy PageRank.
+
+**Giải pháp:**
+- Config `astro.config.mjs`: đặt `trailingSlash: 'always'` để bắt buộc sử dụng slash ở cuối mọi routing nội bộ của Astro.
+- Bỏ cơ chế strip trailing slash của `canonicalURL` ở `<head>` để các thẻ Canonical và OG url đều phản ánh chính xác cấu trúc `/`.
+
+### 17.2. Đồng bộ giới hạn Static Build (`STATIC_BUILD_LIMIT`)
+
+**Vấn đề:** Khi build SSG (Static Site Generation), server tốn nhiều RAM. Việc hardcode số lượng pre-render (24 trang danh sách, 1000 chapter...) không đồng bộ dẫn đến directory sinh ra file thư mục nhưng thiếu `index.html`. Sitemap sử dụng số khác (5000, 1000) sẽ bao gồm những trang bị thiếu -> 404 crawl errors.
+
+**Giải pháp:**
+- Cấu hình qua biến môi trường `STATIC_BUILD_LIMIT` tại `src/ui/src/lib/config/env.ts` (mặc định 1000).
+- Dùng thống nhất biến này ở `getStaticPaths` cho tất cả file như:
+  - `[slug].astro`
+  - `chap-[chapterNum].astro`
+- Dùng cho endpoint tạo sitemap:
+  - `sitemap-comics.xml.ts`
+  - `sitemap-chapters.xml.ts`
+Điều này đảm bảo **Google Crawler chỉ đọc những URL thực sự tồn tại** trong thư mục `dist/client`.
+
+---
+
 ## Tham chiếu
 - [[030-Specs/Spec-Frontend]]
 - [[030-Specs/Spec-GraphQL]]

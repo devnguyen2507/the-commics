@@ -10,7 +10,7 @@ export const GET: APIRoute = async () => {
     let comics: Awaited<ReturnType<typeof getComics>> = [];
     try {
         // Fetch more for sitemap (e.g., 1000 instead of 5000 to be safe on memory during build)
-        comics = await getComics({ first: 1000 });
+        comics = await getComics({ first: env.STATIC_BUILD_LIMIT });
     } catch (err) {
         console.error('[sitemap-chapters] fetch error:', err);
     }

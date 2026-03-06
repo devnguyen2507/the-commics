@@ -23,6 +23,9 @@ export const env = {
     PUBLIC_HOME_COMICS_LIMIT: parseInt(import.meta.env.PUBLIC_HOME_COMICS_LIMIT || '24', 10),
     PUBLIC_PAGE_COMICS_LIMIT: parseInt(import.meta.env.PUBLIC_PAGE_COMICS_LIMIT || '24', 10),
 
+    // Build Time Limits
+    STATIC_BUILD_LIMIT: parseInt(getRuntimeEnv('STATIC_BUILD_LIMIT', '1000'), 10),
+
     // Runtime vars (process.env only)
     SITE_URL: getRuntimeEnv('SITE_URL', 'https://fanmanga.net'),
     SITE_NAME: getRuntimeEnv('SITE_NAME', 'FanManga'),

@@ -13,7 +13,8 @@ export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
   const { getComics } = await import('../../../lib/api/commics');
-  const comics = await getComics({ first: 1000 }); // Increase limit for full static build
+  const { env } = await import('../../../lib/config/env');
+  const comics = await getComics({ first: env.STATIC_BUILD_LIMIT }); // Increase limit for full static build
   return comics.flatMap(comic => 
     comic.chapters.map(ch => ({
       params: { slug: comic.slug, chapterNum: slugify(ch.chapterNumber?.toString() || '') },

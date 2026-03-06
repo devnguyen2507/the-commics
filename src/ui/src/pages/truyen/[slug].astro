@@ -14,7 +14,8 @@ export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
   const { getComics } = await import('../../lib/api/commics');
-  const comics = await getComics({ first: 24 }); // Limit for static build
+  const { env } = await import('../../lib/config/env');
+  const comics = await getComics({ first: env.STATIC_BUILD_LIMIT }); // Use static build limit
   return comics.map(comic => ({
     params: { slug: comic.slug },
   }));

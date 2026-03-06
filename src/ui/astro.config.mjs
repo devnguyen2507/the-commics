@@ -10,7 +10,7 @@ dotenv.config();
 
 export default defineConfig({
     site: process.env.SITE_URL || 'http://localhost:4321',
-    trailingSlash: 'never',
+    trailingSlash: 'always',
     integrations: [
         react()
     ],

@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
 
     let comics: Awaited<ReturnType<typeof getComics>> = [];
     try {
-        comics = await getComics({ first: 5000 });
+        comics = await getComics({ first: env.STATIC_BUILD_LIMIT });
     } catch (err) {
         console.error('[sitemap-comics] fetch error:', err);
     }

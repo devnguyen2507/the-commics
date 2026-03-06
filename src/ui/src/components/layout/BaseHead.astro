@@ -16,8 +16,11 @@ const publicEnv = getPublicEnv();
 // Use Astro.site for canonical if available, otherwise fallback to Astro.url
 const canonicalURL = Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site || Astro.url);
 
-// Ensure no trailing slash for canonical
-const cleanCanonical = canonicalURL.toString().replace(/\/$/, "");
+// Ensure trailing slash for canonical
+let cleanCanonical = canonicalURL.toString();
+if (!cleanCanonical.endsWith('/') && !cleanCanonical.match(/\.[a-zA-Z0-9]+$/)) {
+    cleanCanonical += '/';
+}
 ---
 
 <!-- Global Metadata -->
