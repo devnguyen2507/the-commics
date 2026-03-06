@@ -1,18 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Breadcrumb from '../components/ui/Breadcrumb.astro';
-import { BookmarkButton } from '../components/ui/BookmarkButton';
-import { getComic, getComics } from '../lib/api/commics';
-import { getImageUrl } from '../lib/utils/image';
-import { env } from '../lib/config/env';
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { BookmarkButton } from '../../components/ui/BookmarkButton';
+import { getComic, getComics } from '../../lib/api/commics';
+import { getImageUrl } from '../../lib/utils/image';
+import { env } from '../../lib/config/env';
 import sanitizeHtml from 'sanitize-html';
+import { slugify } from '../../lib/utils/slug';
 
 const { slug } = Astro.params;
 
 export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
-  const { getComics } = await import('../lib/api/commics');
+  const { getComics } = await import('../../lib/api/commics');
   const comics = await getComics({ first: 24 }); // Limit for static build
   return comics.map(comic => ({
     params: { slug: comic.slug },
@@ -71,7 +72,7 @@ const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô t�
         "@type": "Book",
         "name": comic.title,
         "description": comic.description || `Đọc truyện ${comic.title} online tại ${env.SITE_NAME}.`,
-        "url": `${Astro.url.origin}/${comic.slug}`,
+        "url": `${Astro.url.origin}/truyen/${comic.slug}`,
         "image": comic.coverImage,
         "author": {
           "@type": "Person",
@@ -91,7 +92,7 @@ const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô t�
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": Astro.url.origin },
           { "@type": "ListItem", "position": 2, "name": comic.categories?.[0]?.name || "Truyện", "item": `${Astro.url.origin}/the-loai/${comic.categories?.[0]?.slug || ''}` },
-          { "@type": "ListItem", "position": 3, "name": comic.title, "item": `${Astro.url.origin}/${comic.slug}` }
+          { "@type": "ListItem", "position": 3, "name": comic.title, "item": `${Astro.url.origin}/truyen/${comic.slug}` }
         ]
       }
     ])} />
@@ -150,7 +151,7 @@ const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô t�
         </div>
         
         <div class="flex gap-4">
-          <a href={`/${comic.slug}/${comic.chapters?.[0]?.id || ''}`} class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-lg transition-all uppercase text-sm tracking-wide">
+          <a href={`/truyen/${comic.slug}/chap-${slugify(comic.chapters?.[0]?.chapterNumber || '1')}`} class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-lg transition-all uppercase text-sm tracking-wide">
             Đọc từ đầu
           </a>
           <BookmarkButton client:load comic={comic} />
@@ -166,7 +167,7 @@ const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô t�
        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
           {comic.chapters?.slice().reverse().map((ch: any) => (
-            <a href={`/${comic.slug}/chap-${ch.chapterNumber}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
+            <a href={`/truyen/${comic.slug}/chap-${slugify(ch.chapterNumber)}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
               <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapterNumber}</span>
               <span class="text-[10px] text-zinc-600 uppercase font-medium">Ch.{ch.orderIndex}</span>
             </a>
@@ -181,7 +182,7 @@ const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô t�
         </header>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {relatedComics.map((c: any) => (
-            <a href={`/${c.slug}`} class="group space-y-2 block">
+            <a href={`/truyen/${c.slug}`} class="group space-y-2 block">
               <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900">
                 <img 
                   src={getImageUrl(c.coverImage)} 

@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { env } from '../lib/config/env';
 import { getComics } from '../lib/api/commics';
 import { buildSitemapXml, sitemapResponse } from '../lib/sitemap/helpers';
+import { slugify } from '../lib/utils/slug';
 
 export const GET: APIRoute = async () => {
     const base = env.SITE_URL.replace(/\/$/, '');
@@ -28,7 +29,7 @@ export const GET: APIRoute = async () => {
             return detailedComic.chapters
                 .filter((ch) => ch.chapterNumber)
                 .map((ch) => ({
-                    loc: `${base}/${comic.slug}/chap-${ch.chapterNumber}`,
+                    loc: `${base}/truyen/${comic.slug}/chap-${slugify(ch.chapterNumber || '')}`,
                     changefreq: 'monthly' as const,
                     priority: '0.6',
                 }));

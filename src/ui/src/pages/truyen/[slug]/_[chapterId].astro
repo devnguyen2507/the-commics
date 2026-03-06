@@ -1,15 +1,15 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
-import { ReaderImage } from '../../components/feature/reader/ReaderImage';
-import { getChapter } from '../../lib/api/commics';
-import { getImageUrl } from '../../lib/utils/image';
-import { env } from '../../lib/config/env';
+import Layout from '../../../layouts/Layout.astro';
+import ReaderNavbar from '../../../components/feature/reader/ReaderNavbar.astro';
+import { ReaderImage } from '../../../components/feature/reader/ReaderImage';
+import { getChapter } from '../../../lib/api/commics';
+import { getImageUrl } from '../../../lib/utils/image';
+import { env } from '../../../lib/config/env';
 
 export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
-  const { getComics } = await import('../../lib/api/commics');
+  const { getComics } = await import('../../../lib/api/commics');
   const comics = await getComics({ first: 1000 }); // Increase limit for full static build
   return comics.flatMap(comic => 
     comic.chapters.map(ch => ({
@@ -100,7 +100,7 @@ const pageDesc = `Đọc chương ${chapter.chapterNumber} của bộ truyện $
 ></div>
 
 <script>
-  import { storage } from '../../lib/utils/storage';
+  import { storage } from '../../../lib/utils/storage';
   
   const dataset = document.getElementById('reader-data')?.dataset;
   if (dataset) {

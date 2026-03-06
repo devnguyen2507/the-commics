@@ -14,7 +14,7 @@ export const GET: APIRoute = async () => {
     }
 
     const urls = comics.map((c) => ({
-        loc: `${base}/${c.slug}`,
+        loc: `${base}/truyen/${c.slug}`,
         changefreq: 'daily' as const,
         priority: '0.8',
         // updatedAt nếu GraphQL expose, fallback về hôm nay

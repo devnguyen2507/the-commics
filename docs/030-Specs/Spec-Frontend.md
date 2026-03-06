@@ -45,7 +45,7 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
   - **Noindex cho trang phân trang**: Tất cả các trang danh sách truyện từ mục lục trang thứ 2 trở lên (`?page=2`, `?page=3`) bắt buộc chèn thẻ `<meta name="robots" content="noindex, follow" />` nhằm tránh rác kết quả tìm kiếm (Google duplicate content).
   - Lazy load cho các dữ liệu API như danh sách truyện đề xuất hoặc mảng hình ảnh. Nếu chưa tải được hình, JS vẫn render trước thuộc tính `alt` chứa từ khóa mô tả để bot đọc được nội dung ảnh.
   - **Canonical Tags**: Phải trỏ đúng URL gốc để tránh duplicate content.
-  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) sử dụng URL chuẩn (như `chap-{number}`). File `robots.txt` trỏ đến `sitemap-index.xml`.
+  - **Sitemap & Robots**: Sitemap được chia thành **nhiều file** (sitemap-index, sitemap-page, sitemap-categories, sitemap-comics, sitemap-chapters) sử dụng URL chuẩn (như `/truyen/{slug}/chap-{number}`). File `robots.txt` trỏ đến `sitemap-index.xml`.
 
 ---
 
@@ -138,8 +138,9 @@ Vì Astro chạy `output: 'server'` (SSR), `@astrojs/sitemap` mặc định **kh
 sitemap-index.xml
   ├── sitemap-page.xml         # Trang tĩnh: /, /truyen-hot, /tim-kiem, /the-loai
   ├── sitemap-categories.xml   # /the-loai/[slug] — từ getCategories()
-  ├── sitemap-comics.xml       # /[slug] — từ getComics()
-  └── sitemap-chapters.xml     # /[slug]/[chapterId] — từ comics.chapters[]
+  ├── sitemap-categories.xml   # /the-loai/[slug] — từ getCategories()
+  ├── sitemap-comics.xml       # /truyen/[slug] — từ getComics()
+  └── sitemap-chapters.xml     # /truyen/[slug]/chap-[chapterNum] — từ comics.chapters[]
 ```
 
 **Auto-update khi crawl thêm data**:

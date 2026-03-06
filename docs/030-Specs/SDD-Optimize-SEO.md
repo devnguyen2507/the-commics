@@ -36,8 +36,8 @@ Tài liệu này đặc tả kế hoạch tối ưu SEO trên toàn bộ fronten
 | 4 | Truyện Ngắn (One-shot) | `/the-loai/truyen-ngan` | Route thể loại | SEO content box riêng |
 | 5 | Danh mục Thể loại | `/the-loai` | Có H1 | Thêm SEO content box, meta |
 | 6 | Chi tiết Thể loại | `/the-loai/{slug}` | Đã xong | ✅ Tích hợp description DB, render Rich HTML, có scrollbar |
-| 7 | Chi tiết Truyện | `/{slug}` | Có schema Book, breadcrumb | Nâng cấp schema, meta |
-| 8 | Chapter Reader | `/{slug}/{chapterId}` | Có H1, SEO box cơ bản | Nâng cấp schema, cần `description` DB |
+| 7 | Chi tiết Truyện | `/truyen/{slug}` | Đã xong | ✅ Đã thêm prefix /truyen/, nâng cấp schema, meta |
+| 8 | Chapter Reader | `/truyen/{slug}/chap-{chapterNum}` | Đã xong | ✅ Đã đồng bộ chap-N, slugify URL, nâng cấp schema |
 | 9 | Footer | Layout toàn cục | Có links cơ bản | Thêm links SEO |
 | 10 | Điều khoản | `/dieu-khoan` | **Chưa có** | Tạo mới |
 | 11 | Chính sách | `/chinh-sach` | **Chưa có** | Tạo mới |
@@ -51,7 +51,7 @@ Tài liệu này đặc tả kế hoạch tối ưu SEO trên toàn bộ fronten
 ### 3.1. URL Truyện: `/{slug}` vs `/truyen/{slug}`
 
 > [!IMPORTANT]
-> **Đề xuất: Giữ nguyên `/{slug}`** — Không cần thêm `/truyen/` prefix.
+> **Quyết định: Sử dụng `/truyen/{slug}`** — Đã triển khai để phân tách clear namespace cho comic content.
 
 **Lý do:**
 | Tiêu chí | `/{slug}` | `/truyen/{slug}` |
@@ -271,11 +271,11 @@ Mỗi trang cần có **SEO content box** (block text nền) ở cuối trang:
 - [x] Populate category descriptions (In progress - using `seo_report_cat_2.html` for missing slugs)
 
 ### Phase 3: Chapter SEO + URL Migration
-- [ ] Migration: `chapters.description`
-- [ ] Expose `description` trong GraphQL `Chapter` type
-- [ ] Đổi URL chapter sang `/{slug}/chap-{N}` + implement Astro middleware redirect 301
-- [ ] Cập nhật `sitemap-chapters.xml` dùng `chap-{N}` (sau khi redirect xong)
-- [ ] JSON-LD: `Article` + `BreadcrumbList` cho chapter reader
+- [x] Migration: `chapters.description`
+- [x] Expose `description` trong GraphQL `Chapter` type
+- [x] Đổi URL chapter sang `/truyen/{slug}/chap-{N}` + slugify (VD: `chap-ch-1`)
+- [x] Cập nhật `sitemap-chapters.xml` dùng `chap-{N}` URLs
+- [ ] JSON-LD: `Article` + `BreadcrumbList` cho chapter reader (Đã update canonical & breadcrumb)
 - [ ] Nâng cấp SEO box trong chapter reader (dùng `chapters.description`)
 - [ ] Populate chapter descriptions (AI-generated Phase 1)
 

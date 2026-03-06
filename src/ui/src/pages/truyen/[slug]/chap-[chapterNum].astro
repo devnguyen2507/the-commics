@@ -1,21 +1,22 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ReaderNavbar from '../../components/feature/reader/ReaderNavbar.astro';
-import { ReaderImage } from '../../components/feature/reader/ReaderImage';
-import { getComic, getChapter } from '../../lib/api/commics';
-import { getImageUrl } from '../../lib/utils/image';
-import { env } from '../../lib/config/env';
+import Layout from '../../../layouts/Layout.astro';
+import ReaderNavbar from '../../../components/feature/reader/ReaderNavbar.astro';
+import { ReaderImage } from '../../../components/feature/reader/ReaderImage';
+import { getComic, getChapter } from '../../../lib/api/commics';
+import { getImageUrl } from '../../../lib/utils/image';
+import { env } from '../../../lib/config/env';
+import { slugify } from '../../../lib/utils/slug';
 
 const { slug, chapterNum } = Astro.params;
 
 export const prerender = process.env.OUTPUT_MODE === 'static';
 
 export async function getStaticPaths() {
-  const { getComics } = await import('../../lib/api/commics');
+  const { getComics } = await import('../../../lib/api/commics');
   const comics = await getComics({ first: 1000 }); // Increase limit for full static build
   return comics.flatMap(comic => 
     comic.chapters.map(ch => ({
-      params: { slug: comic.slug, chapterNum: ch.chapterNumber?.toString() },
+      params: { slug: comic.slug, chapterNum: slugify(ch.chapterNumber?.toString() || '') },
     }))
   );
 }
@@ -28,7 +29,7 @@ try {
   return Astro.redirect('/404');
 }
 
-const chapterMeta = comic?.chapters.find((c: any) => c.chapterNumber === chapterNum);
+const chapterMeta = comic?.chapters.find((c: any) => slugify(c.chapterNumber) === chapterNum);
 if (!chapterMeta) {
   return Astro.redirect('/404');
 }
@@ -52,10 +53,10 @@ const getChapterNum = (id?: string | null) => {
   return comic?.chapters.find((c: any) => c.id === id)?.chapterNumber;
 }
 
-const nextChapNum = getChapterNum(chapter.nextChapterId);
-const prevChapNum = getChapterNum(chapter.prevChapterId);
+const nextChapNum = slugify(getChapterNum(chapter.nextChapterId) || '');
+const prevChapNum = slugify(getChapterNum(chapter.prevChapterId) || '');
 
-const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/${slug}/chap-${chapter.chapterNumber}`;
+const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}/chap-${slugify(chapter.chapterNumber)}`;
 const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
 const descriptionText = chapter.description || `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
 const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
@@ -71,7 +72,7 @@ const jsonLd = [
     "isPartOf": {
       "@type": "ComicSeries",
       "name": comicTitle,
-      "url": `${env.SITE_URL.replace(/\/$/, '')}/${slug}`
+      "url": `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}`
     },
     "inLanguage": "vi"
   },
@@ -80,7 +81,7 @@ const jsonLd = [
     "@type": "BreadcrumbList",
     "itemListElement": [
       { "@type": "ListItem", "position": 1, "name": "Trang chủ", "item": env.SITE_URL.replace(/\/$/, '') },
-      { "@type": "ListItem", "position": 2, "name": comicTitle, "item": `${env.SITE_URL.replace(/\/$/, '')}/${slug}` },
+      { "@type": "ListItem", "position": 2, "name": comicTitle, "item": `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}` },
       { "@type": "ListItem", "position": 3, "name": `Chương ${chapter.chapterNumber}`, "item": pageUrl }
     ]
   }
@@ -107,14 +108,14 @@ const jsonLd = [
        <div class="flex gap-4">
          {nextChapNum && (
            <a 
-             href={`/${slug}/chap-${nextChapNum}`} 
+             href={`/truyen/${slug}/chap-${nextChapNum}`} 
              data-astro-prefetch="load"
              class="px-12 py-4 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-xl transition-all uppercase tracking-tighter"
            >
              Tiếp theo
            </a>
          )}
-         <a href={`/${slug}`} class="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-black rounded-xl transition-all uppercase tracking-tighter">
+         <a href={`/truyen/${slug}`} class="px-8 py-4 bg-zinc-800 hover:bg-zinc-700 text-white font-black rounded-xl transition-all uppercase tracking-tighter">
            Quay lại
          </a>
        </div>
@@ -135,8 +136,8 @@ const jsonLd = [
     comicTitle={comicTitle}
     chapterNumber={chapter.chapterNumber}
     comicSlug={slug!}
-    nextChapterUrl={nextChapNum ? `/${slug}/chap-${nextChapNum}` : undefined}
-    prevChapterUrl={prevChapNum ? `/${slug}/chap-${prevChapNum}` : undefined}
+    nextChapterUrl={nextChapNum ? `/truyen/${slug}/chap-${nextChapNum}` : undefined}
+    prevChapterUrl={prevChapNum ? `/truyen/${slug}/chap-${prevChapNum}` : undefined}
   />
 </Layout>
 
@@ -150,7 +151,7 @@ const jsonLd = [
 ></div>
 
 <script>
-  import { storage } from '../../lib/utils/storage';
+  import { storage } from '../../../lib/utils/storage';
   
   const dataset = document.getElementById('reader-data')?.dataset;
   if (dataset) {

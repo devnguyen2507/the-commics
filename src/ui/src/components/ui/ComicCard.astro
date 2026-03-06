@@ -9,7 +9,7 @@ interface Props {
 const { comic } = Astro.props;
 ---
 
-<a href={`/${comic.slug}`} class="group space-y-2 block transition-all duration-300 hover:-translate-y-1">
+<a href={`/truyen/${comic.slug}`} class="group space-y-2 block transition-all duration-300 hover:-translate-y-1">
   <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 relative group-hover:border-blue-500/50 shadow-lg transition-all">
     <img 
       src={getImageUrl(comic.coverImage)} 
