@@ -35,7 +35,7 @@ Tài liệu này đặc tả kế hoạch tối ưu SEO trên toàn bộ fronten
 | 3 | Truyện Mới | `/truyen-moi` | **Chưa có trang** | Tạo mới |
 | 4 | Truyện Ngắn (One-shot) | `/the-loai/truyen-ngan` | Route thể loại | SEO content box riêng |
 | 5 | Danh mục Thể loại | `/the-loai` | Có H1 | Thêm SEO content box, meta |
-| 6 | Chi tiết Thể loại | `/the-loai/{slug}` | Có H1, breadcrumb | **Thiếu SEO box**, cần `description` DB |
+| 6 | Chi tiết Thể loại | `/the-loai/{slug}` | Đã xong | ✅ Tích hợp description DB, render Rich HTML, có scrollbar |
 | 7 | Chi tiết Truyện | `/{slug}` | Có schema Book, breadcrumb | Nâng cấp schema, meta |
 | 8 | Chapter Reader | `/{slug}/{chapterId}` | Có H1, SEO box cơ bản | Nâng cấp schema, cần `description` DB |
 | 9 | Footer | Layout toàn cục | Có links cơ bản | Thêm links SEO |
@@ -263,12 +263,12 @@ Mỗi trang cần có **SEO content box** (block text nền) ở cuối trang:
 - [ ] Alt text audit cho `ComicCard.astro` và chapter reader images
 
 ### Phase 2: DB Migration + Category SEO + Schema
-- [ ] Migration: `categories.description`
-- [ ] Expose `description` trong GraphQL `Category` type
-- [ ] Thêm SEO content box vào `/the-loai/{slug}`
-- [ ] JSON-LD: `CollectionPage` + `BreadcrumbList` cho `/the-loai/{slug}`
+- [x] Migration: `categories.description` (Done)
+- [x] Expose `description` trong GraphQL `Category` type (Done)
+- [x] Thêm SEO content box vào `/the-loai/{slug}` (Done - styled with scrollbar)
+- [x] JSON-LD: `CollectionPage` + `BreadcrumbList` cho `/the-loai/{slug}` (Done)
 - [ ] JSON-LD: `ComicSeries` + `BreadcrumbList` cho `/{slug}`
-- [ ] Populate category descriptions
+- [x] Populate category descriptions (In progress - using `seo_report_cat_2.html` for missing slugs)
 
 ### Phase 3: Chapter SEO + URL Migration
 - [ ] Migration: `chapters.description`

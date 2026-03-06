@@ -4,6 +4,7 @@ export interface CategoryView {
     id: string;
     name: string;
     slug: string;
+    description: string | null;
 }
 
 type RawCategory = GetCategoriesQuery['categories'][number];
@@ -13,6 +14,7 @@ export function mapCategoryToView(raw: RawCategory): CategoryView {
         id: raw.id,
         name: raw.name,
         slug: raw.slug,
+        description: raw.description ?? null,
     };
 }
 

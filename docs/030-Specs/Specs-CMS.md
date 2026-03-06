@@ -36,10 +36,17 @@ Cả hai sẽ được đóng gói bằng Docker và cấu hình chạy với `n
   - `PUT /api/chapters/{id}`: Cập nhật thông tin Chapter.
     - Payload: `{ is_publish: boolean, description: string }`
 
+- **Categories**
+  - `GET /api/categories`: Danh sách thể loại.
+  - `GET /api/categories/{id}`: Chi tiết thể loại.
+  - `POST /api/categories`: Tạo thể loại mới.
+  - `PUT /api/categories/{id}`: Cập nhật thông tin thể loại.
+    - Payload: `{ name: string, description: string }`
+
 ### 2.4. Database Schema Updates
-**KHÔNG CÓ MIGRATION MỚI.**
-CMS chỉ thực hiện thao tác CRUD dựa trên 2 schema bảng `comics` và `chapters` hiện có của Project Rust (`src/backend/graphql/src/schema.rs` / `api-aggregator-serving/db/src/schema.rs`).
-Ứng dụng FastAPI sử dụng SQLAlchemy với module tự định nghĩa Table / DeclarativeBase matching y hệt các tên cột như bên schema Rust (ví dụ: `id`, `title`, `description`, `is_publish`).
+Sử dụng các bảng `comics`, `chapters`, và **`categories`** hiện có. 
+- Bảng `categories` được bổ sung cột `description` (TEXT) để lưu nội dung SEO.
+- Ứng dụng sử dụng SQLAlchemy matching chính xác schema DB.
 
 ## 3. Frontend Specifications (`cms/fe`)
 
@@ -52,13 +59,20 @@ CMS chỉ thực hiện thao tác CRUD dựa trên 2 schema bảng `comics` và 
 
 ### 3.2. Page Structure
 1. **/login**: Trang đăng nhập duy nhất cho Admin.
-2. **/ (Dashboard)**: Thống kê nhẹ (tổng truyện, tổng chapter - hoặc redirect vào trang truyện luôn).
+2. **/ (Dashboard)**: Thống kê nhanh và điều hướng.
 3. **/comics**: Quản lý Truyện.
-   - Bảng (Danh sách) với cột Title, Status (Toggle Bật/Tắt).
-   - Nút "Edit" -> Mở Form/Modal chỉnh sửa SEO Box.
-4. **/comics/{id}/chapters**: Quản lý Chapters của một Truyện.
-   - Bảng danh sách chapters, cột Publish Status (Bật/Tắt toggle check ngay).
-   - Nút "Edit" -> Sửa chi tiết Description, SEO Box.
+   - Bảng danh sách với cột Title, Status.
+   - Nút "Edit (SEO)" -> Link tới `/seo-edit/comic/{slug}`.
+4. **/comics/{id}/chapters**: Quản lý Chapters.
+   - Bảng danh sách chapters, cột Publish Status.
+   - Nút "Edit (SEO)" -> Link tới `/seo-edit/chapter/{id}`.
+5. **/categories**: Quản lý Thể loại.
+   - Bảng danh sách slug, tên thể loại.
+   - Chức năng "Thêm Thể loại" để tạo slug mới cho SEO.
+   - Nút "Edit (SEO)" -> Link tới `/seo-edit/category/{id}`.
+6. **/seo-edit/{type}/{id}**: Trang chỉnh sửa SEO tập trung.
+   - Thay thế cho Modal cũ để xử lý nội dung văn bản dài (>1000 từ).
+   - Tích hợp **Unsaved Changes Guard** (cảnh báo khi thoát trang mà chưa lưu).
 
 ### 3.3. UI / UX Design System
 - Header: Sticky header màu `Xanh biển` (#0ea5e9 hoặc tương đương).

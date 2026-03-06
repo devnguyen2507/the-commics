@@ -40,3 +40,19 @@ class ChapterResponse(ChapterBase):
 
     class Config:
         from_attributes = True
+
+class CategoryBase(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+
+class CategoryUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+class CategoryResponse(CategoryBase):
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True

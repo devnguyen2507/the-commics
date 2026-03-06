@@ -8,17 +8,19 @@ Tài liệu này ghi nhận kế hoạch triển khai frontend thực tế dựa
 Thay vì truyền thẳng response GraphQL vào Component, mọi dữ liệu đều phải qua Adapter để chuẩn hoá (`mapToView`).
 
 ### 1.1 Thư viện kết nối (Lib)
-- **File**: `src/lib/api/commics/client.ts`
+- **File**: `src/lib/api/commics/client.ts`, `src/lib/api/commics/generated.ts`
 - **Mục đích**: Chịu trách nhiệm fetch dữ liệu thuần (Raw GraphQL response) qua hàm `GQLFetch`.
+- **Lưu ý Quan Trọng**: Trong trường hợp GraphQL Codegen không tự cập nhật schema, file `generated.ts` cần được **patch thủ công** để thêm các selection set mới (Ví dụ: thêm `description` vào `GetCategoriesDocument`).
 - **Yêu cầu an toàn**: GQLFetch phải làm sạch các biến (remove `undefined` keys) để tránh lỗi deserialize từ backend Rust.
 
 ### 1.2 Lớp chuyển đổi (Adapter)
-- **File**: `src/lib/api/commics/adapters/comic.ts`
-- **Mục đích**: Nhận Raw Data và trả về cấu trúc View Model (`ComicView`, `ChapterView`...).
+- **File**: `src/lib/api/commics/adapters/comic.ts`, `src/lib/api/commics/adapters/category.ts`
+- **Mục đích**: Nhận Raw Data và trả về cấu trúc View Model (`ComicView`, `ChapterView`, `CategoryView`...).
 - **Xử lý ngầm**:
   - Xử lý mảng rỗng `[]` hay null fallback mặc định.
   - Định dạng lại hình thức URL (Ví dụ: `slug` -> URL path).
   - Mapping ảnh gốc sang Local CDN URL thông qua hàm `getImageUrl()`.
+  - **Category Description Mapping**: Map trường `description` từ backend sang `CategoryView` để phục vụ SEO.
 
 ### 1.3 Lớp Hiển Thị (View / Components)
 - **Thư mục**: `src/pages/`, `src/components/ui/`

@@ -137,7 +137,7 @@ services:
       # Phải trỏ vào container 'graphql' vì chạy trong cùng network commics-net
       - GRAPHQL_URL_INTERNAL=http://graphql:8000/graphql
       - CACHE_URL=redis+memory://redis:6379?ttl=300000&lru=5000
-      - SITE_URL=http://localhost:4321
+      - SITE_URL=https://fanmanga.art
       - SITE_NAME=FanManga
       - REVALIDATE_SECRET=change-me-in-production
       # Public vars (baked lúc build, dùng cho client-side / HTML meta tags)
@@ -145,7 +145,7 @@ services:
       - PUBLIC_CDN_URL=http://localhost:3005
       - NODE_ENV=production
     ports:
-      - "4321:4321"
+      - "4322:4321"
     profiles: [ "services" ]
     networks:
       - commics-net

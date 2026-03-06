@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Edit2 } from 'lucide-react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Edit2, Loader2 } from 'lucide-react';
 import api from '../services/api';
-import SeoEditModal from '../components/SeoEditModal';
 
 const ChaptersPage = () => {
     const { comicId } = useParams();
+    const navigate = useNavigate();
     const [page, setPage] = useState(0);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [selectedChapter, setSelectedChapter] = useState(null);
     const queryClient = useQueryClient();
 
     const { data: comic } = useQuery({
@@ -34,7 +32,6 @@ const ChaptersPage = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['chapters', comicId] });
-            setModalOpen(false);
         }
     });
 
@@ -46,20 +43,15 @@ const ChaptersPage = () => {
     };
 
     const handleEditClick = (chapter) => {
-        setSelectedChapter(chapter);
-        setModalOpen(true);
+        navigate(`/seo-edit/chapter/${chapter.id}`);
     };
 
-    const handleSaveSeo = async (data) => {
-        if (!selectedChapter) return;
-        await updateMutation.mutateAsync({
-            id: selectedChapter.id,
-            // Chapter only needs description logic based on our specs
-            data: { description: data.description }
-        });
-    };
-
-    if (isLoading) return <div className="flex items-center justify-center h-full">Đang tải...</div>;
+    if (isLoading) return (
+        <div className="flex flex-col items-center justify-center h-full gap-3">
+            <Loader2 className="animate-spin text-primary" size={32} />
+            <p className="text-gray-500 font-medium">Đang tải chapters...</p>
+        </div>
+    );
 
     return (
         <div className="space-y-6">
@@ -129,17 +121,6 @@ const ChaptersPage = () => {
                 </div>
             </div>
 
-            <SeoEditModal
-                key={selectedChapter ? `chapter-${selectedChapter.id}` : 'none'}
-                isOpen={modalOpen}
-                onClose={() => {
-                    setModalOpen(false);
-                    setSelectedChapter(null);
-                }}
-                data={selectedChapter}
-                onSave={handleSaveSeo}
-                isChapter={true}
-            />
         </div>
     );
 };

@@ -47,10 +47,17 @@ Hệ thống bao gồm các module chính:
 - [x] Config Webp Encoder & Magic Bytes Validation.
 - [x] Áp dụng Atomic File Lock (Chống Thundering Herd).
 
-**Phase 5: Frontend UI (⏳ Todo)**
-- [ ] Render Layout Astro Components.
-- [ ] SSR SEO Engine & Image Placeholder (CLS = 0).
-- [ ] History Storage (Browser-only Quota Limit Caching).
+**Phase 5: Frontend UI & Reader (✅ Done)**
+- [x] Render Layout Astro Components.
+- [x] SSR SEO Engine & Image Placeholder (CLS = 0).
+- [x] History Storage (Browser-only Quota Limit Caching).
+- [x] Integrated Category & Comic SEO content boxes.
+
+**Phase 6: CMS & SEO Operational Refinement (⏳ Progressing)**
+- [x] Build Unified SEO Editor (full-page editing for all content).
+- [x] Category Management API & UI (list, create, update categories).
+- [x] Static Site SEO Audit & QA Checklist.
+- [ ] Automated sitemap ping & verification.
 
 ---
 _Cập nhật lần cuối: 2026-03-01 / Tác giả: Agent SoiBot x DevNguyen_

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Edit2, List } from 'lucide-react';
 import api from '../services/api';
-import SeoEditModal from '../components/SeoEditModal';
 
 const ComicsPage = () => {
     const [page, setPage] = useState(0);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [selectedComic, setSelectedComic] = useState(null);
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
 
     const { data: comics, isLoading } = useQuery({
@@ -25,7 +23,6 @@ const ComicsPage = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['comics'] });
-            setModalOpen(false);
         }
     });
 
@@ -37,16 +34,7 @@ const ComicsPage = () => {
     };
 
     const handleEditClick = (comic) => {
-        setSelectedComic(comic);
-        setModalOpen(true);
-    };
-
-    const handleSaveSeo = async (data) => {
-        if (!selectedComic) return;
-        await updateMutation.mutateAsync({
-            id: selectedComic.id,
-            data: data
-        });
+        navigate(`/seo-edit/comic/${comic.id}`);
     };
 
     if (isLoading) return <div className="flex items-center justify-center h-full">Đang tải...</div>;
@@ -111,18 +99,6 @@ const ComicsPage = () => {
                     </table>
                 </div>
             </div>
-
-            <SeoEditModal
-                key={selectedComic ? `comic-${selectedComic.id}` : 'none'}
-                isOpen={modalOpen}
-                onClose={() => {
-                    setModalOpen(false);
-                    setSelectedComic(null);
-                }}
-                data={selectedComic}
-                onSave={handleSaveSeo}
-                isChapter={false}
-            />
         </div>
     );
 };

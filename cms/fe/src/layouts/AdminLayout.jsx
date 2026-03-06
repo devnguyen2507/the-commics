@@ -40,6 +40,14 @@ const AdminLayout = () => {
                         <Book size={20} />
                         <span className="font-semibold">Quản lý Truyện</span>
                     </Link>
+                    <Link
+                        to="/categories"
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${location.pathname.startsWith('/categories') ? 'bg-primary' : 'hover:bg-gray-800'}`}
+                        onClick={() => setSidebarOpen(false)}
+                    >
+                        <Layers size={20} />
+                        <span className="font-semibold">Quản lý Thể loại</span>
+                    </Link>
                 </nav>
             </aside>
 

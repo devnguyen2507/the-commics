@@ -22,10 +22,10 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
 ### 1.1. Ba loại màn hình chính
 Đặc tả chi tiết 3 bố cục trang cốt lõi của ứng dụng:
 
-2. **Trang Chi tiết Truyện (Comic Detail Page)**:
-   - *Bao gồm*: Trang Chủ (Home), Trang Danh sách theo Thể loại (Category Tag Pages), Trang Kết quả tìm kiếm, Truyện Hot, Truyện Mới, Truyện Ngắn.
-   - *Bố cục*: Grid hiển thị thẻ truyện (thumbnail, tên, rating, số chapter). 
-   - *Chức năng*: **Phân trang (Pagination)** theo tham số query `?page=X`. Sử dụng `PUBLIC_PAGE_COMICS_LIMIT` và `PUBLIC_HOME_COMICS_LIMIT` cấu hình từ biến môi trường để đảm bảo độ tuỳ biến hiển thị.
+2. **Trang Chi tiết Thể loại (Category Detail Page)**:
+   - *Bố cục*: Grid hiển thị thẻ truyện thuộc thể loại đó.
+   - *SEO Content Box*: Nằm ở cuối trang, hiển thị mô tả thể loại từ database.
+   - *Chương trình hiển thị*: Hỗ trợ **Rich HTML** và giới hạn chiều cao (`max-h-[250px]`) kèm **Custom Scrollbar** để đảm bảo tính thẩm mỹ cho các nội dung dài.
    
 2. **Trang Chi tiết Truyện (Comic Detail Page)**:
    - *Bố cục*: 

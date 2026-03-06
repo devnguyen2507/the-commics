@@ -110,21 +110,23 @@ const jsonLd = [
     <!-- SEO Content Box — hiển thị description từ DB nếu có -->
     <section class="pb-16">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện {targetCategoryName} là gì?</h2>
-        <div class="text-zinc-500 text-sm leading-relaxed space-y-3">
-          {categoryDescription ? (
-            <p>{categoryDescription}</p>
-          ) : (
-            <>
-              <p>
-                <strong>Thể loại {targetCategoryName}</strong> là tập hợp các bộ truyện tranh mang phong cách và nội dung đặc trưng của thể loại này.
-                Tại {env.SITE_NAME}, bạn có thể đọc hàng trăm bộ {targetCategoryName} vietsub chất lượng cao, cập nhật mỗi ngày.
-              </p>
-              <p>
-                Tất cả truyện được đọc miễn phí, không cần đăng ký tài khoản.
-              </p>
-            </>
-          )}
+        <h2 class="text-xl font-bold text-zinc-300 mb-4 tracking-tighter uppercase">Truyện {targetCategoryName} là gì?</h2>
+        <div class="bg-zinc-950/40 p-4 rounded-xl border border-zinc-800/50 shadow-inner">
+          <div class="text-zinc-400 text-sm leading-relaxed max-h-[250px] overflow-y-auto custom-scrollbar pr-2 space-y-3">
+            {categoryDescription ? (
+              <div set:html={categoryDescription} />
+            ) : (
+              <>
+                <p>
+                  <strong>Thể loại {targetCategoryName}</strong> là tập hợp các bộ truyện tranh mang phong cách và nội dung đặc trưng của thể loại này.
+                  Tại {env.SITE_NAME}, bạn có thể đọc hàng trăm bộ {targetCategoryName} vietsub chất lượng cao, cập nhật mỗi ngày.
+                </p>
+                <p>
+                  Tất cả truyện được đọc miễn phí, không cần đăng ký tài khoản.
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </section>
