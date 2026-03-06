@@ -4,14 +4,14 @@ import { buildSitemapXml, sitemapResponse } from '../lib/sitemap/helpers';
 
 const STATIC_PAGES = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
-    { path: '/truyen-hot', priority: '0.9', changefreq: 'daily' },
-    { path: '/truyen-moi', priority: '0.9', changefreq: 'daily' },
-    { path: '/the-loai', priority: '0.8', changefreq: 'weekly' },
-    { path: '/tim-kiem', priority: '0.6', changefreq: 'weekly' },
-    { path: '/cau-hoi-thuong-gap', priority: '0.5', changefreq: 'monthly' },
-    { path: '/lien-he', priority: '0.4', changefreq: 'monthly' },
-    { path: '/dieu-khoan', priority: '0.3', changefreq: 'monthly' },
-    { path: '/chinh-sach', priority: '0.3', changefreq: 'monthly' },
+    { path: '/truyen-hot/', priority: '0.9', changefreq: 'daily' },
+    { path: '/truyen-moi/', priority: '0.9', changefreq: 'daily' },
+    { path: '/the-loai/', priority: '0.8', changefreq: 'weekly' },
+    { path: '/tim-kiem/', priority: '0.6', changefreq: 'weekly' },
+    { path: '/cau-hoi-thuong-gap/', priority: '0.5', changefreq: 'monthly' },
+    { path: '/lien-he/', priority: '0.4', changefreq: 'monthly' },
+    { path: '/dieu-khoan/', priority: '0.3', changefreq: 'monthly' },
+    { path: '/chinh-sach/', priority: '0.3', changefreq: 'monthly' },
 ] as const;
 
 export const GET: APIRoute = async () => {

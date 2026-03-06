@@ -46,7 +46,7 @@ const featured = comics.slice(0, 3);
             {featured[0].description || `Đọc ngay bộ truyện hot nhất hiện nay tại ${env.SITE_NAME}.`}
           </p>
           <div class="pt-2">
-            <a href={`/truyen/${featured[0].slug}`} class="inline-flex items-center justify-center px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all uppercase text-sm tracking-wide">
+            <a href={`/truyen/${featured[0].slug}/`} class="inline-flex items-center justify-center px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all uppercase text-sm tracking-wide">
               Đọc ngay
             </a>
           </div>

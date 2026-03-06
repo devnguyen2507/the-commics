@@ -15,7 +15,6 @@ Allow: /truyen-moi/
 
 # Chặn thu thập nội dung rác gây tốn Crawl Budget
 Disallow: /api/
-Disallow: /tim-kiem
 Disallow: /*?page=
 Disallow: /*?sort=
 

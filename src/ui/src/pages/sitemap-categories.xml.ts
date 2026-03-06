@@ -14,7 +14,7 @@ export const GET: APIRoute = async () => {
     }
 
     const urls = categories.map((cat) => ({
-        loc: `${base}/the-loai/${cat.slug}`,
+        loc: `${base}/the-loai/${cat.slug}/`,
         lastmod: new Date().toISOString(),
         changefreq: 'weekly' as const,
         priority: '0.7',

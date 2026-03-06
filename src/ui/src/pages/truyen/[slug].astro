@@ -93,7 +93,7 @@ const schemas = [
         
         <div class="flex flex-wrap gap-2">
           {comic.categories?.map((cat: any) => (
-            <a href={`/the-loai/${cat.slug}`} class="px-3 py-1 bg-zinc-900 hover:bg-blue-600 border border-zinc-800 rounded-full text-xs font-bold uppercase tracking-tight transition-colors">
+            <a href={`/the-loai/${cat.slug}/`} class="px-3 py-1 bg-zinc-900 hover:bg-blue-600 border border-zinc-800 rounded-full text-xs font-bold uppercase tracking-tight transition-colors">
               {cat.name}
             </a>
           ))}
@@ -129,7 +129,7 @@ const schemas = [
         </div>
         
         <div class="flex gap-4">
-          <a href={`/truyen/${comic.slug}/chap-${slugify(comic.chapters?.[0]?.chapterNumber || '1')}`} class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-lg transition-all uppercase text-sm tracking-wide">
+          <a href={`/truyen/${comic.slug}/chap-${slugify(comic.chapters?.[0]?.chapterNumber || '1')}/`} class="px-8 py-3 bg-blue-600 hover:bg-blue-500 text-white font-black rounded-lg transition-all uppercase text-sm tracking-wide">
             Đọc từ đầu
           </a>
           <BookmarkButton client:load comic={comic} />
@@ -145,7 +145,7 @@ const schemas = [
        
         <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
           {comic.chapters?.slice().reverse().map((ch: any) => (
-            <a href={`/truyen/${comic.slug}/chap-${slugify(ch.chapterNumber)}`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
+            <a href={`/truyen/${comic.slug}/chap-${slugify(ch.chapterNumber)}/`} class="flex items-center justify-between p-4 bg-zinc-900/30 hover:bg-zinc-800 border border-zinc-800/50 rounded-lg group transition-colors">
               <span class="font-bold text-sm text-zinc-300 group-hover:text-blue-500 transition-colors">Chương {ch.chapterNumber}</span>
               <span class="text-[10px] text-zinc-600 uppercase font-medium">Ch.{ch.orderIndex}</span>
             </a>
@@ -160,7 +160,7 @@ const schemas = [
         </header>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           {relatedComics.map((c: any) => (
-            <a href={`/truyen/${c.slug}`} class="group space-y-2 block">
+            <a href={`/truyen/${c.slug}/`} class="group space-y-2 block">
               <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900">
                 <img 
                   src={getImageUrl(c.coverImage)} 
