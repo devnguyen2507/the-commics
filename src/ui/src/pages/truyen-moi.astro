@@ -30,10 +30,7 @@ const title = page > 1 ? `Truyện Mới Cập Nhật - Trang ${page} - ${env.SI
 const description = `Đọc truyện mới nhất hôm nay: manga, manhwa, manhua vietsub cập nhật liên tục, nhanh nhất tại ${env.SITE_NAME}.`;
 ---
 
-<Layout title={title} description={description}>
-  <Fragment slot="head">
-    {page > 1 && <meta name="robots" content="noindex, follow" />}
-  </Fragment>
+<Layout title={title} description={description} robots={page > 1 ? "noindex, follow" : undefined}>
   <main class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">

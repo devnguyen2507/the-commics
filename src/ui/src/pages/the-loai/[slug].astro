@@ -80,10 +80,9 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={pageTitle} description={pageDesc}>
+<Layout title={pageTitle} description={pageDesc} robots={page > 1 ? "noindex, follow" : undefined}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    {page > 1 && <meta name="robots" content="noindex, follow" />}
   </Fragment>
 
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">

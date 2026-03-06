@@ -33,8 +33,11 @@ const breadcrumbs = [
 ];
 ---
 
-<Layout title={page > 1 ? `Kết quả tìm kiếm cho "${query}" - Trang ${page} - ${env.SITE_NAME}` : `Kết quả tìm kiếm cho "${query}" - ${env.SITE_NAME}`} description={`Tìm thấy ${comics.length} bộ truyện khớp với từ khóa "${query}" tại ${env.SITE_NAME}.`}>
-  {(query || page > 1) && <meta slot="head" name="robots" content="noindex, follow" />}
+<Layout 
+  title={page > 1 ? `Kết quả tìm kiếm cho "${query}" - Trang ${page} - ${env.SITE_NAME}` : `Kết quả tìm kiếm cho "${query}" - ${env.SITE_NAME}`} 
+  description={`Tìm thấy ${comics.length} bộ truyện khớp với từ khóa "${query}" tại ${env.SITE_NAME}.`}
+  robots={(query || page > 1) ? "noindex, follow" : undefined}
+>
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
     <Breadcrumb items={breadcrumbs} />
     
