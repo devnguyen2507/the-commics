@@ -26,7 +26,7 @@ export async function GET(context: any) {
             description: `Đọc truyện tranh ${comic.title} online chất lượng cao tại ${env.SITE_NAME}.`,
             link: `${siteUrl}/truyen/${comic.slug}/`,
             // Bạn có thể thêm customData để chèn ảnh vào feed nều cần (tùy chọn)
-            customData: `<image>${comic.coverImage}</image><author>${comic.author || 'Đang cập nhật'}</author>`,
+            customData: `<author>${comic.author || 'Đang cập nhật'}</author>`,
         })),
         customData: `<language>vi-vn</language>`,
     });
