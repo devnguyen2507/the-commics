@@ -24,8 +24,8 @@ export const env = {
     PUBLIC_PAGE_COMICS_LIMIT: parseInt(import.meta.env.PUBLIC_PAGE_COMICS_LIMIT || '24', 10),
 
     // Runtime vars (process.env only)
-    SITE_URL: getRuntimeEnv('SITE_URL', 'http://localhost:4321'),
-    SITE_NAME: getRuntimeEnv('SITE_NAME', 'Commics'),
+    SITE_URL: getRuntimeEnv('SITE_URL', 'https://fanmanga.net'),
+    SITE_NAME: getRuntimeEnv('SITE_NAME', 'FanManga'),
     CACHE_URL: getRuntimeEnv('CACHE_URL', ''),
     REVALIDATE_SECRET: getRuntimeEnv('REVALIDATE_SECRET', ''),
     OUTPUT_MODE: getRuntimeEnv('OUTPUT_MODE', 'server'),

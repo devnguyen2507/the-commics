@@ -1,6 +1,7 @@
 ---
 import type { ComicView } from '../../../lib/api/commics/adapters/comic';
 import { getImageUrl } from '../../../lib/utils/image';
+import { env } from '../../../lib/config/env';
 
 interface Props {
   comics: ComicView[];
@@ -42,7 +43,7 @@ const featured = comics.slice(0, 3);
              <span class="text-yellow-500 font-bold">{featured[0].ratingScore.toFixed(1)} Rating</span>
           </div>
           <p class="text-zinc-400 max-w-2xl line-clamp-2 text-sm md:text-base">
-            {featured[0].description || "Đọc ngay bộ truyện hot nhất hiện nay tại Commics."}
+            {featured[0].description || `Đọc ngay bộ truyện hot nhất hiện nay tại ${env.SITE_NAME}.`}
           </p>
           <div class="pt-2">
             <a href={`/truyen/${featured[0].slug}`} class="inline-flex items-center justify-center px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-blue-500 hover:text-white transition-all uppercase text-sm tracking-wide">
@@ -54,7 +55,7 @@ const featured = comics.slice(0, 3);
     </div>
   ) : (
     <div class="flex items-center justify-center h-full text-zinc-700 font-bold uppercase tracking-widest italic">
-      Commics Featured
+      {env.SITE_NAME} Featured
     </div>
   )}
 </section>

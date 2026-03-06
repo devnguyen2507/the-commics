@@ -30,6 +30,7 @@ export const GET: APIRoute = async () => {
                 .filter((ch) => ch.chapterNumber)
                 .map((ch) => ({
                     loc: `${base}/truyen/${comic.slug}/chap-${slugify(ch.chapterNumber || '')}`,
+                    lastmod: new Date().toISOString(),
                     changefreq: 'monthly' as const,
                     priority: '0.6',
                 }));

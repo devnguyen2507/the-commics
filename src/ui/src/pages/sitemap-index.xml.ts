@@ -8,19 +8,19 @@ export const GET: APIRoute = async () => {
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${base}/sitemap-page.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${base}/sitemap-categories.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${base}/sitemap-comics.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>
   <sitemap>
     <loc>${base}/sitemap-chapters.xml</loc>
-    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <lastmod>${new Date().toISOString()}</lastmod>
   </sitemap>
 </sitemapindex>`;
 

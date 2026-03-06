@@ -3,7 +3,7 @@ export interface SitemapUrl {
     changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
     /** '0.0' → '1.0' */
     priority?: string;
-    /** YYYY-MM-DD */
+    /** ISO 8601 (e.g., YYYY-MM-DDThh:mm:ss+hh:mm) */
     lastmod?: string;
 }
 

@@ -9,8 +9,11 @@ interface Props {
 	ogType?: string;
 }
 
-const { title, description, image = '/og-default.jpg', canonicalURL = Astro.url, ogType = 'website' } = Astro.props;
+const { title, description, image = '/og-default.jpg', ogType = 'website' } = Astro.props;
 const publicEnv = getPublicEnv();
+
+// Use Astro.site for canonical if available, otherwise fallback to Astro.url
+const canonicalURL = Astro.props.canonicalURL || new URL(Astro.url.pathname, Astro.site || Astro.url);
 
 // Ensure no trailing slash for canonical
 const cleanCanonical = canonicalURL.toString().replace(/\/$/, "");

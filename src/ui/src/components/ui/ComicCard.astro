@@ -1,6 +1,7 @@
 ---
 import type { ComicView } from '../../lib/api/commics/adapters/comic';
 import { getImageUrl } from '../../lib/utils/image';
+import { env } from '../../lib/config/env';
 
 interface Props {
   comic: ComicView;
@@ -13,7 +14,7 @@ const { comic } = Astro.props;
   <div class="aspect-[3/4] overflow-hidden rounded-xl bg-zinc-900 border border-zinc-800 relative group-hover:border-blue-500/50 shadow-lg transition-all">
     <img 
       src={getImageUrl(comic.coverImage)} 
-      alt={`${comic.title} - đọc truyện online tại Commics`}
+      alt={`${comic.title} - đọc truyện online tại ${env.SITE_NAME}`}
       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       loading="lazy"
       onerror="this.onerror=null;this.src='/placeholder.svg';"

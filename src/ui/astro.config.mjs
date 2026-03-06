@@ -1,18 +1,18 @@
 import node from '@astrojs/node';
-import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 export default defineConfig({
     site: process.env.SITE_URL || 'http://localhost:4321',
+    trailingSlash: 'never',
     integrations: [
-        react(),
-        sitemap({
-            trailingSlash: "ignore",
-        })
+        react()
     ],
 
     output: process.env.OUTPUT_MODE === 'static' ? 'static' : 'server',

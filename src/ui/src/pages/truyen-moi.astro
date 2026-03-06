@@ -59,16 +59,56 @@ const description = `Đọc truyện mới nhất hôm nay: manga, manhwa, manhu
     <!-- SEO Content Box -->
     <section class="max-w-6xl mx-auto px-0 pb-16 mt-16">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-xl font-bold text-zinc-300 mb-4">Truyện mới cập nhật hôm nay</h2>
-          <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-4">
-            <p>
-            <strong>{env.SITE_NAME}</strong> cập nhật truyện mới liên tục mỗi ngày từ các nguồn manga Nhật Bản,
-            truyện tranh Hàn Quốc (manhwa) và Trung Quốc (manhua). Tất cả đều được dịch sang tiếng Việt chất lượng cao.
-            </p>
+        <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">Truyện mới cập nhật hôm nay - Đọc sớm nhất tại {env.SITE_NAME}</h2>
+        
+        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6">
           <p>
-            Danh sách truyện mới được sắp xếp theo thứ tự cập nhật chapter mới nhất,
-            giúp bạn không bỏ lỡ bất kỳ bộ truyện hấp dẫn nào. Bookmark ngay để theo dõi!
+            Tại <strong>Fanmanga.net</strong>, chúng tôi hiểu rằng niềm vui lớn nhất của một độc giả là được cầm trên tay (hoặc nhìn trên màn hình) những chương truyện mới nhất ngay khi chúng vừa ra lò. Trang "Truyện Mới Cập Nhật" chính là linh hồn của hệ thống, nơi ghi dấu những bước chân mới nhất của mọi bộ truyện đang làm mưa làm gió trên toàn cầu.
           </p>
+
+          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Cập nhật liên tục 24/7 từ các nguồn uy tín</h2>
+          <p>
+            Chúng tôi không chỉ thu thập truyện, chúng tôi tuyển lọc những tác phẩm chất lượng nhất. Từ các studio Manga nổi tiếng tại Nhật Bản, những nền tảng Webtoon hàng đầu tại Hàn Quốc (Manhwa) cho đến các kho tàng Manhua đồ sộ của Trung Quốc. Mọi bộ truyện đều được đội ngũ dịch giả chuyên nghiệp Việt hóa một cách mượt mà, sát nghĩa và đầy cảm xúc.
+          </p>
+          <p>
+            Danh sách truyện mới tại {env.SITE_NAME} được sắp xếp theo thời gian thực. Bất kể là ngày hay đêm, chỉ cần có chương mới, hệ thống sẽ tự động đưa chúng lên đầu danh sách để bạn không bao giờ phải chờ đợi. Đây là nơi bạn có thể tìm thấy những câu chuyện đang ở giai đoạn cao trào, những bí mật vừa được hé lộ và những nhân vật mới vừa xuất hiện.
+          </p>
+
+          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Đa dạng lựa chọn cho mọi sở thích</h2>
+          <p>
+            Cho dù bạn đang tìm kiếm một bộ truyện hành động để giải tỏa căng thẳng, hay một câu chuyện tình yêu nhẹ nhàng cho buổi tối cuối tuần, chuyên mục này đều có đủ. Chúng tôi phân loại rõ ràng các thể loại để bạn dễ dàng theo dõi:
+          </p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>Truyện hành động mới:</strong> Cập nhật những màn combat mãn nhãn nhất.</li>
+            <li><strong>Manhwa 18+ mới:</strong> Những bộ truyện người lớn với art style đỉnh cao và cốt truyện lôi cuốn.</li>
+            <li><strong>Manga học đường mới:</strong> Những ký ức tuổi trẻ đầy mộng mơ.</li>
+            <li><strong>Truyện màu (Webtoon):</strong> Trải nghiệm hình ảnh sống động với phong cách vẽ hiện đại.</li>
+          </ul>
+
+          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Trải nghiệm đọc mượt mà, không quảng cáo phiền nhiễu</h2>
+          <p>
+            Chúng tôi cam kết mang đến một môi trường đọc truyện sạch sẽ nhất có thể. Tại Fanmanga.net, tốc độ tải trang là cực kỳ nhanh, hình ảnh được tối ưu hóa dung lượng nhưng vẫn giữ được độ nét cao. Bạn sẽ không bị làm phiền bởi những banner quảng cáo che khuất tầm nhìn hay những pop-up khó chịu. Tất cả vì trải nghiệm tuyệt vời của bạn!
+          </p>
+
+          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Tính năng theo dõi (Favorite)</h3>
+          <p>
+            Hãy sử dụng tính năng đánh dấu truyện yêu thích để nhận được thông báo ngay khi bộ truyện đó có chương mới. Với Fanmanga, bạn sẽ luôn là người dẫn đầu trong hành trình khám phá thế giới truyện tranh.
+          </p>
+
+          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Kết nối với cộng đồng mọt truyện</h3>
+          <p>
+            Đừng quên comment và chia sẻ cảm nghĩ của bạn bên dưới mỗi chương truyện. Những ý kiến đóng góp của bạn chính là động lực để đội ngũ dịch giả tiếp tục cống hiến và mang đến những bản dịch chất lượng hơn nữa.
+          </p>
+
+          <p class="font-bold text-zinc-300">
+            Hãy bookmark ngay Fanmanga.net và ghé thăm mỗi ngày để không bỏ lỡ bất kỳ "siêu phẩm" nào nhé! Mọi ý kiến đóng góp xin gửi về: <strong>info@fanmanga.net</strong>.
+          </p>
+
+          <div class="mt-8 pt-8 border-t border-zinc-800">
+            <p class="text-xs italic text-zinc-500">
+              Từ khóa: truyện mới nhất, manga vietsub mới, manhwa 18+ cập nhật, truyen moi hom nay, đọc truyện tranh online, fanmanga cập nhật.
+            </p>
+          </div>
         </div>
       </div>
     </section>

@@ -16,7 +16,7 @@ const STATIC_PAGES = [
 
 export const GET: APIRoute = async () => {
     const base = env.SITE_URL.replace(/\/$/, '');
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString();
 
     const urls = STATIC_PAGES.map(({ path, priority, changefreq }) => ({
         loc: `${base}${path}`,
