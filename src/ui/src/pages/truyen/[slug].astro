@@ -57,7 +57,7 @@ const breadcrumbs = [
   { label: comic.title, url: `${Astro.url.origin}/truyen/${comic.slug}` }
 ];
 
-const pageTitle = `${comic.title} - Đọc truyện online tại ${env.SITE_NAME}`;
+const pageTitle = `${comic.title} - Đọc tại ${env.SITE_NAME}`;
 const pageDesc = `Đọc truyện ${comic.title} online miễn phí tại ${env.SITE_NAME}. Cập nhật nhanh nhất, chất lượng cao.`;
 
 const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô tả cho bộ truyện này.", {
