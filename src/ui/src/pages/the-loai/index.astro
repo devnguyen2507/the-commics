@@ -13,8 +13,8 @@ try {
 }
 
 const breadcrumbs = [{ label: 'Thể loại', url: `${Astro.url.origin}/the-loai` }];
-const pageTitle = `Tất cả Thể loại - ${env.SITE_NAME}`;
-const pageDesc = `Danh sách toàn bộ thể loại truyện tranh tại ${env.SITE_NAME}.`;
+const pageTitle = `Tất cả Thể loại truyện tranh hay nhất - ${env.SITE_NAME}`;
+const pageDesc = `Khám phá danh sách toàn bộ các thể loại truyện tranh hấp dẫn tại ${env.SITE_NAME}. Từ Manga, Manhwa đến những thể loại mặn mà nhất, tất cả đều miễn phí.`;
 
 const schemas = [
   generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/the-loai`),

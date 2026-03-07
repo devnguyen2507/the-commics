@@ -35,7 +35,10 @@ const breadcrumbs = [
 
 <Layout 
   title={page > 1 ? `Kết quả tìm kiếm cho "${query}" - Trang ${page} - ${env.SITE_NAME}` : `Kết quả tìm kiếm cho "${query}" - ${env.SITE_NAME}`} 
-  description={`Tìm thấy ${comics.length} bộ truyện khớp với từ khóa "${query}" tại ${env.SITE_NAME}.`}
+  description={query 
+    ? `Khám phá ngay danh sách truyện tranh khớp với từ khóa "${query}" tại ${env.SITE_NAME}. Hàng ngàn bộ truyện hay đang chờ bạn đọc miễn phí.`
+    : `Tìm kiếm truyện tranh online thông minh tại ${env.SITE_NAME}. Nhập tên truyện, tác giả hoặc thể loại để khám phá kho tàng Manga, Manhwa hấp dẫn.`
+  }
   robots={(query || page > 1) ? "noindex, follow" : undefined}
 >
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">

@@ -55,8 +55,11 @@ const pageTitle = page > 1
   ? `Truyện ${targetCategoryName} - Trang ${page} - Đọc online tại ${env.SITE_NAME}` 
   : `Truyện ${targetCategoryName} - Đọc online tại ${env.SITE_NAME}`;
 
-const pageDesc = categoryDescription
-  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc miễn phí tại ${env.SITE_NAME}.`;
+const h3Match = categoryDescription ? categoryDescription.match(/<h3>(.*?)<\/h3>/i) : null;
+const extractedDesc = h3Match ? h3Match[1].replace(/<[^>]*>?/gm, '') : null;
+
+const pageDesc = extractedDesc 
+  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc truyện ${targetCategoryName} vietsub miễn phí sớm nhất tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
   { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` },

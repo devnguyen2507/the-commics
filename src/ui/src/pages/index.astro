@@ -32,7 +32,13 @@ const schemas = [generateWebsiteSchema(env.SITE_NAME || 'Commics', siteUrl)];
 
 ---
 
-<Layout title={pageTitle} isHome={true} ogType="website" schemas={schemas}>
+<Layout 
+	title={pageTitle} 
+	description={`Đọc truyện tranh online hay nhất tại ${env.SITE_NAME}. Cập nhật liên tục Manga, Manhwa, Manhua vietsub sớm nhất với chất lượng hình ảnh sắc nét, hoàn toàn miễn phí.`}
+	isHome={true} 
+	ogType="website" 
+	schemas={schemas}
+>
 	<HeroSlider comics={latestComics} />
 	
 	<div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
