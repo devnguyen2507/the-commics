@@ -15,6 +15,8 @@ const { comic } = Astro.props;
     <img 
       src={getImageUrl(comic.coverImage)} 
       alt={`${comic.title} - đọc truyện online tại ${env.SITE_NAME}`}
+      width="300"
+      height="400"
       class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
       loading="lazy"
       onerror="this.onerror=null;this.src='/placeholder.svg';"

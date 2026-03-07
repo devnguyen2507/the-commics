@@ -58,7 +58,7 @@ const pageTitle = page > 1
 const h3Match = categoryDescription ? categoryDescription.match(/<h3>(.*?)<\/h3>/i) : null;
 const extractedDesc = h3Match ? h3Match[1].replace(/<[^>]*>?/gm, '') : null;
 
-const pageDesc = extractedDesc 
+const pageDesc = `${extractedDesc}. Đọc truyện mới nhất tại ${env.SITE_NAME}` 
   || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc truyện ${targetCategoryName} vietsub miễn phí sớm nhất tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
