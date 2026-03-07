@@ -15,8 +15,6 @@ Allow: /truyen-moi/
 
 # Chặn thu thập nội dung rác gây tốn Crawl Budget
 Disallow: /api/
-Disallow: /*?page=
-Disallow: /*?sort=
 
 # Chặn các đường dẫn Honeypot / Dò quét lỗi phổ biến của Scanner Bots
 Disallow: /wp-admin/
