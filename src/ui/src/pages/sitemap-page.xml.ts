@@ -1,6 +1,7 @@
 import type { APIRoute } from 'astro';
 import { env } from '../lib/config/env';
-import { buildSitemapXml, sitemapResponse } from '../lib/sitemap/helpers';
+import { buildSitemapXml, sitemapResponse, formatSitemapDate } from '../lib/sitemap/helpers';
+import { getSeoContents } from '../lib/api/commics';
 
 const STATIC_PAGES = [
     { path: '/', priority: '1.0', changefreq: 'daily' },
@@ -16,14 +17,30 @@ const STATIC_PAGES = [
 
 export const GET: APIRoute = async () => {
     const base = env.SITE_URL.replace(/\/$/, '');
-    const today = new Date().toISOString();
 
-    const urls = STATIC_PAGES.map(({ path, priority, changefreq }) => ({
-        loc: `${base}${path}`,
-        changefreq,
-        priority,
-        lastmod: today,
-    }));
+    let seoContents: any[] = [];
+    try {
+        seoContents = await getSeoContents({ entityType: 'page' });
+    } catch (err) {
+        console.error('[sitemap-page] fetch error:', err);
+    }
+
+    const seoMap = new Map(seoContents.map(c => [c.path, c]));
+
+    const urls = STATIC_PAGES
+        .filter((p) => {
+            const seo = seoMap.get(p.path);
+            return seo ? seo.isPublished : true;
+        })
+        .map(({ path, priority, changefreq }) => {
+            const seo = seoMap.get(path);
+            return {
+                loc: `${base}${path}`,
+                changefreq,
+                priority,
+                lastmod: formatSitemapDate(seo?.publishedAt),
+            };
+        });
 
     return sitemapResponse(buildSitemapXml(urls), 86400);
 };

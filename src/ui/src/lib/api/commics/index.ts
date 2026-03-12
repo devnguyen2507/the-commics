@@ -119,3 +119,25 @@ export const getChapter = withCache(
     tags: (id: string) => ['chapters', `chapter:${id} `],
   }
 );
+// ─── getSeoContents: cache 1 giờ ───
+export const getSeoContents = withCache(
+  async (variables?: { entityType?: string }) => {
+    const data = await GQLFetch<any>(
+      `query getSeoContents($filter: SeoFilter) {
+        seoContents(filter: $filter) {
+          path
+          title
+          description
+          keywords
+          publishedAt
+          isPublished
+          entityType
+          entityId
+        }
+      }`,
+      { filter: variables }
+    );
+    return data.seoContents;
+  },
+  { mode: 'stale-while-revalidate', ttl: 3600, staleTTL: 3600, tags: ['seo'] }
+);

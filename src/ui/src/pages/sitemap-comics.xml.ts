@@ -1,25 +1,27 @@
 import type { APIRoute } from 'astro';
 import { env } from '../lib/config/env';
-import { getComics } from '../lib/api/commics';
-import { buildSitemapXml, sitemapResponse } from '../lib/sitemap/helpers';
+import { getSeoContents } from '../lib/api/commics';
+import { buildSitemapXml, sitemapResponse, formatSitemapDate } from '../lib/sitemap/helpers';
 
 export const GET: APIRoute = async () => {
     const base = env.SITE_URL.replace(/\/$/, '');
 
-    let comics: Awaited<ReturnType<typeof getComics>> = [];
+    let seoContents: any[] = [];
     try {
-        comics = await getComics({ first: env.STATIC_BUILD_LIMIT });
+        seoContents = await getSeoContents({ entityType: 'comic' });
     } catch (err) {
         console.error('[sitemap-comics] fetch error:', err);
     }
 
-    const urls = comics.map((c) => ({
-        loc: `${base}/truyen/${c.slug}/`,
-        changefreq: 'daily' as const,
-        priority: '0.8',
-        // updatedAt nếu GraphQL expose, fallback về hôm nay
-        lastmod: (c as any).publishedAt ?? new Date().toISOString(),
-    }));
+    const urls = seoContents
+        .filter((c) => c.isPublished)
+        .map((c) => ({
+            loc: `${base}${c.path}`,
+            changefreq: 'daily' as const,
+            priority: '0.8',
+            lastmod: formatSitemapDate(c.publishedAt),
+        }))
+        .sort((a, b) => a.loc.localeCompare(b.loc));
 
     return sitemapResponse(buildSitemapXml(urls));
 };

@@ -83,6 +83,22 @@ diesel::table! {
     }
 }
 
+diesel::table! {
+    seo_contents (id) {
+        id -> Uuid,
+        path -> Varchar,
+        title -> Nullable<Varchar>,
+        description -> Nullable<Text>,
+        keywords -> Nullable<Varchar>,
+        is_published -> Bool,
+        published_at -> Nullable<Timestamptz>,
+        entity_type -> Nullable<Varchar>,
+        entity_id -> Nullable<Varchar>,
+        created_at -> Nullable<Timestamptz>,
+        updated_at -> Nullable<Timestamptz>,
+    }
+}
+
 diesel::joinable!(assets -> chapters (chapter_id));
 diesel::joinable!(assets -> comics (comic_id));
 diesel::joinable!(chapters -> comics (comic_id));
@@ -96,4 +112,5 @@ diesel::allow_tables_to_appear_in_same_query!(
     comic_categories,
     comics,
     worker_tasks,
+    seo_contents,
 );

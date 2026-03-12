@@ -98,3 +98,18 @@ class ComicCategory(Base):
     __tablename__ = 'comic_categories'
     comic_id = Column(String, ForeignKey('comics.id', ondelete='CASCADE'), primary_key=True)
     category_id = Column(String, ForeignKey('categories.id', ondelete='CASCADE'), primary_key=True)
+
+class SeoContent(Base):
+    __tablename__ = 'seo_contents'
+
+    id = Column(String, primary_key=True)
+    path = Column(String, unique=True, nullable=False)
+    title = Column(String)
+    description = Column(String)
+    keywords = Column(String)
+    is_published = Column(Boolean, default=False)
+    published_at = Column(DateTime)
+    entity_type = Column(String) # 'comic', 'chapter', 'category', 'page'
+    entity_id = Column(String)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -80,3 +80,20 @@ pub struct Asset {
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
 }
+
+#[derive(Debug, Queryable, Selectable, Identifiable, Serialize, Deserialize, Clone)]
+#[diesel(table_name = seo_contents)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct SeoContent {
+    pub id: uuid::Uuid,
+    pub path: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub keywords: Option<String>,
+    pub is_published: bool,
+    pub published_at: Option<chrono::DateTime<chrono::Utc>>,
+    pub entity_type: Option<String>,
+    pub entity_id: Option<String>,
+    pub created_at: Option<chrono::DateTime<chrono::Utc>>,
+    pub updated_at: Option<chrono::DateTime<chrono::Utc>>,
+}

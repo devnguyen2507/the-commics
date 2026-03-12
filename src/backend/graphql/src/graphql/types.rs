@@ -311,3 +311,39 @@ pub struct ComicFilter {
     pub search_query: Option<String>,
     pub status: Option<String>,
 }
+
+#[derive(SimpleObject)]
+pub struct SeoContent {
+    pub id: ID,
+    pub path: String,
+    pub title: Option<String>,
+    pub description: Option<String>,
+    pub keywords: Option<String>,
+    pub entity_type: Option<String>,
+    pub entity_id: Option<String>,
+    pub is_published: bool,
+    pub published_at: Option<String>,
+}
+
+impl From<models::SeoContent> for SeoContent {
+    fn from(m: models::SeoContent) -> Self {
+        Self {
+            id: ID::from(m.id.to_string()),
+            path: m.path,
+            title: m.title,
+            description: m.description,
+            keywords: m.keywords,
+            entity_type: m.entity_type,
+            entity_id: m.entity_id,
+            is_published: m.is_published,
+            published_at: m.published_at.map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string()),
+        }
+    }
+}
+
+#[derive(InputObject)]
+pub struct SeoFilter {
+    pub entity_type: Option<String>,
+    pub entity_id: Option<String>,
+    pub path: Option<String>,
+}

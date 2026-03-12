@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 from temporalio import activity
 from db.database import async_session_maker
-from db.models import Comic, WorkerTask, Asset, WorkerComic, WorkerChapter, Category, ComicCategory
+from db.models import Comic, WorkerTask, Asset, WorkerComic, WorkerChapter, Category, ComicCategory, SeoContent
 from models.comic_models import ComicMetadata, ChapterInfo, AssetMetadata
 from utils.http_client import fetch_html
 from sqlalchemy.dialects.postgresql import insert
@@ -204,7 +204,44 @@ async def upsert_comic_in_db(metadata: ComicMetadata) -> dict:
                         category_id=cat_id
                     ).on_conflict_do_nothing()
                 )
+                
+                # Update SEO Content for Category
+                await session.execute(
+                    insert(SeoContent).values(
+                        id=str(uuid.uuid4()),
+                        path=f"/the-loai/{cat_id}/",
+                        title=norm_name,
+                        entity_type="category",
+                        entity_id=cat_id,
+                        is_published=True,
+                        published_at=datetime.utcnow()
+                    ).on_conflict_do_update(
+                        index_elements=['path'],
+                        set_={"title": norm_name, "updated_at": datetime.utcnow()}
+                    )
+                )
             
+        # Update SEO Content for Comic
+        await session.execute(
+            insert(SeoContent).values(
+                id=str(uuid.uuid4()),
+                path=f"/truyen/{metadata.id}/",
+                title=metadata.title,
+                description=metadata.description,
+                entity_type="comic",
+                entity_id=internal_id,
+                is_published=True,
+                published_at=datetime.utcnow()
+            ).on_conflict_do_update(
+                index_elements=['path'],
+                set_={
+                    "title": metadata.title,
+                    "description": metadata.description,
+                    "updated_at": datetime.utcnow()
+                }
+            )
+        )
+
         await session.commit()
         logger.info("Comic upsert completed", internal_id=internal_id)
         return {

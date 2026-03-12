@@ -1,4 +1,4 @@
-use crate::graphql::types::{Category, Chapter, Comic, ComicFilter, ComicSort};
+use crate::graphql::types::{Category, Chapter, Comic, ComicFilter, ComicSort, SeoContent, SeoFilter};
 use async_graphql::*;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
@@ -7,6 +7,36 @@ pub struct QueryRoot;
 
 #[Object]
 impl QueryRoot {
+    async fn seo_contents(
+        &self,
+        ctx: &Context<'_>,
+        filter: Option<SeoFilter>,
+    ) -> Result<Vec<SeoContent>> {
+        let pool = ctx.data::<crate::db::DbPool>()?;
+        let mut conn = pool.get().await.map_err(|e| e.to_string())?;
+
+        let mut query = crate::schema::seo_contents::table.into_boxed();
+
+        if let Some(f) = filter {
+            if let Some(et) = f.entity_type {
+                query = query.filter(crate::schema::seo_contents::entity_type.eq(et));
+            }
+            if let Some(ei) = f.entity_id {
+                query = query.filter(crate::schema::seo_contents::entity_id.eq(ei));
+            }
+            if let Some(p) = f.path {
+                query = query.filter(crate::schema::seo_contents::path.eq(p));
+            }
+        }
+
+        let results: Vec<crate::models::SeoContent> = query
+            .load::<crate::models::SeoContent>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        Ok(results.into_iter().map(SeoContent::from).collect())
+    }
+
     async fn comics(
         &self,
         ctx: &Context<'_>,

@@ -4,9 +4,10 @@ import uuid
 from datetime import datetime
 from temporalio import activity
 from db.database import async_session_maker
-from db.models import Chapter, WorkerTask, Asset, WorkerChapter
+from db.models import Chapter, WorkerTask, Asset, WorkerChapter, SeoContent
 from models.comic_models import ChapterInfo, AssetMetadata
 from utils.http_client import fetch_html, get_random_headers
+from utils.text_utils import slugify_vn
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy import select, update
 import aiofiles
@@ -170,6 +171,31 @@ async def upsert_chapter_in_db(chapter_info: ChapterInfo, internal_comic_id: str
                     status="extracted",
                     last_sync_at=datetime.utcnow()
                 )
+            )
+        )
+        
+        # Update SEO Content for Chapter
+        # Format path: /truyen/{comic_slug}/chap-{chapter_number}/
+        # We need the comic_slug here. internal_comic_id IS the slug in this system (based on activities.py)
+        chap_slug_num = slugify_vn(str(chapter_info.chapter_number))
+        path = f"/truyen/{internal_comic_id}/chap-{chap_slug_num}/"
+        title = f"{internal_comic_id} - Chương {chapter_info.chapter_number}" # Basic title, can be refined
+        
+        await session.execute(
+            insert(SeoContent).values(
+                id=str(uuid.uuid4()),
+                path=path,
+                title=title,
+                entity_type="chapter",
+                entity_id=chapter_slug,
+                is_published=True,
+                published_at=datetime.utcnow()
+            ).on_conflict_do_update(
+                index_elements=['path'],
+                set_={
+                    "title": title,
+                    "updated_at": datetime.utcnow()
+                }
             )
         )
         

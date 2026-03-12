@@ -61,6 +61,7 @@ dependencies = [
  "async-trait",
  "base64",
  "bytes",
+ "chrono",
  "fast_chemail",
  "fnv",
  "futures-channel",
@@ -490,6 +491,7 @@ dependencies = [
  "pq-sys",
  "r2d2",
  "serde_json",
+ "uuid",
 ]
 
 [[package]]

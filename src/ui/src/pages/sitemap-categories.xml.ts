@@ -1,24 +1,26 @@
 import type { APIRoute } from 'astro';
 import { env } from '../lib/config/env';
-import { getCategories } from '../lib/api/commics';
-import { buildSitemapXml, sitemapResponse } from '../lib/sitemap/helpers';
+import { getSeoContents } from '../lib/api/commics';
+import { buildSitemapXml, sitemapResponse, formatSitemapDate } from '../lib/sitemap/helpers';
 
 export const GET: APIRoute = async () => {
     const base = env.SITE_URL.replace(/\/$/, '');
 
-    let categories: Awaited<ReturnType<typeof getCategories>> = [];
+    let seoContents: any[] = [];
     try {
-        categories = await getCategories();
+        seoContents = await getSeoContents({ entityType: 'category' });
     } catch (err) {
         console.error('[sitemap-categories] fetch error:', err);
     }
 
-    const urls = categories.map((cat) => ({
-        loc: `${base}/the-loai/${cat.slug}/`,
-        lastmod: new Date().toISOString(),
-        changefreq: 'weekly' as const,
-        priority: '0.7',
-    }));
-
+    const urls = seoContents
+        .filter((c) => c.isPublished)
+        .map((c) => ({
+            loc: `${base}${c.path}`,
+            changefreq: 'weekly' as const,
+            priority: '0.7',
+            lastmod: formatSitemapDate(c.publishedAt),
+        }))
+        .sort((a, b) => a.loc.localeCompare(b.loc));
     return sitemapResponse(buildSitemapXml(urls));
 };

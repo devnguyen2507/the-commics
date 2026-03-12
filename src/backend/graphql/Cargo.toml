@@ -4,11 +4,11 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-async-graphql = { version = "=7.0.5", features = ["dataloader"] }
+async-graphql = { version = "=7.0.5", features = ["dataloader", "chrono"] }
 async-graphql-axum = "=7.0.5"
 axum = "0.7.5"
 tokio = { version = "1.37.0", features = ["full"] }
-diesel = { version = "2.1.4", features = ["postgres", "r2d2", "chrono", "serde_json"] }
+diesel = { version = "2.1.4", features = ["postgres", "r2d2", "chrono", "serde_json", "uuid"] }
 diesel-async = { version = "0.4.1", features = ["postgres", "bb8"] }
 redis = { version = "0.25.3", features = ["tokio-comp"] }
 moka = { version = "0.12.7", features = ["future"] }

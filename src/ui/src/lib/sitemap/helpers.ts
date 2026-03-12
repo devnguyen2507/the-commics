@@ -3,8 +3,23 @@ export interface SitemapUrl {
     changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
     /** '0.0' → '1.0' */
     priority?: string;
-    /** ISO 8601 (e.g., YYYY-MM-DDThh:mm:ss+hh:mm) */
+    /** ISO 8601 (e.g., YYYY-MM-DDThh:mm:ssZ) */
     lastmod?: string;
+}
+
+/**
+ * Format date to ISO string without milliseconds (Standard Sitemap format)
+ * e.g., 2026-03-07T07:56:40.915Z -> 2026-03-07T07:56:40Z
+ */
+export function formatSitemapDate(date: string | Date | undefined | null): string | undefined {
+    if (!date) return undefined;
+    try {
+        const d = typeof date === 'string' ? new Date(date) : date;
+        if (isNaN(d.getTime())) return undefined;
+        return d.toISOString();
+    } catch {
+        return undefined;
+    }
 }
 
 /**
