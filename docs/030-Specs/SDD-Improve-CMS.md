@@ -39,6 +39,18 @@ Khi khởi tạo bảng `seo_contents`, thực hiện chuyển đổi dữ liệ
 4. **Static Pages:** Insert các trang mặc định: `/`, `/truyen-hot`, `/truyen-moi`, `/chinh-sach`, v.v.
 
 ## 4. Tối ưu hóa CMS & API
-- **GraphQL:** Thêm các Query/Mutation để CRUD bảng `seo_contents`. 
-- **CMS UI:** Cung cấp giao diện chỉnh sửa toàn bộ các trường trên cho mỗi đường dẫn.
-- **Independence:** Thay đổi dữ liệu trong `seo_contents` sẽ không tác động đến dữ liệu gốc trong bảng `comics` hay `chapters`.
+- **API REST (FastAPI):** Cung cấp các endpoint tập trung tại `/api/seo`:
+    - `GET /seo`: Danh sách SEO với phân trang và search.
+    - `GET /seo/count`: Đếm tổng số bản ghi theo filter.
+    - `GET /seo/{id}`: Chi tiết một bản ghi.
+    - `PUT /seo/{id}`: Cập nhật Metadata.
+- **CMS UI:**
+    - Giao diện dạng bảng (Table) tích hợp phân trang (Pagination).
+    - **Sub-tabs Filtering:** 5 tab giúp lọc nhanh theo `entity_type` (Tất cả, Truyện, Chương, Thể loại, Trang).
+    - **Search:** Tìm kiếm theo Slug/Path.
+- **Centralized Editing:** Hỗ trợ chỉnh sửa đồng thời Title, Description, Keywords và Trạng thái Publish từ một màn hình duy nhất.
+
+## 5. Vận hành & Bảo mật
+- **Credentials:** Tài khoản Admin mặc định được cấu hình qua biến môi trường `ADMIN_USER` và `ADMIN_PASS` (Hiện tại là `admin/admin@123`).
+- **Deployment:** Chạy thông qua Docker Compose (`cms-api`, `cms-fe`).
+- **Data Integrity:** Toàn bộ dữ liệu SEO được lưu trữ độc lập trong bảng `seo_contents`, không làm thay đổi dữ liệu gốc của Truyện/Chương.
