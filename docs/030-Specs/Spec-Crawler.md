@@ -59,7 +59,12 @@ Dựa trên đề xuất kiến trúc sử dụng **Temporal Workflow**, chúng 
   - Điều phối Activity vào trong trang chi tiết chương.
   - Lấy sạch danh sách các tag `<img>`.
   - Điều phối Activity tải từng ảnh về và lưu vào Disk theo định dạng path.
-  - **Data Duplication (Upsert)**: Khi ghi danh sách chương vào DB, bắt buộc dùng lệnh **Upsert** (`ON CONFLICT DO UPDATE`) để tránh sinh rác chapter bị trùng khi Crawler chạy lại.
+  - **Persistance SEO:**
+    - Mỗi khi crawl nội dung mới (Truyện, Chương), hệ thống phải tự động tạo bản ghi trong `seo_contents`.
+    - `path` phải được chuẩn hóa (slugify) thông qua `text_utils` để đảm bảo tính duy nhất.
+    - Đồng bộ `is_published` và `published_at` từ Crawler sang SEO table.
+- **Xử lý Ảnh:** Download ảnh -> Upload lên S3/Cloudflare R2 -> Lưu path cdn vào DB.
+- **Data Duplication (Upsert)**: Khi ghi danh sách chương vào DB, bắt buộc dùng lệnh **Upsert** (`ON CONFLICT DO UPDATE`) để tránh sinh rác chapter bị trùng khi Crawler chạy lại.
 
 ### 2.2. Chiến lược Tải và Lưu trữ Hình ảnh
 

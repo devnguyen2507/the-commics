@@ -161,27 +161,47 @@ type ChapterImage {
 type Query {
   # Trang Danh sách (Home/Category/Search)
   # Sử dụng Relay Connection pattern cho Pagination
-  comics(
-    first: Int, 
-    after: String, 
-    filter: ComicFilterInput, 
-    sort: ComicSortInput
-  ): ComicConnection!
+  comics(first: Int, after: String, filter: ComicFilterInput, sort: ComicSortInput): [Comic!]!
 
   # Trang Chi tiết Truyện
-  comic(slug: String!): Comic
+  comic(comic_slug: String!): Comic
   
   # Trang Đọc Truyện
   chapter(id: ID!): Chapter
 
   # Hỗ trợ Breadcrumbs & Navigation
   categories: [Category!]!
+
+  seo_contents(filter: SeoFilter): [SeoContent!]!
+}
+
+### 2.2. Mutations (Phần lớn dành cho CMS / Crawler)
+type Mutation {
+  update_seo_content(path: String!, title: String, description: String, keywords: String, is_published: Boolean, published_at: String): Boolean!
 }
 
 input ComicFilterInput {
   category_slug: String
   search_query: String
   status: String
+}
+
+type SeoContent {
+    id: ID!
+    path: String!
+    title: String
+    description: String
+    keywords: String
+    is_published: Boolean!
+    published_at: String
+    entity_type: String
+    entity_id: String
+}
+
+input SeoFilter {
+    entity_type: String
+    entity_id: String
+    path: String
 }
 
 enum ComicSortInput {

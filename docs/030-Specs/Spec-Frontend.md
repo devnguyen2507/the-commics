@@ -41,6 +41,18 @@ Hệ thống Frontend cần tải cực nhanh (SSG/SSR) đối với các nội 
 
 ### 1.2. Mở rộng Hệ thống Điều hướng & SEO
 - **Breadcrumbs**: Bắt buộc có cấu trúc Breadcrumbs rõ ràng (VD: `Trang chủ > Thể loại > Tên truyện > Chapter 1`) để người dùng dễ định vị và Google Bot hiểu cấu trúc site.
+- **SEO Dynamic Metadata:**
+    - Toàn bộ meta tags (title, description, keywords, og:image) được lấy từ GraphQL `seo_contents(path: $currentPath)`.
+    - Fallback về default metadata nếu không tìm thấy bản ghi SEO cụ thể.
+- **Sitemap Index:**
+    - Entry point: `/sitemap-index.xml`.
+    - Phân mảnh sitemap theo thực thể: `sitemap-comics.xml`, `sitemap-chapters.xml`, `sitemap-categories.xml`.
+    - Chỉ render các URL có `is_published: true`.
+    - `lastmod` lấy từ `published_at` (chuẩn ISO 8601).
+- **Chuẩn hóa URL:**
+    - Sử dụng library `slugify` (client-side) tương đồng hoàn toàn với Backend.
+    - Ép buộc trailing slash (`/`) cho toàn bộ URL để SEO Search Console không bị báo lỗi trùng lặp.
+- **Tốc độ Tải trang:**
 - **Tiêu chuẩn SEO Khắt khe**:
   - Chỉ duy nhất **1 thẻ H1** trên mỗi trang, chứa từ khóa SEO trọng tâm (Tên truyện ở trang chi tiết, Tên danh mục ở trang Category).
   - Tối ưu SSR (Server-Side Rendering) cho các vùng nội dung cần SEO (Box thông tin truyện, Tên truyện, Tags, Text description). Tuy nhiên, đối với **thẻ meta description** và nội dung description trong JSON-LD, **TUYỆT ĐỐI KHÔNG DÙNG** trường `description` từ API backend mà thay bằng một Template string tĩnh để không bị nhiễu mã HTML và tách biệt với Description Box.

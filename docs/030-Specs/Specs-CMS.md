@@ -71,8 +71,13 @@ Sử dụng các bảng `comics`, `chapters`, và **`categories`** hiện có.
    - Chức năng "Thêm Thể loại" để tạo slug mới cho SEO.
    - Nút "Edit (SEO)" -> Link tới `/seo-edit/category/{id}`.
 6. **/seo-edit/{type}/{id}**: Trang chỉnh sửa SEO tập trung.
-   - Thay thế cho Modal cũ để xử lý nội dung văn bản dài (>1000 từ).
-   - Tích hợp **Unsaved Changes Guard** (cảnh báo khi thoát trang mà chưa lưu).
+   - Thay thế cho Modal cũ.
+   - **Quản lý Chương:** Sửa nội dung chương, quản lý ảnh (upload/delete/reorder).
+   - **Quản lý SEO (NEW):**
+     - Chỉnh sửa Meta tags (Title, Description, Keywords) theo từng `path`.
+     - Điều khiển hiển thị (`is_published`) và ngày xuất bản (`published_at`) tác động trực tiếp đến Sitemap.
+     - Path format: `/truyen/[comic-slug]/` hoặc `/truyen/[comic-slug]/[chapter-slug]/`.
+   - Cảnh báo khi thoát trang mà chưa lưu.
 
 ### 3.3. UI / UX Design System
 - Header: Sticky header màu `Xanh biển` (#0ea5e9 hoặc tương đương).

@@ -38,6 +38,9 @@ erDiagram
     COMIC ||--o{ COMIC_CATEGORY : has
     CATEGORY ||--o{ COMIC_CATEGORY : belongs_to
     COMIC ||--o{ CHAPTER : contains
+    SEO_CONTENTS ||--o| COMIC : describes
+    SEO_CONTENTS ||--o| CHAPTER : describes
+    SEO_CONTENTS ||--o| CATEGORY : describes
 
     COMIC {
         string id PK
@@ -82,6 +85,20 @@ erDiagram
         bool is_publish "Visibility control"
         timestamp published_at "Public release date"
         timestamp created_at
+    }
+
+    SEO_CONTENTS {
+        uuid id PK
+        string path "Unique, Slugified path (e.g. /truyen/slug/)"
+        string title
+        text description
+        string keywords
+        bool is_published "Search engine visibility"
+        timestamp published_at "Used for sitemap lastmod"
+        string entity_type "comic | chapter | category | page"
+        string entity_id "Reference to original table ID"
+        timestamp created_at
+        timestamp updated_at
     }
 ```
 

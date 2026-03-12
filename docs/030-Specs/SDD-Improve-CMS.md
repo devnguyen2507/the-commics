@@ -20,6 +20,9 @@ Thêm bảng `seo_contents` (đổi tên từ `seo_configs`):
 - `entity_id` (String): ID của thực thể tương ứng (nếu có).
 - `created_at`, `updated_at`.
 
+> [!IMPORTANT]
+> Toàn bộ `path` trong bảng `seo_contents` phải được slugified đồng bộ giữa UI và Crawler để tránh lỗi 404 và trùng lặp nội dung.
+
 ## 3. Chiến lược Migration
 Khi khởi tạo bảng `seo_contents`, thực hiện chuyển đổi dữ liệu từ các bảng cũ:
 1. **Comics:** 
@@ -28,8 +31,9 @@ Khi khởi tạo bảng `seo_contents`, thực hiện chuyển đổi dữ liệ
    - Description: `{description}`
    - PublishedAt: `2026-03-07T07:56:40.915Z`
 2. **Chapters:**
-   - Path: `/truyen/{comic_slug}/chap-{chapter_number}`
-   - PublishedAt: `2026-03-07T07:56:40.915Z`
+   - Path: `/truyen/{comic_slug}/chap-{chapter_number}/`
+   - Chapter Number được slugified (Ví dụ: "Ch. 01" -> "ch-01").
+   - PublishedAt: `2026-03-07T07:56:40.915Z` (hoặc ngày crawl thực tế).
 3. **Categories:**
    - Path: `/the-loai/{slug}`
 4. **Static Pages:** Insert các trang mặc định: `/`, `/truyen-hot`, `/truyen-moi`, `/chinh-sach`, v.v.
