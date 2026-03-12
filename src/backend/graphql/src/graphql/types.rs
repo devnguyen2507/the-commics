@@ -81,6 +81,16 @@ impl Comic {
         Ok(self.thumbnail_path.clone())
     }
 
+    async fn seo(&self, ctx: &Context<'_>) -> Result<Option<SeoContent>> {
+        let loader = ctx.data::<DataLoader<crate::graphql::dataloaders::SeoLoader>>()?;
+        let key = crate::graphql::dataloaders::SeoKey {
+            entity_id: self.id.to_string(),
+            entity_type: "comic".to_string(),
+        };
+        let result = loader.load_one(key).await?;
+        Ok(result.map(SeoContent::from))
+    }
+
     async fn categories(&self, ctx: &Context<'_>) -> Result<Vec<Category>> {
         let loader = ctx.data::<DataLoader<CategoryLoader>>()?;
         let results = loader
@@ -181,6 +191,16 @@ impl Chapter {
     async fn published_at(&self) -> Option<String> {
         self.published_at
             .map(|dt| dt.format("%Y-%m-%dT%H:%M:%SZ").to_string())
+    }
+
+    async fn seo(&self, ctx: &Context<'_>) -> Result<Option<SeoContent>> {
+        let loader = ctx.data::<DataLoader<crate::graphql::dataloaders::SeoLoader>>()?;
+        let key = crate::graphql::dataloaders::SeoKey {
+            entity_id: self.id.to_string(),
+            entity_type: "chapter".to_string(),
+        };
+        let result = loader.load_one(key).await?;
+        Ok(result.map(SeoContent::from))
     }
 
     /// Parent comic info — for breadcrumbs, SEO title, navbar
@@ -297,6 +317,21 @@ pub struct ChapterImage {
     pub h: i32,
 }
 
+pub struct SeoList {
+    pub items: Vec<SeoContent>,
+    pub total: i64,
+}
+
+#[Object]
+impl SeoList {
+    async fn items(&self) -> &Vec<SeoContent> {
+        &self.items
+    }
+    async fn total(&self) -> i64 {
+        self.total
+    }
+}
+
 #[derive(Enum, Copy, Clone, Eq, PartialEq, Debug)]
 pub enum ComicSort {
     Latest,
@@ -312,7 +347,6 @@ pub struct ComicFilter {
     pub status: Option<String>,
 }
 
-#[derive(SimpleObject)]
 pub struct SeoContent {
     pub id: ID,
     pub path: String,
@@ -323,6 +357,50 @@ pub struct SeoContent {
     pub entity_id: Option<String>,
     pub is_published: bool,
     pub published_at: Option<String>,
+}
+
+#[Object]
+impl SeoContent {
+    async fn id(&self) -> &ID {
+        &self.id
+    }
+    async fn path(&self) -> &String {
+        &self.path
+    }
+    async fn title(&self) -> &Option<String> {
+        &self.title
+    }
+    async fn description(&self) -> &Option<String> {
+        &self.description
+    }
+    async fn keywords(&self) -> &Option<String> {
+        &self.keywords
+    }
+    async fn entity_type(&self) -> &Option<String> {
+        &self.entity_type
+    }
+    async fn entity_id(&self) -> &Option<String> {
+        &self.entity_id
+    }
+    async fn is_published(&self) -> bool {
+        self.is_published
+    }
+    async fn published_at(&self) -> &Option<String> {
+        &self.published_at
+    }
+
+    async fn linked_published(&self, ctx: &Context<'_>) -> Result<Option<bool>> {
+        if let (Some(etype), Some(eid)) = (&self.entity_type, &self.entity_id) {
+            let loader = ctx.data::<DataLoader<crate::graphql::dataloaders::SeoEntityLoader>>()?;
+            let key = crate::graphql::dataloaders::SeoKey {
+                entity_id: eid.clone(),
+                entity_type: etype.clone(),
+            };
+            let result = loader.load_one(key).await?;
+            return Ok(result);
+        }
+        Ok(None)
+    }
 }
 
 impl From<models::SeoContent> for SeoContent {

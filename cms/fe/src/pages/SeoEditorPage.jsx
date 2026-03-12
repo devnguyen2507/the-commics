@@ -14,6 +14,7 @@ const SeoEditorPage = () => {
         description: '',
         keywords: '',
         is_published: false,
+        published_at: '',
         name: '' // for categories
     });
     const [baseData, setBaseData] = useState(null);
@@ -40,6 +41,7 @@ const SeoEditorPage = () => {
                 description: detail.description || '',
                 keywords: detail.keywords || '',
                 is_published: detail.is_published || false,
+                published_at: detail.published_at ? new Date(detail.published_at).toISOString().slice(0, 16) : '',
                 name: detail.name || ''
             };
             setFormData(initialValues);
@@ -52,6 +54,7 @@ const SeoEditorPage = () => {
         formData.description !== baseData.description ||
         formData.keywords !== baseData.keywords ||
         formData.is_published !== baseData.is_published ||
+        formData.published_at !== baseData.published_at ||
         formData.name !== baseData.name
     );
 
@@ -86,8 +89,15 @@ const SeoEditorPage = () => {
                 delete payload.is_published;
             }
             // If entity is 'seo' or 'page', keep title, description, keywords, is_published
+            // If entity is 'seo' or 'page', keep title, description, keywords, is_published, published_at
             if (entity === 'seo' || entity === 'page') {
                 delete payload.name;
+                // Add ISO string conversion for published_at if present
+                if (payload.published_at) {
+                    payload.published_at = new Date(payload.published_at).toISOString();
+                } else {
+                    payload.published_at = null;
+                }
             }
             return await api.put(getEndpoint(), payload);
         },
@@ -254,23 +264,65 @@ const SeoEditorPage = () => {
                     )}
 
                     {(entity === 'seo' || entity === 'page') && (
-                        <div className="shrink-0 flex items-center gap-3">
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
-                                Trạng thái đăng
-                            </label>
-                            <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    name="is_published"
-                                    className="sr-only peer"
-                                    checked={formData.is_published}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, is_published: e.target.checked }))}
-                                />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            </label>
-                            <span className="text-sm text-gray-500">
-                                {formData.is_published ? 'Hiển thị trên site' : 'Bản nháp'}
-                            </span>
+                        <div className="shrink-0 flex flex-col gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                            <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-3">
+                                    <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                        Trạng thái đăng
+                                    </label>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            name="is_published"
+                                            className="sr-only peer"
+                                            checked={formData.is_published}
+                                            onChange={(e) => {
+                                                const checked = e.target.checked;
+                                                setFormData(prev => {
+                                                    const next = { ...prev, is_published: checked };
+                                                    if (checked && !prev.published_at) {
+                                                        next.published_at = new Date().toISOString().slice(0, 16);
+                                                    }
+                                                    return next;
+                                                });
+                                            }}
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    </label>
+                                    <span className={`text-sm font-bold ${formData.is_published ? 'text-blue-600' : 'text-gray-500'}`}>
+                                        {formData.is_published ? 'SẴN SÀNG CÔNG KHAI' : 'BẢN NHÁP'}
+                                    </span>
+                                </div>
+                                
+                                <div className="flex items-center gap-3 border-l pl-6 border-gray-200">
+                                    <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                        Ngày công khai
+                                    </label>
+                                    <input
+                                        type="datetime-local"
+                                        name="published_at"
+                                        value={formData.published_at}
+                                        onChange={handleChange}
+                                        className="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm bg-white"
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="flex flex-col gap-1">
+                                {detail?.linked_published !== undefined && (
+                                    <div className={`flex items-center gap-2 text-xs font-medium ${detail.linked_published ? 'text-green-600' : 'text-amber-600'}`}>
+                                        <AlertCircle size={14} />
+                                        <span>
+                                            Trạng thái {entity === 'comic' || entity === 'chapter' ? 'truyện/chương' : 'entity'} gốc: 
+                                            {detail.linked_published ? ' Đang công khai' : ' Đang ẩn/nháp'}
+                                        </span>
+                                    </div>
+                                )}
+                                <p className="text-[10px] text-gray-400 italic leading-tight">
+                                    * SEO record sẽ chỉ xuất hiện trên sitemap nếu cả <b>Trạng thái đăng</b> được bật VÀ <b>Thực thể gốc</b> đang công khai. 
+                                    Ngày công khai được dùng để Google lập chỉ mục chuẩn hơn.
+                                </p>
+                            </div>
                         </div>
                     )}
 

@@ -1,4 +1,4 @@
-use crate::graphql::types::{Category, Chapter, Comic, ComicFilter, ComicSort, SeoContent, SeoFilter};
+use crate::graphql::types::{Category, Chapter, Comic, ComicFilter, ComicSort, SeoContent, SeoFilter, SeoList};
 use async_graphql::*;
 use diesel::prelude::*;
 use diesel_async::RunQueryDsl;
@@ -85,6 +85,65 @@ impl QueryRoot {
             .map_err(|e| e.to_string())?;
 
         Ok(count)
+    }
+
+    async fn all_seo(
+        &self,
+        ctx: &Context<'_>,
+        limit: Option<i64>,
+        offset: Option<i64>,
+        filter: Option<SeoFilter>,
+    ) -> Result<SeoList> {
+        let pool = ctx.data::<crate::db::DbPool>()?;
+        let mut conn = pool.get().await.map_err(|e| e.to_string())?;
+
+        let mut query = crate::schema::seo_contents::table.into_boxed();
+
+        let mut count_query = crate::schema::seo_contents::table.into_boxed();
+
+        if let Some(ref f) = filter {
+            if let Some(ref et) = f.entity_type {
+                query = query.filter(crate::schema::seo_contents::entity_type.eq(et));
+                count_query = count_query.filter(crate::schema::seo_contents::entity_type.eq(et));
+            }
+            if let Some(ref ei) = f.entity_id {
+                query = query.filter(crate::schema::seo_contents::entity_id.eq(ei));
+                count_query = count_query.filter(crate::schema::seo_contents::entity_id.eq(ei));
+            }
+            if let Some(ref p) = f.path {
+                query = query.filter(crate::schema::seo_contents::path.eq(p));
+                count_query = count_query.filter(crate::schema::seo_contents::path.eq(p));
+            }
+            if let Some(ref q) = f.search_query {
+                query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+                count_query = count_query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+            }
+        }
+
+        let total = count_query
+            .count()
+            .get_result::<i64>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        query = query.order(crate::schema::seo_contents::updated_at.desc());
+
+        if let Some(l) = limit {
+            query = query.limit(l);
+        }
+        if let Some(o) = offset {
+            query = query.offset(o);
+        }
+
+        let items: Vec<crate::models::SeoContent> = query
+            .load::<crate::models::SeoContent>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        Ok(SeoList {
+            items: items.into_iter().map(SeoContent::from).collect(),
+            total,
+        })
     }
 
     async fn comics(

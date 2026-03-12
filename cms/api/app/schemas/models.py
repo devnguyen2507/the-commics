@@ -79,6 +79,7 @@ class SeoContentResponse(SeoContentBase):
     published_at: Optional[datetime] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
+    linked_published: Optional[bool] = None
 
     class Config:
         from_attributes = True

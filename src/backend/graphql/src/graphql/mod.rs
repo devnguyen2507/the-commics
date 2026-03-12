@@ -5,9 +5,11 @@ pub mod types;
 
 use crate::cache::ArcCache;
 use crate::db::DbPool;
-use crate::graphql::dataloaders::{AssetLoader, CategoryLoader, ChapterLoader, ComicLoader};
-use crate::graphql::query::QueryRoot;
+use crate::graphql::dataloaders::{
+    AssetLoader, CategoryLoader, ChapterLoader, ComicLoader, SeoEntityLoader, SeoLoader,
+};
 use crate::graphql::mutation::MutationRoot;
+use crate::graphql::query::QueryRoot;
 use async_graphql::dataloader::DataLoader;
 use async_graphql::{EmptySubscription, Schema};
 
@@ -27,6 +29,14 @@ pub fn create_schema(pool: DbPool, cache: ArcCache) -> CommicsSchema {
         ))
         .data(DataLoader::new(
             ChapterLoader::new(pool.clone()),
+            tokio::spawn,
+        ))
+        .data(DataLoader::new(
+            SeoLoader::new(pool.clone()),
+            tokio::spawn,
+        ))
+        .data(DataLoader::new(
+            SeoEntityLoader::new(pool.clone()),
             tokio::spawn,
         ))
         .data(DataLoader::new(AssetLoader::new(pool), tokio::spawn));

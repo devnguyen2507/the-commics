@@ -143,3 +143,121 @@ impl Loader<String> for AssetLoader {
         Ok(map)
     }
 }
+
+#[derive(Clone, Hash, Eq, PartialEq)]
+pub struct SeoKey {
+    pub entity_id: String,
+    pub entity_type: String,
+}
+
+pub struct SeoLoader {
+    pool: DbPool,
+}
+
+impl SeoLoader {
+    pub fn new(pool: DbPool) -> Self {
+        Self { pool }
+    }
+}
+
+impl Loader<SeoKey> for SeoLoader {
+    type Value = crate::models::SeoContent;
+    type Error = String;
+
+    async fn load(&self, keys: &[SeoKey]) -> Result<HashMap<SeoKey, Self::Value>, Self::Error> {
+        let mut conn = self.pool.get().await.map_err(|e| e.to_string())?;
+
+        use crate::schema::seo_contents::dsl::*;
+
+        let mut results = HashMap::new();
+        
+        // Group by entity_type for efficient fetching
+        let mut type_groups: HashMap<String, Vec<String>> = HashMap::new();
+        for key in keys {
+            type_groups.entry(key.entity_type.clone()).or_default().push(key.entity_id.clone());
+        }
+
+        for (etype, eids) in type_groups {
+            let entries = seo_contents
+                .filter(entity_type.eq(Some(etype.clone())))
+                .filter(entity_id.eq_any(eids))
+                .load::<crate::models::SeoContent>(&mut conn)
+                .await
+                .map_err(|e| e.to_string())?;
+                
+            for entry in entries {
+                if let Some(ref eid) = entry.entity_id {
+                    results.insert(SeoKey { 
+                        entity_id: eid.clone(), 
+                        entity_type: etype.clone() 
+                    }, entry);
+                }
+            }
+        }
+
+        Ok(results)
+    }
+}
+
+pub struct SeoEntityLoader {
+    pool: DbPool,
+}
+
+impl SeoEntityLoader {
+    pub fn new(pool: DbPool) -> Self {
+        Self { pool }
+    }
+}
+
+impl Loader<SeoKey> for SeoEntityLoader {
+    type Value = bool; // is_publish status
+    type Error = String;
+
+    async fn load(&self, keys: &[SeoKey]) -> Result<HashMap<SeoKey, Self::Value>, Self::Error> {
+        let mut conn = self.pool.get().await.map_err(|e| e.to_string())?;
+
+        let mut results = HashMap::new();
+        
+        // Handle Comics
+        let comic_ids: Vec<String> = keys.iter()
+            .filter(|k| k.entity_type == "comic")
+            .map(|k| k.entity_id.clone())
+            .collect();
+            
+        if !comic_ids.is_empty() {
+            use crate::schema::comics::dsl as comics_dsl;
+            let comics = comics_dsl::comics
+                .filter(comics_dsl::id.eq_any(&comic_ids))
+                .select((comics_dsl::id, comics_dsl::is_publish))
+                .load::<(String, Option<bool>)>(&mut conn)
+                .await
+                .map_err(|e| e.to_string())?;
+                
+            for (cid, published) in comics {
+                results.insert(SeoKey { entity_id: cid, entity_type: "comic".to_string() }, published.unwrap_or(false));
+            }
+        }
+        
+        // Handle Chapters
+        let chapter_ids: Vec<String> = keys.iter()
+            .filter(|k| k.entity_type == "chapter")
+            .map(|k| k.entity_id.clone())
+            .collect();
+            
+        if !chapter_ids.is_empty() {
+            use crate::schema::chapters::dsl as chapters_dsl;
+            let chapters = chapters_dsl::chapters
+                .filter(chapters_dsl::id.eq_any(&chapter_ids))
+                .select((chapters_dsl::id, chapters_dsl::is_publish))
+                .load::<(String, Option<bool>)>(&mut conn)
+                .await
+                .map_err(|e| e.to_string())?;
+                
+            for (chid, published) in chapters {
+                results.insert(SeoKey { entity_id: chid, entity_type: "chapter".to_string() }, published.unwrap_or(false));
+            }
+        }
+
+        Ok(results)
+    }
+}
