@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
     
     ADMIN_USER: str = "admin"
-    ADMIN_PASS: str = "admin"
+    ADMIN_PASS: str = "admin@123"
 
     class Config:
         env_file = ".env"

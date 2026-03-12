@@ -5,6 +5,7 @@ import ComicsPage from './pages/ComicsPage';
 import ChaptersPage from './pages/ChaptersPage';
 import CategoriesPage from './pages/CategoriesPage';
 import SeoEditorPage from './pages/SeoEditorPage';
+import SeoListPage from './pages/SeoListPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/comics" element={<ComicsPage />} />
           <Route path="/comics/:comicId/chapters" element={<ChaptersPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
+          <Route path="/seo" element={<SeoListPage />} />
           <Route path="/seo-edit/:entity/:id" element={<SeoEditorPage />} />
         </Route>
       </Routes>

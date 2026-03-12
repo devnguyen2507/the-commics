@@ -48,6 +48,14 @@ const AdminLayout = () => {
                         <Layers size={20} />
                         <span className="font-semibold">Quản lý Thể loại</span>
                     </Link>
+                    <Link
+                        to="/seo"
+                        className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${location.pathname.startsWith('/seo') ? 'bg-primary' : 'hover:bg-gray-800'}`}
+                        onClick={() => setSidebarOpen(false)}
+                    >
+                        <Book size={20} />
+                        <span className="font-semibold">Quản lý SEO</span>
+                    </Link>
                 </nav>
             </aside>
 

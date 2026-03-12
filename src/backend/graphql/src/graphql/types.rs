@@ -346,4 +346,5 @@ pub struct SeoFilter {
     pub entity_type: Option<String>,
     pub entity_id: Option<String>,
     pub path: Option<String>,
+    pub search_query: Option<String>,
 }

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+import uuid
 
 class ComicBase(BaseModel):
     id: str
@@ -51,6 +52,31 @@ class CategoryUpdate(BaseModel):
     description: Optional[str] = None
 
 class CategoryResponse(CategoryBase):
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class SeoContentBase(BaseModel):
+    path: str
+    title: Optional[str] = None
+    description: Optional[str] = None
+    keywords: Optional[str] = None
+    is_published: Optional[bool] = False
+    entity_type: Optional[str] = None
+    entity_id: Optional[str] = None
+
+class SeoContentUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    keywords: Optional[str] = None
+    is_published: Optional[bool] = None
+    published_at: Optional[datetime] = None
+
+class SeoContentResponse(SeoContentBase):
+    id: uuid.UUID
+    published_at: Optional[datetime] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

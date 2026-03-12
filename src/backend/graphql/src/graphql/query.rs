@@ -10,6 +10,8 @@ impl QueryRoot {
     async fn seo_contents(
         &self,
         ctx: &Context<'_>,
+        first: Option<i32>,
+        after: Option<String>,
         filter: Option<SeoFilter>,
     ) -> Result<Vec<SeoContent>> {
         let pool = ctx.data::<crate::db::DbPool>()?;
@@ -27,6 +29,20 @@ impl QueryRoot {
             if let Some(p) = f.path {
                 query = query.filter(crate::schema::seo_contents::path.eq(p));
             }
+            if let Some(q) = f.search_query {
+                query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+            }
+        }
+
+        query = query.order(crate::schema::seo_contents::updated_at.desc());
+
+        let limit_val = first.unwrap_or(20) as i64;
+        query = query.limit(limit_val);
+
+        if let Some(a) = after {
+            if let Ok(offset_val) = a.parse::<i64>() {
+                query = query.offset(offset_val);
+            }
         }
 
         let results: Vec<crate::models::SeoContent> = query
@@ -35,6 +51,40 @@ impl QueryRoot {
             .map_err(|e| e.to_string())?;
 
         Ok(results.into_iter().map(SeoContent::from).collect())
+    }
+
+    async fn seo_contents_count(
+        &self,
+        ctx: &Context<'_>,
+        filter: Option<SeoFilter>,
+    ) -> Result<i64> {
+        let pool = ctx.data::<crate::db::DbPool>()?;
+        let mut conn = pool.get().await.map_err(|e| e.to_string())?;
+
+        let mut query = crate::schema::seo_contents::table.into_boxed();
+
+        if let Some(f) = filter {
+            if let Some(et) = f.entity_type {
+                query = query.filter(crate::schema::seo_contents::entity_type.eq(et));
+            }
+            if let Some(ei) = f.entity_id {
+                query = query.filter(crate::schema::seo_contents::entity_id.eq(ei));
+            }
+            if let Some(p) = f.path {
+                query = query.filter(crate::schema::seo_contents::path.eq(p));
+            }
+            if let Some(q) = f.search_query {
+                query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+            }
+        }
+
+        let count = query
+            .count()
+            .get_result::<i64>(&mut conn)
+            .await
+            .map_err(|e| e.to_string())?;
+
+        Ok(count)
     }
 
     async fn comics(

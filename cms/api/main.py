@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.endpoints import auth, comics, chapters, categories
+from app.api.endpoints import auth, comics, chapters, categories, seo
 from app.api.deps import get_current_admin
 from fastapi import Depends
 
@@ -34,6 +34,12 @@ app.include_router(
     categories.router, 
     prefix=f"{settings.API_V1_STR}/categories", 
     tags=["categories"],
+    dependencies=[Depends(get_current_admin)]
+)
+app.include_router(
+    seo.router,
+    prefix=f"{settings.API_V1_STR}/seo",
+    tags=["seo"],
     dependencies=[Depends(get_current_admin)]
 )
 

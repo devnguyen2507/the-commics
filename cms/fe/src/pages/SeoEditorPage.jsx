@@ -12,11 +12,14 @@ const SeoEditorPage = () => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
+        keywords: '',
+        is_published: false,
         name: '' // for categories
     });
     const [baseData, setBaseData] = useState(null);
 
     const getEndpoint = () => {
+        if (entity === 'seo' || entity === 'page') return `/seo/${id}`;
         const plural = entity === 'category' ? 'categories' : `${entity}s`;
         return `/${plural}/${id}`;
     };
@@ -35,6 +38,8 @@ const SeoEditorPage = () => {
             const initialValues = {
                 title: detail.title || '',
                 description: detail.description || '',
+                keywords: detail.keywords || '',
+                is_published: detail.is_published || false,
                 name: detail.name || ''
             };
             setFormData(initialValues);
@@ -45,6 +50,8 @@ const SeoEditorPage = () => {
     const hasChanged = baseData && (
         formData.title !== baseData.title ||
         formData.description !== baseData.description ||
+        formData.keywords !== baseData.keywords ||
+        formData.is_published !== baseData.is_published ||
         formData.name !== baseData.name
     );
 
@@ -67,10 +74,20 @@ const SeoEditorPage = () => {
             if (entity === 'chapter') {
                 delete payload.title;
                 delete payload.name;
+                delete payload.keywords;
+                delete payload.is_published;
             } else if (entity === 'comic') {
                 delete payload.name;
+                delete payload.keywords;
+                delete payload.is_published;
             } else if (entity === 'category') {
                 delete payload.title;
+                delete payload.keywords;
+                delete payload.is_published;
+            }
+            // If entity is 'seo' or 'page', keep title, description, keywords, is_published
+            if (entity === 'seo' || entity === 'page') {
+                delete payload.name;
             }
             return await api.put(getEndpoint(), payload);
         },
@@ -204,7 +221,7 @@ const SeoEditorPage = () => {
                         </div>
                     )}
 
-                    {entity === 'comic' && (
+                    {(entity === 'comic' || entity === 'seo' || entity === 'page') && (
                         <div className="shrink-0">
                             <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
                                 SEO Title
@@ -217,6 +234,43 @@ const SeoEditorPage = () => {
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-lg"
                                 placeholder="Nhập tiêu đề chuẩn SEO..."
                             />
+                        </div>
+                    )}
+
+                    {(entity === 'seo' || entity === 'page') && (
+                        <div className="shrink-0">
+                            <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-wide">
+                                Keywords (Tags)
+                            </label>
+                            <input
+                                type="text"
+                                name="keywords"
+                                value={formData.keywords}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none"
+                                placeholder="Cách nhau bằng dấu phẩy..."
+                            />
+                        </div>
+                    )}
+
+                    {(entity === 'seo' || entity === 'page') && (
+                        <div className="shrink-0 flex items-center gap-3">
+                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
+                                Trạng thái đăng
+                            </label>
+                            <label className="relative inline-flex items-center cursor-pointer">
+                                <input
+                                    type="checkbox"
+                                    name="is_published"
+                                    className="sr-only peer"
+                                    checked={formData.is_published}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, is_published: e.target.checked }))}
+                                />
+                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                            <span className="text-sm text-gray-500">
+                                {formData.is_published ? 'Hiển thị trên site' : 'Bản nháp'}
+                            </span>
                         </div>
                     )}
 

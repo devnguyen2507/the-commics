@@ -160,7 +160,7 @@ services:
     environment:
       - DATABASE_URL=postgresql+asyncpg://commics:secret@db:5432/commics
       - ADMIN_USER=admin
-      - ADMIN_PASS=admin
+      - ADMIN_PASS=admin@123
       - JWT_SECRET=super_secret_key
     ports:
       - "8000:8000"
