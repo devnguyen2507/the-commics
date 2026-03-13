@@ -121,10 +121,10 @@ export const getChapter = withCache(
 );
 // ─── getSeoContents: cache 1 giờ ───
 export const getSeoContents = withCache(
-  async (variables?: { entityType?: string }) => {
+  async (variables?: { entityType?: string; all?: boolean; isPublished?: boolean }) => {
     const data = await GQLFetch<any>(
-      `query getSeoContents($filter: SeoFilter) {
-        seoContents(filter: $filter) {
+      `query getSeoContents($filter: SeoFilter, $all: Boolean) {
+        seoContents(filter: $filter, all: $all) {
           path
           title
           description
@@ -135,7 +135,13 @@ export const getSeoContents = withCache(
           entityId
         }
       }`,
-      { filter: variables }
+      { 
+        filter: { 
+          entityType: variables?.entityType,
+          isPublished: variables?.isPublished 
+        }, 
+        all: variables?.all 
+      }
     );
     return data.seoContents;
   },

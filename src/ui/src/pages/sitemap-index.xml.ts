@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
 
   let seoContents: any[] = [];
   try {
-    seoContents = await getSeoContents();
+    seoContents = await getSeoContents({ all: true, isPublished: true });
   } catch (err) {
     console.error('[sitemap-index] fetch error:', err);
   }

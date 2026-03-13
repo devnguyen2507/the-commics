@@ -12,6 +12,7 @@ impl QueryRoot {
         ctx: &Context<'_>,
         first: Option<i32>,
         after: Option<String>,
+        all: Option<bool>,
         filter: Option<SeoFilter>,
     ) -> Result<Vec<SeoContent>> {
         let pool = ctx.data::<crate::db::DbPool>()?;
@@ -32,12 +33,17 @@ impl QueryRoot {
             if let Some(q) = f.search_query {
                 query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
             }
+            if let Some(ip) = f.is_published {
+                query = query.filter(crate::schema::seo_contents::is_published.eq(ip));
+            }
         }
 
         query = query.order(crate::schema::seo_contents::updated_at.desc());
-
-        let limit_val = first.unwrap_or(20) as i64;
-        query = query.limit(limit_val);
+        
+        if !all.unwrap_or(false) {
+            let limit_val = first.unwrap_or(20) as i64;
+            query = query.limit(limit_val);
+        }
 
         if let Some(a) = after {
             if let Ok(offset_val) = a.parse::<i64>() {
@@ -75,6 +81,9 @@ impl QueryRoot {
             }
             if let Some(q) = f.search_query {
                 query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+            }
+            if let Some(ip) = f.is_published {
+                query = query.filter(crate::schema::seo_contents::is_published.eq(ip));
             }
         }
 
@@ -117,6 +126,10 @@ impl QueryRoot {
             if let Some(ref q) = f.search_query {
                 query = query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
                 count_query = count_query.filter(crate::schema::seo_contents::path.ilike(format!("%{}%", q)));
+            }
+            if let Some(ip) = f.is_published {
+                query = query.filter(crate::schema::seo_contents::is_published.eq(ip));
+                count_query = count_query.filter(crate::schema::seo_contents::is_published.eq(ip));
             }
         }
 
