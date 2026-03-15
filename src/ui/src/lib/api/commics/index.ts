@@ -135,12 +135,12 @@ export const getSeoContents = withCache(
           entityId
         }
       }`,
-      { 
-        filter: { 
+      {
+        filter: {
           entityType: variables?.entityType,
-          isPublished: variables?.isPublished 
-        }, 
-        all: variables?.all 
+          isPublished: variables?.isPublished
+        },
+        all: variables?.all
       }
     );
     return data.seoContents;

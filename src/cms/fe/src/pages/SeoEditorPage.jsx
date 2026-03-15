@@ -118,7 +118,7 @@ const SeoEditorPage = () => {
                 targetRoute = '/seo';
                 invalidationKey = 'seo-list';
             }
-            
+
             queryClient.invalidateQueries({ queryKey: [invalidationKey] });
             queryClient.invalidateQueries({ queryKey: ['seo-detail', entity, id] });
             // Navigate back
@@ -294,6 +294,12 @@ const SeoEditorPage = () => {
                                             checked={formData.is_published}
                                             onChange={(e) => {
                                                 const checked = e.target.checked;
+
+                                                if (checked && (entity === 'comic' || entity === 'chapter') && detail?.linked_published === false) {
+                                                    alert('Vui lòng published truyện truyện/chapters trước!');
+                                                    return; // Prevent turning on
+                                                }
+
                                                 setFormData(prev => {
                                                     const next = { ...prev, is_published: checked };
                                                     if (checked && !prev.published_at) {
@@ -311,7 +317,7 @@ const SeoEditorPage = () => {
                                         {formData.is_published ? 'SẴN SÀNG CÔNG KHAI' : 'BẢN NHÁP'}
                                     </span>
                                 </div>
-                                
+
                                 <div className="flex items-center gap-3 border-l pl-6 border-gray-200">
                                     <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
                                         Ngày công khai
@@ -329,8 +335,8 @@ const SeoEditorPage = () => {
                                             onClick={() => {
                                                 const d = new Date();
                                                 const tzOffset = d.getTimezoneOffset() * 60000;
-                                                setFormData(prev => ({ 
-                                                    ...prev, 
+                                                setFormData(prev => ({
+                                                    ...prev,
                                                     published_at: new Date(d.getTime() - tzOffset).toISOString().slice(0, 16)
                                                 }));
                                             }}
@@ -341,19 +347,19 @@ const SeoEditorPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div className="flex flex-col gap-1">
                                 {detail?.linked_published !== undefined && (
                                     <div className={`flex items-center gap-2 text-xs font-medium ${detail.linked_published ? 'text-green-600' : 'text-amber-600'}`}>
                                         <AlertCircle size={14} />
                                         <span>
-                                            Trạng thái {entity === 'comic' || entity === 'chapter' ? 'truyện/chương' : 'entity'} gốc: 
+                                            Trạng thái {entity === 'comic' || entity === 'chapter' ? 'truyện/chương' : 'entity'} gốc:
                                             {detail.linked_published ? ' Đang công khai' : ' Đang ẩn/nháp'}
                                         </span>
                                     </div>
                                 )}
                                 <p className="text-[10px] text-gray-400 italic leading-tight">
-                                    * SEO record sẽ chỉ xuất hiện trên sitemap nếu cả <b>Trạng thái đăng</b> được bật VÀ <b>Thực thể gốc</b> đang công khai. 
+                                    * SEO record sẽ chỉ xuất hiện trên sitemap nếu cả <b>Trạng thái đăng</b> được bật VÀ <b>Thực thể gốc</b> đang công khai.
                                     Ngày công khai được dùng để Google lập chỉ mục chuẩn hơn.
                                 </p>
                             </div>
