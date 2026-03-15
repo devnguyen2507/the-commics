@@ -20,7 +20,7 @@ export const GET: APIRoute = async () => {
 
     let seoContents: any[] = [];
     try {
-        seoContents = await getSeoContents({ entityType: 'page' });
+        seoContents = await getSeoContents({ entityType: 'page', all: true, isPublished: true });
     } catch (err) {
         console.error('[sitemap-page] fetch error:', err);
     }

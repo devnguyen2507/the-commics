@@ -8,7 +8,7 @@ export const GET: APIRoute = async () => {
 
     let seoContents: any[] = [];
     try {
-        seoContents = await getSeoContents({ entityType: 'category' });
+        seoContents = await getSeoContents({ entityType: 'category', all: true, isPublished: true });
     } catch (err) {
         console.error('[sitemap-categories] fetch error:', err);
     }
