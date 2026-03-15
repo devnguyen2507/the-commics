@@ -62,7 +62,7 @@ const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}/chap-${slugif
 const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
 const plainChapterDesc = chapter.description ? chapter.description.replace(/<[^>]+>/g, '').trim() : '';
 const descriptionText = plainChapterDesc
-  ? (plainChapterDesc.length > 150 ? plainChapterDesc.substring(0, 147) + '...' : plainChapterDesc)
+  ? (plainChapterDesc.length > 150 ? plainChapterDesc.substring(0, 140) + '...' : plainChapterDesc)
   : '';
 const pageTitle = `Đọc ${comicTitle} Chương ${chapter.chapterNumber} | ${env.SITE_NAME}`;
 

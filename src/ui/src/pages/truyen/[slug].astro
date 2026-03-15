@@ -60,7 +60,7 @@ const breadcrumbs = [
 const pageTitle = `Đọc Truyện ${comic.title} | ${env.SITE_NAME}`;
 const plainComicDesc = comic.description ? comic.description.replace(/<[^>]+>/g, '').trim() : '';
 const pageDesc = plainComicDesc
-  ? (plainComicDesc.length > 150 ? plainComicDesc.substring(0, 147) + '...' : plainComicDesc)
+  ? (plainComicDesc.length > 150 ? plainComicDesc.substring(0, 140) + '...' : plainComicDesc)
   : '';
 
 const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô tả cho bộ truyện này.", {
