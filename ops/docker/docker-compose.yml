@@ -154,7 +154,7 @@ services:
 
   cms-api:
     build:
-      context: ../../cms/api
+      context: ../../src/cms/api
       dockerfile: Dockerfile
     container_name: commics-cms-api
     environment:
@@ -173,7 +173,7 @@ services:
 
   cms-fe:
     build:
-      context: ../../cms/fe
+      context: ../../src/cms/fe
       dockerfile: Dockerfile
     container_name: commics-cms-fe
     environment:

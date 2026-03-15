@@ -36,12 +36,19 @@ const SeoEditorPage = () => {
 
     useEffect(() => {
         if (detail) {
+            let initialPublishedAt = '';
+            if (detail.published_at) {
+                const d = new Date(detail.published_at);
+                const tzOffset = d.getTimezoneOffset() * 60000;
+                initialPublishedAt = new Date(d.getTime() - tzOffset).toISOString().slice(0, 16);
+            }
+
             const initialValues = {
                 title: detail.title || '',
                 description: detail.description || '',
                 keywords: detail.keywords || '',
                 is_published: detail.is_published || false,
-                published_at: detail.published_at ? new Date(detail.published_at).toISOString().slice(0, 16) : '',
+                published_at: initialPublishedAt,
                 name: detail.name || ''
             };
             setFormData(initialValues);
@@ -102,14 +109,23 @@ const SeoEditorPage = () => {
             return await api.put(getEndpoint(), payload);
         },
         onSuccess: () => {
-            const plural = entity === 'category' ? 'categories' : `${entity}s`;
-            queryClient.invalidateQueries({ queryKey: [plural] });
+            let targetRoute = `/${entity}s`;
+            let invalidationKey = `${entity}s`;
+            if (entity === 'category') {
+                targetRoute = '/categories';
+                invalidationKey = 'categories';
+            } else if (entity === 'seo') {
+                targetRoute = '/seo';
+                invalidationKey = 'seo-list';
+            }
+            
+            queryClient.invalidateQueries({ queryKey: [invalidationKey] });
             queryClient.invalidateQueries({ queryKey: ['seo-detail', entity, id] });
             // Navigate back
             if (entity === 'chapter') {
                 navigate(-1);
             } else {
-                navigate(`/${plural}`);
+                navigate(targetRoute);
             }
         }
     });
@@ -281,7 +297,9 @@ const SeoEditorPage = () => {
                                                 setFormData(prev => {
                                                     const next = { ...prev, is_published: checked };
                                                     if (checked && !prev.published_at) {
-                                                        next.published_at = new Date().toISOString().slice(0, 16);
+                                                        const d = new Date();
+                                                        const tzOffset = d.getTimezoneOffset() * 60000;
+                                                        next.published_at = new Date(d.getTime() - tzOffset).toISOString().slice(0, 16);
                                                     }
                                                     return next;
                                                 });
@@ -298,13 +316,29 @@ const SeoEditorPage = () => {
                                     <label className="text-sm font-bold text-gray-700 uppercase tracking-wide">
                                         Ngày công khai
                                     </label>
-                                    <input
-                                        type="datetime-local"
-                                        name="published_at"
-                                        value={formData.published_at}
-                                        onChange={handleChange}
-                                        className="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm bg-white"
-                                    />
+                                    <div className="flex items-center gap-2">
+                                        <input
+                                            type="datetime-local"
+                                            name="published_at"
+                                            value={formData.published_at}
+                                            onChange={handleChange}
+                                            className="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none text-sm bg-white"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const d = new Date();
+                                                const tzOffset = d.getTimezoneOffset() * 60000;
+                                                setFormData(prev => ({ 
+                                                    ...prev, 
+                                                    published_at: new Date(d.getTime() - tzOffset).toISOString().slice(0, 16)
+                                                }));
+                                            }}
+                                            className="px-3 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 rounded-lg transition-colors"
+                                        >
+                                            Hôm nay
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             
