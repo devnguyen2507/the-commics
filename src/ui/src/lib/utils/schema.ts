@@ -34,6 +34,7 @@ export function generateWebsiteSchema(siteName: string, siteUrl: string, logoUrl
             "@type": "WebSite",
             "name": siteName,
             "url": siteUrl,
+            "description": "Đọc truyện hentai, truyện tranh 18+, manhwa vietsub không che tại FanManga",
             "potentialAction": {
                 "@type": "SearchAction",
                 "target": `${siteUrl}/tim-kiem?q={search_term_string}`,
@@ -45,7 +46,8 @@ export function generateWebsiteSchema(siteName: string, siteUrl: string, logoUrl
             "@type": "Organization",
             "name": siteName,
             "url": siteUrl,
-            ...(logoUrl && { "logo": logoUrl })
+            "logo": logoUrl || `${siteUrl}/favicon.svg`,
+            "sameAs": []
         }
     ];
     return JSON.stringify(schema);
