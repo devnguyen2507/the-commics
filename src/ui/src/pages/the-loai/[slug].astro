@@ -59,8 +59,8 @@ const h3Match = categoryDescription ? categoryDescription.match(/<h3>(.*?)<\/h3>
 const extractedDesc = h3Match ? h3Match[1].replace(/<[^>]*>?/gm, '') : null;
 
 const pageDesc = extractedDesc 
-  ? `${extractedDesc}. Đọc ngay truyện ${targetCategoryName} vietsub chất lượng cao tại ${env.SITE_NAME}.`
-  : `Khám phá danh sách truyện tranh ${targetCategoryName} hay nhất. Đọc online trọn bộ, vietsub mới nhất, cập nhật liên tục 24/7 hoàn toàn miễn phí tại ${env.SITE_NAME}.`;
+  ? `${extractedDesc} Đọc truyện ${targetCategoryName} chất lượng cao tại ${env.SITE_NAME}.`
+  : `Đọc truyện tranh ${targetCategoryName} hay nhất. Trọn bộ vietsub mới nhất, cập nhật liên tục 24/7 hoàn toàn miễn phí tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
   { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` },

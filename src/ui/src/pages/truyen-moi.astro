@@ -27,8 +27,8 @@ try {
 }
 import { env } from '../lib/config/env';
 
-const pageTitle = page > 1 ? `Truyện Tranh Mới Cập Nhật Hôm Nay - Trang ${page} | ${env.SITE_NAME}` : `Truyện Tranh Mới Cập Nhật Hôm Nay - Manga, Manhwa Vietsub | ${env.SITE_NAME}`;
-const pageDesc = `Đọc truyện tranh mới nhất hôm nay. Manga, manhwa vietsub cập nhật liên tục 24/7, luôn là người đọc sớm nhất bản chất lượng cao tại ${env.SITE_NAME}.`;
+const pageTitle = page > 1 ? `Truyện Mới Cập Nhật Hôm Nay - Trang ${page} | ${env.SITE_NAME}` : `Truyện Mới Cập Nhật - Manga, Manhwa Vietsub | ${env.SITE_NAME}`;
+const pageDesc = `Đọc truyện tranh mới nhất hôm nay. Manga, manhwa vietsub cập nhật liên tục 24/7, bản chất lượng cao tại ${env.SITE_NAME}. Đọc ngay miễn phí!`;
 
 const schemas = [
   generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/truyen-moi`),

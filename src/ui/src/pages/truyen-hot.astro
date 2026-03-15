@@ -26,8 +26,8 @@ try {
   console.error("Fetch error:", e);
 }
 
-const pageTitle = page > 1 ? `Top Truyện Tranh Hot Nhất - Trang ${page} | ${env.SITE_NAME}` : `Top Truyện Tranh Hot Nhất - Manga, Manhwa Đọc Nhiều Nhất | ${env.SITE_NAME}`;
-const pageDesc = `Khám phá top truyện tranh hot nhất, được xem nhiều nhất tuần qua. Cập nhật liên tục những siêu phẩm manga, manhwa hấp dẫn. Đọc ngay miễn phí!`;
+const pageTitle = page > 1 ? `Top Truyện Hot Nhất - Trang ${page} | ${env.SITE_NAME}` : `Top Truyện Hot Nhất - Manga, Manhwa Nổi Bật | ${env.SITE_NAME}`;
+const pageDesc = `Khám phá top truyện tranh hot nhất tuần qua. Cập nhật liên tục siêu phẩm manga, manhwa hấp dẫn hàng đầu. Đọc ngay miễn phí tại ${env.SITE_NAME}!`;
 
 const schemas = [
   generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/truyen-hot`),

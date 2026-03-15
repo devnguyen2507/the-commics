@@ -60,7 +60,10 @@ const prevChapNum = slugify(getChapterNum(chapter.prevChapterId) || '');
 
 const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}/chap-${slugify(chapter.chapterNumber)}`;
 const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
-const descriptionText = `Đọc ngay truyện tranh ${comicTitle} Chương ${chapter.chapterNumber} bản vietsub mới nhất, hình ảnh sắc nét, load siêu mượt. Không quảng cáo làm phiền, trải nghiệm đọc tuyệt vời tại ${env.SITE_NAME}.`;
+const plainChapterDesc = chapter.description ? chapter.description.replace(/<[^>]+>/g, '').trim() : '';
+const descriptionText = plainChapterDesc
+  ? (plainChapterDesc.length > 150 ? plainChapterDesc.substring(0, 147) + '...' : plainChapterDesc)
+  : '';
 const pageTitle = `Đọc ${comicTitle} Chương ${chapter.chapterNumber} | ${env.SITE_NAME}`;
 
 const schemas = [
