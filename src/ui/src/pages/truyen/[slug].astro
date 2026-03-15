@@ -57,8 +57,8 @@ const breadcrumbs = [
   { label: comic.title, url: `${Astro.url.origin}/truyen/${comic.slug}` }
 ];
 
-const pageTitle = `${comic.title} - Đọc tại ${env.SITE_NAME}`;
-const pageDesc = `Đọc truyện ${comic.title} online miễn phí tại ${env.SITE_NAME}. Cập nhật nhanh nhất, chất lượng cao.`;
+const pageTitle = `Đọc Truyện ${comic.title} | ${env.SITE_NAME}`;
+const pageDesc = `Đọc ngay truyện tranh ${comic.title} bản vietsub chất lượng cao, cập nhật liên tục 24/7. Trải nghiệm đọc online bản full không quảng cáo tuyệt vời nhất tại ${env.SITE_NAME}.`;
 
 const sanitizedDescription = sanitizeHtml(comic.description || "Chưa có mô tả cho bộ truyện này.", {
   allowedTags: ['p', 'b', 'i', 'strong', 'em', 'br', 'h2', 'h3', 'ul', 'ol', 'li'],

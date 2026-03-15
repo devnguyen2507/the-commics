@@ -13,8 +13,8 @@ try {
 }
 
 const breadcrumbs = [{ label: 'Thể loại', url: `${Astro.url.origin}/the-loai` }];
-const pageTitle = `Tất cả Thể loại truyện tranh hay nhất - ${env.SITE_NAME}`;
-const pageDesc = `Khám phá danh sách toàn bộ các thể loại truyện tranh hấp dẫn tại ${env.SITE_NAME}. Từ Manga, Manhwa đến những thể loại mặn mà nhất, tất cả đều miễn phí.`;
+const pageTitle = `Tổng Hợp Tất Cả Thể Loại Truyện Tranh - Kho Manga Đồ Sộ | ${env.SITE_NAME}`;
+const pageDesc = `Khám phá danh sách toàn bộ thể loại truyện tranh cực hot tại ${env.SITE_NAME}. Từ Action, Adventure đến Hentai mặn mà nhất, tất cả đều hoàn toàn miễn phí.`;
 
 const schemas = [
   generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/the-loai`),
@@ -30,7 +30,7 @@ const schemas = [
     <Breadcrumb items={breadcrumbs} />
     
     <header class="border-l-4 border-blue-500 pl-4">
-      <h1 class="text-3xl font-black uppercase tracking-tight">Tất cả Thể loại</h1>
+      <h1 class="text-3xl font-black uppercase tracking-tight">Tất cả Thể loại Truyện Tranh</h1>
     </header>
     
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">

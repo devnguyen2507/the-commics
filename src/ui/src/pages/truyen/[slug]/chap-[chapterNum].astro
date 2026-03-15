@@ -60,8 +60,8 @@ const prevChapNum = slugify(getChapterNum(chapter.prevChapterId) || '');
 
 const pageUrl = `${env.SITE_URL.replace(/\/$/, '')}/truyen/${slug}/chap-${slugify(chapter.chapterNumber)}`;
 const firstPageImage = chapter.images?.[0]?.url ? getImageUrl(chapter.images[0].url) : '';
-const descriptionText = `Đọc ngay ${comicTitle} Chương ${chapter.chapterNumber} online chất lượng cao, cập nhật nhanh nhất tại ${env.SITE_NAME}. Không quảng cáo làm phiền.`;
-const pageTitle = `Đọc Chương ${chapter.chapterNumber} - ${comicTitle} - ${env.SITE_NAME}`;
+const descriptionText = `Đọc ngay truyện tranh ${comicTitle} Chương ${chapter.chapterNumber} bản vietsub mới nhất, hình ảnh sắc nét, load siêu mượt. Không quảng cáo làm phiền, trải nghiệm đọc tuyệt vời tại ${env.SITE_NAME}.`;
+const pageTitle = `Đọc ${comicTitle} Chương ${chapter.chapterNumber} | ${env.SITE_NAME}`;
 
 const schemas = [
   generateChapterSchema(chapter, comicTitle, slug!, pageUrl, firstPageImage, env.SITE_URL.replace(/\/$/, '')),

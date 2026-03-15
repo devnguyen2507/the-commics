@@ -26,24 +26,63 @@ try {
 	}));
 }
 
-const pageTitle = `Truyện Hentai, Đọc Truyện Tranh 18+ Manhwa Không Che - FanManga`;
+const pageTitle = `Đọc Truyện Manga, Đọc Truyện Hentai 18+ Không Che - FanManga`;
+const pageDesc = `Đọc truyện manga, đọc truyện hentai 18+ nhanh nhất tại FanManga. Kho manhwa, truyện người lớn vietsub chuẩn không che. Cập nhật hàng ngày. Đọc miễn phí ngay hôm nay!`;
 const siteUrl = Astro.url.origin;
 const schemas = [generateWebsiteSchema(env.SITE_NAME || 'FanManga', siteUrl)];
+
+const seoHeading = `Đọc Truyện Manga, Đọc Truyện Hentai Vietsub - FanManga`;
+const seoContentHtml = `
+  <p>Chào mừng bạn đến với <strong>FanManga</strong>, nền tảng <strong>đọc truyện manga</strong> và <strong>đọc truyện hentai</strong> hàng đầu tại Việt Nam. Với sứ mệnh mang đến không gian giải trí đỉnh cao, chúng tôi cung cấp kho tàng <strong>hentai</strong>, <strong>manga</strong>, <strong>manhwa 18+</strong>, và <strong>doujinshi vietsub</strong> được cập nhật liên tục. FanManga cam kết đem tới những bộ <strong>truyện tranh 18+</strong> chất lượng, bản dịch chuẩn <strong>không che</strong> sắc nét nhất.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao nên chọn web đọc truyện Fanmanga.net?</h2>
+  <p>Trong bối cảnh các website truyện tranh mọc lên như nấm, Fanmanga.net vẫn giữ vững vị thế nhờ vào sự chỉn chu trong từng khung hình và tốc độ cập nhật thần tốc. Chúng tôi hiểu rằng, đối với một "mọt truyện", cảm giác được đọc chương mới nhất ngay khi vừa ra mắt là điều tuyệt vời nhất. Chính vì thế, đội ngũ của chúng tôi làm việc không ngừng nghỉ để đảm bảo mọi bộ truyện hot nhất đều có mặt trên hệ thống sớm nhất có thể.</p>
+  <p>Không chỉ có tốc độ, chất lượng hình ảnh cũng là yếu tố chúng tôi đặt lên hàng đầu. Mọi trang truyện đều được xử lý ở độ phân giải cao, sắc nét, không bị mờ nhòe, giúp bạn tận hưởng trọn vẹn nét vẽ của các họa sĩ tài năng. Đặc biệt, giao diện của Fanmanga được tối ưu hóa cực tốt cho cả điện thoại di động và máy tính, mang lại trải nghiệm đọc mượt mà, không giật lag.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Khám Phá Kho Manga, Manhwa 18+ Đa Dạng Thể Loại</h2>
+  <p>Tại Fanmanga.net, bạn sẽ lạc vào thế giới của hàng nghìn bộ truyện trải dài qua nhiều phân khúc khác nhau:</p>
+  <ul class="list-disc pl-5 space-y-2">
+    <li><a href="/the-loai/ntr/" class="text-blue-500 hover:underline"><strong>Ngoại tình (NTR)</strong></a>: Cảm giác kịch tính, sai trái nhưng đầy kích thích với những mối quan hệ lén lút.</li>
+    <li><a href="/the-loai/schoolgirl-uniform/" class="text-blue-500 hover:underline"><strong>Nữ sinh</strong></a>: Tình yêu tuổi thanh xuân với hình ảnh những nữ sinh trong bộ đồng phục trong sáng nhưng không kém phần quyến rũ.</li>
+    <li><a href="/the-loai/veu-to/" class="text-blue-500 hover:underline"><strong>Vú to</strong></a>: Phân khúc được yêu thích với những nhân vật nữ body nóng bỏng, vòng một ngoại cỡ.</li>
+    <li><a href="/the-loai/cheating/" class="text-blue-500 hover:underline"><strong>Cheating / Phản bội</strong></a>: Tâm lý phức tạp, đầy rẫy sự lừa dối và những nhục dục đầy cám dỗ.</li>
+    <li><a href="/the-loai/virgins/" class="text-blue-500 hover:underline"><strong>Trinh nữ</strong></a>: Sự thuần khiết, ngượng ngùng trong những trải nghiệm đầu tiên đầy thăng hoa.</li>
+    <li><a href="/the-loai/deo-kinh/" class="text-blue-500 hover:underline"><strong>Đeo kính</strong></a>: Nét đẹp đoan trang, tri thức nhưng lại mang một sức hút bí ẩn khó cưỡng.</li>
+    <li><a href="/the-loai/maid/" class="text-blue-500 hover:underline"><strong>Hầu gái</strong></a>: Phục tùng và chiều chuộng, hóa thân vào những ảo mộng ngọt ngào nhất của các tác giả doujinshi.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Trải nghiệm đọc truyện manga, manhwa tối ưu trên mọi thiết bị</h2>
+  <p>Thấu hiểu thói quen của người dùng hiện đại, Fanmanga.net được thiết kế theo phong cách responsive hiện đại. Bạn có thể dễ dàng theo dõi bộ truyện yêu thích trên chiếc smartphone của mình khi đang di chuyển trên xe bus, hoặc tận hưởng màn hình rộng của máy tính khi ở nhà. Hệ thống tự động lưu lại lịch sử đọc truyện, giúp bạn có thể tiếp tục hành trình của mình ở bất cứ đâu mà không cần tốn công tìm lại chương đang đọc dở.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Tính năng tìm kiếm thông minh</h3>
+  <p>Với bộ lọc nâng cao, bạn có thể dễ dàng tìm kiếm truyện theo tên tác giả, tên bộ truyện, hoặc theo từng tag thể loại cụ thể. Nếu bạn đang cảm thấy phân vân không biết nên đọc gì tiếp theo, chuyên mục "Truyện Hot" và "Truyện Mới Cập Nhật" sẽ là những gợi ý tuyệt vời dành cho bạn.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Cộng đồng Fanmanga - Nơi kết nối niềm đam mê</h3>
+  <p>Fanmanga không chỉ là một website, đó là một cộng đồng. Tại đây, bạn có thể tự do thảo luận, chia sẻ cảm nghĩ về các tình tiết trong truyện. Chúng tôi luôn lắng nghe ý kiến đóng góp của độc giả để ngày càng hoàn thiện dịch vụ, mang tới một sân chơi văn minh và sôi động cho tất cả mọi người.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Cam kết của chúng tôi</h2>
+  <p>Chúng tôi cam kết bảo mật thông tin người dùng và luôn nỗ lực loại bỏ các quảng cáo gây khó chịu để bạn có thể tập trung hoàn toàn vào nội dung truyện. Fanmanga.net hướng tới việc xây dựng một thư viện số bền vững, nơi lưu giữ những giá trị nghệ thuật của thế giới truyện tranh.</p>
+  <p>Nếu bạn có bất kỳ thắc mắc hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi qua email: <strong>info@fanmanga.net</strong>. Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn 24/7.</p>
+
+  <div class="mt-8 pt-8 border-t border-zinc-800">
+    <p class="text-xs italic text-zinc-500">Từ khóa tìm kiếm: đọc truyện manga, đọc truyện hentai, đọc truyện tranh 18+, manhwa 18+, truyện tranh không che, hentai vietsub, truyện người lớn, doujinshi tiếng việt, fanmanga, fanmanga.net.</p>
+  </div>
+`;
 
 ---
 
 <Layout 
-	title={pageTitle} 
-	description={`Đọc truyện tranh 18+ nhanh nhất tại FanManga. Kho truyện manhwa, hentai, truyện người lớn vietsub bản dịch chuẩn không che. Cập nhật hàng ngày.`}
-	isHome={true} 
-	ogType="website" 
-	schemas={schemas}
+  title={pageTitle} 
+  description={pageDesc}
+  isHome={true} 
+  ogType="website" 
+  schemas={schemas}
 >
 	<HeroSlider comics={latestComics} />
 	
 	<div class="max-w-6xl mx-auto px-4 py-12 space-y-8">
 		<header class="flex items-center justify-between border-l-4 border-blue-500 pl-4">
-			<h2 class="text-2xl font-black uppercase tracking-tight">Mới cập nhật</h2>
+			<h2 class="text-2xl font-black uppercase tracking-tight">Truyện Manga, Manhwa Mới Cập Nhật Hôm Nay</h2>
 			<a href="/the-loai/" class="text-xs font-bold text-zinc-500 hover:text-blue-500 uppercase tracking-widest transition-colors">
 				Xem tất cả →
 			</a>
@@ -59,63 +98,8 @@ const schemas = [generateWebsiteSchema(env.SITE_NAME || 'FanManga', siteUrl)];
 	<!-- SEO Box -->
 	<section class="max-w-6xl mx-auto px-4 pb-16">
 		<div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-			<h1 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">Đọc Tuyển Tập Truyện Hentai, Truyện Tranh 18+ Vietsub - FanManga</h1>
-			
-			<div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6">
-				<p>
-					Chào mừng bạn đến với <strong>FanManga</strong>, nền tảng đọc <strong>truyện hentai</strong> và <strong>truyện tranh 18+</strong> hàng đầu tại Việt Nam. Với sứ mệnh mang đến không gian giải trí đỉnh cao, chúng tôi cung cấp kho tàng <strong>hentai</strong>, <strong>manhwa 18+</strong>, và <strong>doujinshi vietsub</strong> được cập nhật liên tục. FanManga cam kết đem tới những bộ <strong>truyện người lớn</strong> chất lượng, bản dịch chuẩn <strong>không che</strong> sắc nét nhất.
-				</p>
-
-				<h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao nên chọn đọc truyện tại Fanmanga.net?</h2>
-				<p>
-					Trong bối cảnh các website truyện tranh mọc lên như nấm, Fanmanga.net vẫn giữ vững vị thế nhờ vào sự chỉn chu trong từng khung hình và tốc độ cập nhật thần tốc. Chúng tôi hiểu rằng, đối với một "mọt truyện", cảm giác được đọc chương mới nhất ngay khi vừa ra mắt là điều tuyệt vời nhất. Chính vì thế, đội ngũ của chúng tôi làm việc không ngừng nghỉ để đảm bảo mọi bộ truyện hot nhất đều có mặt trên hệ thống sớm nhất có thể.
-				</p>
-				<p>
-					Không chỉ có tốc độ, chất lượng hình ảnh cũng là yếu tố chúng tôi đặt lên hàng đầu. Mọi trang truyện đều được xử lý ở độ phân giải cao, sắc nét, không bị mờ nhòe, giúp bạn tận hưởng trọn vẹn nét vẽ của các họa sĩ tài năng. Đặc biệt, giao diện của Fanmanga được tối ưu hóa cực tốt cho cả điện thoại di động và máy tính, mang lại trải nghiệm đọc mượt mà, không giật lag.
-				</p>
-
-				<h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Khám phá kho truyện tranh đa dạng thể loại</h2>
-				<p>
-					Tại Fanmanga.net, bạn sẽ lạc vào thế giới của hàng nghìn bộ truyện trải dài qua nhiều phân khúc khác nhau:
-				</p>
-				<ul class="list-disc pl-5 space-y-2">
-					<li><strong>Action (Hành động):</strong> Những trận chiến nảy lửa, kịch tính và đầy nghẹt thở.</li>
-					<li><strong>Adventure (Phiêu lưu):</strong> Cùng nhân vật khám phá những vùng đất mới lạ và những bí ẩn chưa có lời giải.</li>
-					<li><strong>Comedy (Hài hước):</strong> Những tràng cười sảng khoái giúp bạn giải tỏa căng thẳng sau giờ làm việc.</li>
-					<li><strong>Romance (Lãng mạn):</strong> Những câu chuyện tình yêu ngọt ngào, cảm động và đầy chiều sâu.</li>
-					<li><strong>Horror (Kinh dị):</strong> Thử thách lòng dũng cảm với những bộ truyện ma mị và đầy ám ảnh.</li>
-					<li><strong>18+ (Người lớn):</strong> Những bộ Manhwa, Hentai dành riêng cho khán giả trưởng thành với nội dung mặn mà và art style cực phẩm.</li>
-				</ul>
-
-				<h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Trải nghiệm đọc truyện đỉnh cao trên mọi thiết bị</h2>
-				<p>
-					Thấu hiểu thói quen của người dùng hiện đại, Fanmanga.net được thiết kế theo phong cách responsive hiện đại. Bạn có thể dễ dàng theo dõi bộ truyện yêu thích trên chiếc smartphone của mình khi đang di chuyển trên xe bus, hoặc tận hưởng màn hình rộng của máy tính khi ở nhà. Hệ thống tự động lưu lại lịch sử đọc truyện, giúp bạn có thể tiếp tục hành trình của mình ở bất cứ đâu mà không cần tốn công tìm lại chương đang đọc dở.
-				</p>
-
-				<h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Tính năng tìm kiếm thông minh</h3>
-				<p>
-					Với bộ lọc nâng cao, bạn có thể dễ dàng tìm kiếm truyện theo tên tác giả, tên bộ truyện, hoặc theo từng tag thể loại cụ thể. Nếu bạn đang cảm thấy phân vân không biết nên đọc gì tiếp theo, chuyên mục "Truyện Hot" và "Truyện Mới Cập Nhật" sẽ là những gợi ý tuyệt vời dành cho bạn.
-				</p>
-
-				<h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Cộng đồng Fanmanga - Nơi kết nối niềm đam mê</h3>
-				<p>
-					Fanmanga không chỉ là một website, đó là một cộng đồng. Tại đây, bạn có thể tự do thảo luận, chia sẻ cảm nghĩ về các tình tiết trong truyện. Chúng tôi luôn lắng nghe ý kiến đóng góp của độc giả để ngày càng hoàn thiện dịch vụ, mang tới một sân chơi văn minh và sôi động cho tất cả mọi người.
-				</p>
-
-				<h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Cam kết của chúng tôi</h2>
-				<p>
-					Chúng tôi cam kết bảo mật thông tin người dùng và luôn nỗ lực loại bỏ các quảng cáo gây khó chịu để bạn có thể tập trung hoàn toàn vào nội dung truyện. Fanmanga.net hướng tới việc xây dựng một thư viện số bền vững, nơi lưu giữ những giá trị nghệ thuật của thế giới truyện tranh.
-				</p>
-				<p>
-					Nếu bạn có bất kỳ thắc mắc hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi qua email: <strong>info@fanmanga.net</strong>. Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn 24/7.
-				</p>
-
-				<div class="mt-8 pt-8 border-t border-zinc-800">
-					<p class="text-xs italic text-zinc-500">
-						Từ khóa tìm kiếm: đọc truyện tranh 18+, manhwa 18+, truyện tranh không che, hentai vietsub, đọc manhwa, truyện người lớn, doujinshi tiếng việt, truyện hentai tiếng việt, fanmanga, fanmanga.net.
-					</p>
-				</div>
-			</div>
+			<h1 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">{seoHeading}</h1>
+			<div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6" set:html={seoContentHtml} />
 		</div>
 	</section>
 </Layout>

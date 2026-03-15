@@ -34,7 +34,7 @@ export function generateWebsiteSchema(siteName: string, siteUrl: string, logoUrl
             "@type": "WebSite",
             "name": siteName,
             "url": siteUrl,
-            "description": "Đọc truyện hentai, truyện tranh 18+, manhwa vietsub không che tại FanManga",
+            "description": "Đọc truyện manga, đọc truyện hentai 18+, manhwa vietsub không che tại FanManga. Kho truyện phong phú cập nhật liên tục. Đọc miễn phí ngay hôm nay!",
             "potentialAction": {
                 "@type": "SearchAction",
                 "target": `${siteUrl}/tim-kiem?q={search_term_string}`,

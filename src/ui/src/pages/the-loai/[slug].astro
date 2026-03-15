@@ -52,14 +52,15 @@ try {
 }
 
 const pageTitle = page > 1 
-  ? `Truyện ${targetCategoryName} - Trang ${page} - Đọc online tại ${env.SITE_NAME}` 
-  : `Truyện ${targetCategoryName} - Đọc online tại ${env.SITE_NAME}`;
+  ? `Truyện ${targetCategoryName} Hay Nhất - Trang ${page} | ${env.SITE_NAME}` 
+  : `Truyện ${targetCategoryName} Hay Nhất | ${env.SITE_NAME}`;
 
 const h3Match = categoryDescription ? categoryDescription.match(/<h3>(.*?)<\/h3>/i) : null;
 const extractedDesc = h3Match ? h3Match[1].replace(/<[^>]*>?/gm, '') : null;
 
-const pageDesc = `${extractedDesc}. Đọc truyện mới nhất tại ${env.SITE_NAME}` 
-  || `Danh sách truyện thể loại ${targetCategoryName} hay nhất, cập nhật liên tục. Đọc truyện ${targetCategoryName} vietsub miễn phí sớm nhất tại ${env.SITE_NAME}.`;
+const pageDesc = extractedDesc 
+  ? `${extractedDesc}. Đọc ngay truyện ${targetCategoryName} vietsub chất lượng cao tại ${env.SITE_NAME}.`
+  : `Khám phá danh sách truyện tranh ${targetCategoryName} hay nhất. Đọc online trọn bộ, vietsub mới nhất, cập nhật liên tục 24/7 hoàn toàn miễn phí tại ${env.SITE_NAME}.`;
 
 const breadcrumbs = [
   { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` },
@@ -85,7 +86,7 @@ const schemas = [
     <Breadcrumb items={breadcrumbs} />
 
     <header class="border-l-4 border-blue-500 pl-4">
-      <h1 class="text-3xl font-black uppercase tracking-tight">Truyện {targetCategoryName}</h1>
+      <h1 class="text-3xl font-black uppercase tracking-tight">Truyện Tranh {targetCategoryName}</h1>
     </header>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-4 gap-y-8 animate-slide-up">
@@ -105,7 +106,7 @@ const schemas = [
     <!-- SEO Content Box — hiển thị description từ DB nếu có -->
     <section class="pb-16">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-xl font-bold text-zinc-300 mb-4 tracking-tighter uppercase">Tìm hiểu về thể loại {targetCategoryName} tại {env.SITE_NAME}</h2>
+        <h2 class="text-xl font-bold text-zinc-300 mb-4 tracking-tighter uppercase">Tuyển Tập Truyện Tranh {targetCategoryName} Hot Nhất Tại {env.SITE_NAME}</h2>
         <div class="bg-zinc-950/40 p-4 rounded-xl border border-zinc-800/50 shadow-inner">
           <div class="text-zinc-400 text-sm leading-relaxed max-h-[250px] overflow-y-auto custom-scrollbar pr-2 space-y-3">
             {categoryDescription ? (

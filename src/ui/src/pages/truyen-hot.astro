@@ -26,23 +26,56 @@ try {
   console.error("Fetch error:", e);
 }
 
-const title = page > 1 ? `Truyện Hot - Đọc nhiều nhất - Trang ${page} - ${env.SITE_NAME}` : `Truyện Hot - Đọc nhiều nhất - ${env.SITE_NAME}`;
-const description = `Top truyện tranh hot nhất, được xem nhiều nhất tuần qua. Cập nhật liên tục những siêu phẩm manga, manhwa, manhua hấp dẫn tại ${env.SITE_NAME}.`;
+const pageTitle = page > 1 ? `Top Truyện Tranh Hot Nhất - Trang ${page} | ${env.SITE_NAME}` : `Top Truyện Tranh Hot Nhất - Manga, Manhwa Đọc Nhiều Nhất | ${env.SITE_NAME}`;
+const pageDesc = `Khám phá top truyện tranh hot nhất, được xem nhiều nhất tuần qua. Cập nhật liên tục những siêu phẩm manga, manhwa hấp dẫn. Đọc ngay miễn phí!`;
 
 const schemas = [
-  generateCollectionSchema(title, description, `${Astro.url.origin}/truyen-hot`),
+  generateCollectionSchema(pageTitle, pageDesc, `${Astro.url.origin}/truyen-hot`),
   generateBreadcrumbSchema([
     { label: 'Trang chủ', url: Astro.url.origin },
     { label: 'Truyện Hot', url: `${Astro.url.origin}/truyen-hot` }
   ])
 ];
+
+const seoHeading = `Top truyện tranh hot nhất tuần qua trên ${env.SITE_NAME}`;
+const seoContentHtml = `
+  <p>Bạn đang tìm kiếm những "siêu phẩm" đang làm mưa làm gió trong cộng đồng yêu truyện? Chào mừng bạn đến với bảng xếp hạng <strong>Truyện Hot</strong> tại Fanmanga.net. Đây là nơi hội tụ những bộ truyện có lượt xem khủng nhất, được bàn luận sôi nổi nhất và sở hữu cộng đồng fan đông đảo nhất hiện nay.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao danh sách Truyện Hot lại đáng đọc?</h2>
+  <p>Bảng xếp hạng tại Fanmanga.net không dựa trên cảm tính, mà dựa trên số liệu thực tế về lượt truy cập và sự quan tâm của độc giả trong suốt tuần qua. Một bộ truyện lọt vào danh sách này chắc chắn phải sở hữu cốt truyện hấp dẫn, nét vẽ đỉnh cao hoặc những tình tiết gây cấn không thể rời mắt.</p>
+  <p>Đặc biệt, trong thế giới Manhwa 18+ và Hentai, danh sách truyện hot giúp bạn nhanh chóng nhận diện được những bộ truyện có art style "nuột" nhất, nội dung "mặn" nhất mà anh em đồng dâm đang săn đón. Đừng bỏ lỡ những cái tên đang đứng đầu bảng nếu bạn không muốn trở thành người "tối cổ" trong giới mọt truyện!</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Đa dạng các thể loại cực phẩm</h2>
+  <p>Danh sách truyện hot thường xuyên thay đổi với sự góp mặt của nhiều thể loại khác nhau:</p>
+  <ul class="list-disc pl-5 space-y-2">
+    <li><strong>Siêu phẩm Action:</strong> Những hành trình tu tiên, xuyên không hay những cuộc chiến tranh giành quyền lực.</li>
+    <li><strong>Manhwa Adult Hot:</strong> Những câu chuyện tình yêu đầy nhục dục với nét vẽ sắc nét, không che (uncensored).</li>
+    <li><strong>Romance cực ngọt:</strong> Những bộ truyện tình cảm chiếm trọn trái tim của các độc giả nữ.</li>
+    <li><strong>Drama kịch tính:</strong> Những màn "quay xe" khét lẹt khiến người đọc phải ngả mũ thán phục.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Đọc truyện tại Fanmanga.net - Nhanh, Nét, Miễn Phí</h2>
+  <p>Chúng tôi tự hào mang đến trải nghiệm đọc truyện 10/10 cho độc giả. Mọi bộ truyện hot đều được cập nhật server tải ảnh siêu tốc, giúp bạn đọc chương mới mà không cần chờ đợi load từng trang. Từng khung hình đều được trau chuốt kỹ lưỡng để đảm bảo độ HD sắc nét nhất trên cả màn hình điện thoại và PC.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Hệ thống phân loại thông minh</h3>
+  <p>Bạn có thể lọc danh sách truyện hot theo lượt xem ngày, tuần, tháng hoặc theo từng thể loại yêu thích. Điều này giúp bạn dễ dàng bắt kịp xu hướng (trend) của cộng đồng mà không tốn quá nhiều thời gian tìm kiếm.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Hỗ trợ độc giả tận tâm</h3>
+  <p>Chúng tôi luôn lắng nghe phản hồi từ độc giả để cải thiện chất lượng bản dịch cũng như tốc độ hệ thống. Nếu có bất kỳ vấn đề gì về hình ảnh hoặc nội dung, vui lòng liên hệ ngay với chúng tôi để được xử lý sớm nhất.</p>
+
+  <p class="font-bold text-zinc-300">Khám phá ngay thế giới giải trí bất tận cùng Top Truyện Hot tại Fanmanga.net. Mọi góp ý xin gửi về: <strong>info@fanmanga.net</strong>.</p>
+
+  <div class="mt-8 pt-8 border-t border-zinc-800">
+    <p class="text-xs italic text-zinc-500">Keywords: truyện hot, đọc truyện nhiều nhất, top manga, manhwa 18+ hot, fanmanga.net truyện hay, bảng xếp hạng truyện tranh.</p>
+  </div>
+`;
 ---
 
-<Layout title={title} description={description} schemas={schemas} robots={page > 1 ? "noindex, follow" : undefined}>
+<Layout title={pageTitle} description={pageDesc} schemas={schemas} robots={page > 1 ? "noindex, follow" : undefined}>
   <main class="max-w-6xl mx-auto px-4 py-8">
     <div class="flex items-center justify-between mb-8">
       <h1 class="text-3xl font-black text-white uppercase tracking-tighter border-l-4 border-blue-600 pl-4">
-        Truyện Hot <span class="text-blue-500">Nhất</span>
+        Top Truyện Tranh <span class="text-blue-500">Hot Nhất</span>
       </h1>
     </div>
 
@@ -64,57 +97,8 @@ const schemas = [
     <!-- SEO Content Box -->
     <section class="max-w-6xl mx-auto px-0 pb-16 mt-16">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">Top truyện tranh hot nhất tuần qua trên {env.SITE_NAME}</h2>
-        
-        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6">
-          <p>
-            Bạn đang tìm kiếm những "siêu phẩm" đang làm mưa làm gió trong cộng đồng yêu truyện? Chào mừng bạn đến với bảng xếp hạng <strong>Truyện Hot</strong> tại Fanmanga.net. Đây là nơi hội tụ những bộ truyện có lượt xem khủng nhất, được bàn luận sôi nổi nhất và sở hữu cộng đồng fan đông đảo nhất hiện nay.
-          </p>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao danh sách Truyện Hot lại đáng đọc?</h2>
-          <p>
-            Bảng xếp hạng tại Fanmanga.net không dựa trên cảm tính, mà dựa trên số liệu thực tế về lượt truy cập và sự quan tâm của độc giả trong suốt tuần qua. Một bộ truyện lọt vào danh sách này chắc chắn phải sở hữu cốt truyện hấp dẫn, nét vẽ đỉnh cao hoặc những tình tiết gây cấn không thể rời mắt.
-          </p>
-          <p>
-            Đặc biệt, trong thế giới Manhwa 18+ và Hentai, danh sách truyện hot giúp bạn nhanh chóng nhận diện được những bộ truyện có art style "nuột" nhất, nội dung "mặn" nhất mà anh em đồng dâm đang săn đón. Đừng bỏ lỡ những cái tên đang đứng đầu bảng nếu bạn không muốn trở thành người "tối cổ" trong giới mọt truyện!
-          </p>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Đa dạng các thể loại cực phẩm</h2>
-          <p>
-            Danh sách truyện hot thường xuyên thay đổi với sự góp mặt của nhiều thể loại khác nhau:
-          </p>
-          <ul class="list-disc pl-5 space-y-2">
-            <li><strong>Siêu phẩm Action:</strong> Những hành trình tu tiên, xuyên không hay những cuộc chiến tranh giành quyền lực.</li>
-            <li><strong>Manhwa Adult Hot:</strong> Những câu chuyện tình yêu đầy nhục dục với nét vẽ sắc nét, không che (uncensored).</li>
-            <li><strong>Romance cực ngọt:</strong> Những bộ truyện tình cảm chiếm trọn trái tim của các độc giả nữ.</li>
-            <li><strong>Drama kịch tính:</strong> Những màn "quay xe" khét lẹt khiến người đọc phải ngả mũ thán phục.</li>
-          </ul>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Đọc truyện tại Fanmanga.net - Nhanh, Nét, Miễn Phí</h2>
-          <p>
-            Chúng tôi tự hào mang đến trải nghiệm đọc truyện 10/10 cho độc giả. Mọi bộ truyện hot đều được cập nhật server tải ảnh siêu tốc, giúp bạn đọc chương mới mà không cần chờ đợi load từng trang. Từng khung hình đều được trau chuốt kỹ lưỡng để đảm bảo độ HD sắc nét nhất trên cả màn hình điện thoại và PC.
-          </p>
-
-          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Hệ thống phân loại thông minh</h3>
-          <p>
-            Bạn có thể lọc danh sách truyện hot theo lượt xem ngày, tuần, tháng hoặc theo từng thể loại yêu thích. Điều này giúp bạn dễ dàng bắt kịp xu hướng (trend) của cộng đồng mà không tốn quá nhiều thời gian tìm kiếm.
-          </p>
-
-          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Hỗ trợ độc giả tận tâm</h3>
-          <p>
-            Chúng tôi luôn lắng nghe phản hồi từ độc giả để cải thiện chất lượng bản dịch cũng như tốc độ hệ thống. Nếu có bất kỳ vấn đề gì về hình ảnh hoặc nội dung, vui lòng liên hệ ngay với chúng tôi để được xử lý sớm nhất.
-          </p>
-
-          <p class="font-bold text-zinc-300">
-            Khám phá ngay thế giới giải trí bất tận cùng Top Truyện Hot tại Fanmanga.net. Mọi góp ý xin gửi về: <strong>info@fanmanga.net</strong>.
-          </p>
-
-          <div class="mt-8 pt-8 border-t border-zinc-800">
-            <p class="text-xs italic text-zinc-500">
-              Keywords: truyện hot, đọc truyện nhiều nhất, top manga, manhwa 18+ hot, fanmanga.net truyện hay, bảng xếp hạng truyện tranh.
-            </p>
-          </div>
-        </div>
+        <h1 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">{seoHeading}</h1>
+        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6" set:html={seoContentHtml} />
       </div>
     </section>
   </main>

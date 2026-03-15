@@ -31,14 +31,47 @@ if (query) {
 const breadcrumbs = [
   { label: 'Tìm kiếm' }
 ];
+
+const pageTitle = query ? (page > 1 ? `Kết quả tìm kiếm cho "${query}" - Trang ${page} | ${env.SITE_NAME}` : `Kết quả tìm kiếm cho "${query}" | ${env.SITE_NAME}`) : `Tìm kiếm truyện tranh online thông minh | ${env.SITE_NAME}`;
+const pageDesc = query 
+  ? `Khám phá ngay danh sách truyện tranh khớp với từ khóa "${query}" tại ${env.SITE_NAME}. Hàng ngàn bộ truyện hay đang chờ bạn đọc miễn phí.`
+  : `Công cụ tìm kiếm truyện tranh thông minh tại ${env.SITE_NAME}. Nhập tên truyện manga, tác giả hoặc thể loại manhwa để khám phá kho tàng giải trí bất tận.`;
+
+const seoHeading = `Tìm kiếm truyện tranh online thông minh tại ${env.SITE_NAME}`;
+const seoContentHtml = `
+  <p>Bạn đang khao khát tìm lại một bộ truyện cũ đã quên tên, hay đang săn lùng những từ khóa hot nhất trong giới Manga? Hệ thống <strong>Tìm kiếm thông minh</strong> của Fanmanga.net được thiết kế để giúp bạn chạm tới kho tàng giải trí khổng lồ chỉ sau vài giây gõ phím.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Mẹo tìm kiếm truyện hiệu quả</h2>
+  <p>Để có kết quả chính xác nhất, bạn có thể thử các mẹo sau:</p>
+  <ul class="list-disc pl-5 space-y-2">
+    <li><strong>Tìm theo tên truyện:</strong> Nhập chính xác tên tiếng Việt hoặc tên gốc (Romaji/English) của bộ truyện.</li>
+    <li><strong>Tìm theo tên tác giả:</strong> Nếu bạn là fan của một họa sĩ cụ thể, hãy nhập tên họ để khám phá toàn bộ tác phẩm.</li>
+    <li><strong>Tìm theo thể loại phối hợp:</strong> Sử dụng các từ khóa thể loại kèm theo để thu hẹp phạm vi tìm kiếm.</li>
+  </ul>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao nên sử dụng tìm kiếm tại Fanmanga.net?</h2>
+  <p>Khác với các công cụ tìm kiếm thông thường, Fanmanga.net tối ưu hóa kết quả dựa trên mức độ phổ biến và tính cập nhật. Chúng tôi đảm bảo rằng những bộ truyện bạn tìm thấy đều có link tải ảnh tốc độ cao và chất lượng dịch thuật tốt nhất. Cho dù là những bộ Manhwa 18+ hiếm gặp hay những siêu phẩm Manga đang on-top, mọi thứ đều nằm trong tầm tay bạn.</p>
+
+  <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Khám phá nội dung mặn mà và độc bản</h2>
+  <p>Nếu kết quả tìm kiếm mang lại cho bạn những bộ truyện thuộc tag Adult, Hentai, hay MILF, hãy yên tâm rằng Fanmanga cung cấp những bản leak chất lượng cao nhất, không che và có đầy đủ phụ đề tiếng Việt. Chúng tôi tự hào mang đến không gian tìm kiếm riêng tư, bảo mật và cực kỳ mạnh mẽ cho mọi độc giả.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Tốc độ là ưu tiên hàng đầu</h3>
+  <p>Hệ thống backend của chúng tôi xử lý hàng triệu dữ liệu mỗi giây để đảm bảo rằng kết quả tìm kiếm được hiển thị ngay lập tức, không có độ trễ. Điều này cực kỳ hữu ích khi bạn đang sử dụng 3G/4G trên điện thoại di động.</p>
+
+  <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Phản hồi và Hỗ trợ</h3>
+  <p>Nếu bạn tìm kiếm mãi mà vẫn không thấy bộ truyện yêu thích, đừng ngần ngại gửi yêu cầu "Yêu cầu truyện" cho chúng tôi qua email: <strong>info@fanmanga.net</strong>. Đội ngũ kỹ thuật và biên tập viên của Fanmanga sẽ cố gắng cập nhật bộ truyện đó lên hệ thống trong thời gian sớm nhất.</p>
+
+  <p class="font-bold text-zinc-300">Fanmanga.net - Nơi mọi tìm kiếm đều dẫn đến khoái cảm và sự thư giãn tuyệt vời. Chúc bạn tìm được bộ truyện ưng ý!</p>
+
+  <div class="mt-8 pt-8 border-t border-zinc-800">
+    <p class="text-xs italic text-zinc-500">Keywords: tìm truyện tranh, search manga, tìm manhwa 18+, đọc truyện online fanmanga, fanmanga.net search, tìm kiếm truyện hay.</p>
+  </div>
+`;
 ---
 
 <Layout 
-  title={page > 1 ? `Kết quả tìm kiếm cho "${query}" - Trang ${page} - ${env.SITE_NAME}` : `Kết quả tìm kiếm cho "${query}" - ${env.SITE_NAME}`} 
-  description={query 
-    ? `Khám phá ngay danh sách truyện tranh khớp với từ khóa "${query}" tại ${env.SITE_NAME}. Hàng ngàn bộ truyện hay đang chờ bạn đọc miễn phí.`
-    : `Tìm kiếm truyện tranh online thông minh tại ${env.SITE_NAME}. Nhập tên truyện, tác giả hoặc thể loại để khám phá kho tàng Manga, Manhwa hấp dẫn.`
-  }
+  title={pageTitle}
+  description={pageDesc}
   robots={(query || page > 1) ? "noindex, follow" : undefined}
 >
   <div class="max-w-6xl mx-auto px-4 py-8 space-y-8">
@@ -46,8 +79,8 @@ const breadcrumbs = [
     
     <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-l-4 border-blue-500 pl-4">
       <div class="space-y-1">
-        <h1 class="text-3xl font-black uppercase tracking-tight">Tìm kiếm</h1>
-        <p class="text-zinc-500 text-sm">Kết quả cho từ khóa: <span class="text-zinc-300 font-bold">"{query}"</span></p>
+        <h1 class="text-3xl font-black uppercase tracking-tight">{query ? 'Kết quả tìm kiếm' : 'Tìm kiếm truyện tranh'}</h1>
+        {query && <p class="text-zinc-500 text-sm">Kết quả cho từ khóa: <span class="text-zinc-300 font-bold">"{query}"</span></p>}
       </div>
       <form action="/tim-kiem" method="GET" class="relative w-full md:w-96">
         <input 
@@ -86,53 +119,8 @@ const breadcrumbs = [
     <!-- SEO Content Box -->
     <section class="max-w-6xl mx-auto px-0 pb-16 mt-16 pt-16 border-t border-zinc-800">
       <div class="bg-zinc-900/50 rounded-xl p-8 border border-zinc-800">
-        <h2 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">Tìm kiếm truyện tranh online thông minh tại {env.SITE_NAME}</h2>
-        
-        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6">
-          <p>
-            Bạn đang khao khát tìm lại một bộ truyện cũ đã quên tên, hay đang săn lùng những từ khóa hot nhất trong giới Manga? Hệ thống <strong>Tìm kiếm thông minh</strong> của Fanmanga.net được thiết kế để giúp bạn chạm tới kho tàng giải trí khổng lồ chỉ sau vài giây gõ phím.
-          </p>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Mẹo tìm kiếm truyện hiệu quả</h2>
-          <p>
-            Để có kết quả chính xác nhất, bạn có thể thử các mẹo sau:
-          </p>
-          <ul class="list-disc pl-5 space-y-2">
-            <li><strong>Tìm theo tên truyện:</strong> Nhập chính xác tên tiếng Việt hoặc tên gốc (Romaji/English) của bộ truyện.</li>
-            <li><strong>Tìm theo tên tác giả:</strong> Nếu bạn là fan của một họa sĩ cụ thể, hãy nhập tên họ để khám phá toàn bộ tác phẩm.</li>
-            <li><strong>Tìm theo thể loại phối hợp:</strong> Sử dụng các từ khóa thể loại kèm theo để thu hẹp phạm vi tìm kiếm.</li>
-          </ul>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Tại sao nên sử dụng tìm kiếm tại Fanmanga.net?</h2>
-          <p>
-            Khác với các công cụ tìm kiếm thông thường, Fanmanga.net tối ưu hóa kết quả dựa trên mức độ phổ biến và tính cập nhật. Chúng tôi đảm bảo rằng những bộ truyện bạn tìm thấy đều có link tải ảnh tốc độ cao và chất lượng dịch thuật tốt nhất. Cho dù là những bộ Manhwa 18+ hiếm gặp hay những siêu phẩm Manga đang on-top, mọi thứ đều nằm trong tầm tay bạn.
-          </p>
-
-          <h2 class="text-xl font-bold text-zinc-200 mt-8 mb-4">Khám phá nội dung mặn mà và độc bản</h2>
-          <p>
-            Nếu kết quả tìm kiếm mang lại cho bạn những bộ truyện thuộc tag Adult, Hentai, hay MILF, hãy yên tâm rằng Fanmanga cung cấp những bản leak chất lượng cao nhất, không che và có đầy đủ phụ đề tiếng Việt. Chúng tôi tự hào mang đến không gian tìm kiếm riêng tư, bảo mật và cực kỳ mạnh mẽ cho mọi độc giả.
-          </p>
-
-          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Tốc độ là ưu tiên hàng đầu</h3>
-          <p>
-            Hệ thống backend của chúng tôi xử lý hàng triệu dữ liệu mỗi giây để đảm bảo rằng kết quả tìm kiếm được hiển thị ngay lập tức, không có độ trễ. Điều này cực kỳ hữu ích khi bạn đang sử dụng 3G/4G trên điện thoại di động.
-          </p>
-
-          <h3 class="text-lg font-bold text-zinc-200 mt-6 mb-3">Phản hồi và Hỗ trợ</h3>
-          <p>
-            Nếu bạn tìm kiếm mãi mà vẫn không thấy bộ truyện yêu thích, đừng ngần ngại gửi yêu cầu "Yêu cầu truyện" cho chúng tôi qua email: <strong>info@fanmanga.net</strong>. Đội ngũ kỹ thuật và biên tập viên của Fanmanga sẽ cố gắng cập nhật bộ truyện đó lên hệ thống trong thời gian sớm nhất.
-          </p>
-
-          <p class="font-bold text-zinc-300">
-            Fanmanga.net - Nơi mọi tìm kiếm đều dẫn đến khoái cảm và sự thư giãn tuyệt vời. Chúc bạn tìm được bộ truyện ưng ý!
-          </p>
-
-          <div class="mt-8 pt-8 border-t border-zinc-800">
-            <p class="text-xs italic text-zinc-500">
-              Keywords: tìm truyện tranh, search manga, tìm manhwa 18+, đọc truyện online fanmanga, fanmanga.net search, tìm kiếm truyện hay.
-            </p>
-          </div>
-        </div>
+        <h1 class="text-3xl font-black text-white mb-6 uppercase tracking-tighter border-l-4 border-blue-600 pl-4">{seoHeading}</h1>
+        <div class="prose prose-invert max-w-none text-zinc-400 text-sm leading-relaxed space-y-6" set:html={seoContentHtml} />
       </div>
     </section>
   </div>
