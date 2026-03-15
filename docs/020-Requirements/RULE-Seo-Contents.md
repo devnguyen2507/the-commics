@@ -43,7 +43,7 @@
 
 | Rule | Chi tiết |
 |------|----------|
-| ✅ BẮT BUỘC | Độ dài: **50–60 ký tự** (pixel limit ~600px) |
+| ✅ BẮT BUỘC | Độ dài: **30–60 ký tự** (pixel limit < **561px**). *Note: Do giới hạn theo pixel width, dù đủ 60 ký tự vẫn có thể quá 561px. Giới hạn an toàn khuyên dùng là **55-58 ký tự**.* |
 | ✅ BẮT BUỘC | Keyword chính đặt **đầu title** |
 | ✅ BẮT BUỘC | Mỗi trang có title **duy nhất**, không trùng lặp |
 | ✅ NÊN | Thêm brand name ở cuối: `\| TênSite` |
@@ -70,7 +70,7 @@
 
 | Rule | Chi tiết |
 |------|----------|
-| ✅ BẮT BUỘC | Độ dài: **140–160 ký tự** |
+| ✅ BẮT BUỘC | Độ dài: **140–150 ký tự**. *Note: Tương tự như Title, cần lưu ý pixel width. Giới hạn an toàn khuyên dùng là **145-148 ký tự** để tránh bị cắt.* |
 | ✅ BẮT BUỘC | Phải chứa keyword chính (tự nhiên, không nhồi) |
 | ✅ BẮT BUỘC | Phải có **call-to-action** (Đọc ngay, Xem miễn phí,...) |
 | ✅ NÊN | Chứa số liệu cụ thể (số chương, trạng thái full/đang ra) |
