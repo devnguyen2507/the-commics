@@ -6,6 +6,7 @@ import Pagination from '../../components/ui/Pagination.astro';
 import { getComics, getCategories, getComicsCount } from '../../lib/api/commics';
 import { env } from '../../lib/config/env';
 import { generateBreadcrumbSchema, generateCollectionSchema } from '../../lib/utils/schema';
+import { GENRE_SEO_DATA } from '../../lib/constants/seoData';
 
 const { slug } = Astro.params;
 
@@ -51,16 +52,22 @@ try {
   console.error('Fetch error:', e);
 }
 
-const pageTitle = page > 1 
+const genreSeo = GENRE_SEO_DATA[slug as string];
+
+const baseTitle = page > 1 
   ? `Truyện ${targetCategoryName} Hay Nhất - Trang ${page} | ${env.SITE_NAME}` 
   : `Truyện ${targetCategoryName} Hay Nhất | ${env.SITE_NAME}`;
+
+const pageTitle = genreSeo?.title && page === 1 ? genreSeo.title : baseTitle;
 
 const h3Match = categoryDescription ? categoryDescription.match(/<h3>(.*?)<\/h3>/i) : null;
 const extractedDesc = h3Match ? h3Match[1].replace(/<[^>]*>?/gm, '') : null;
 
-const pageDesc = extractedDesc 
+const baseDesc = extractedDesc 
   ? `${extractedDesc} Đọc truyện ${targetCategoryName} chất lượng cao tại ${env.SITE_NAME}.`
   : `Đọc truyện tranh ${targetCategoryName} hay nhất. Trọn bộ vietsub mới nhất, cập nhật liên tục 24/7 hoàn toàn miễn phí tại ${env.SITE_NAME}.`;
+
+const pageDesc = genreSeo?.description && page === 1 ? genreSeo.description : baseDesc;
 
 const breadcrumbs = [
   { label: 'Thể loại', url: `${Astro.url.origin}/the-loai` },
