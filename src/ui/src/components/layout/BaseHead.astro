@@ -81,15 +81,11 @@ if (!cleanCanonical.endsWith('/') && !cleanCanonical.match(/\.[a-zA-Z0-9]+$/)) {
   <script type="application/ld+json" set:html={schema} />
 ))}
 
-<!-- Fonts (non-blocking) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-  media="print" onload="this.media='all'" />
-<noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
-</noscript>
+<!-- Fonts (Self-hosted) -->
+<link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/Inter-Medium.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/Inter-Bold.woff2" as="font" type="font/woff2" crossorigin />
 
 <meta name="msvalidate.01" content="56E8EFDF4678FDD7A880CFF23E2F2C19" />
 {publicEnv.GOOGLE_SITE_VERIFICATION && <meta name="google-site-verification" content={publicEnv.GOOGLE_SITE_VERIFICATION} />}
